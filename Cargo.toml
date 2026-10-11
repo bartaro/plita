@@ -1,0 +1,48 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/plita",
+    "crates/plita_app",
+    "crates/plita_window",
+    "crates/plita_render",
+    "crates/plita_ui",
+    "examples/hello_plita",
+    "examples/docking_demo",
+    "examples/canvas_demo",
+]
+
+[workspace.package]
+version = "0.0.1"
+edition = "2021"
+rust-version = "1.92"
+license = "MIT"
+authors = ["DAISUKE OBA"]
+repository = "https://github.com/bartaro/plita"
+description = "A clean-room Rust GUI foundation for lightweight creative desktop applications."
+
+[workspace.dependencies]
+plita_app = { path = "crates/plita_app" }
+plita_window = { path = "crates/plita_window" }
+plita_render = { path = "crates/plita_render" }
+plita_ui = { path = "crates/plita_ui" }
+
+thiserror = "2.0"
+bytemuck = { version = "1.25", features = ["derive"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+pollster = "0.4"
+pyo3 = { version = "0.21", features = ["abi3-py310", "extension-module"] }
+winit = "0.30.13"
+# Keep the desktop backends explicit; downstream apps pin windows/windows-core
+# to 0.62.0 so wgpu-hal and gpu-allocator share the same Win32 bindings.
+wgpu = { version = "28.0.0", default-features = false, features = ["std", "parking_lot", "dx12", "gles", "vulkan", "wgsl"] }
+vello = { version = "0.8.0", default-features = false, features = ["wgpu"] }
+
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package.plita_ui]
+opt-level = 2
+
+[profile.dev.package.plita_render]
+opt-level = 2

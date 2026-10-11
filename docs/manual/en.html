@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>PLITA — User and developer manual</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header><a class="brand" href="index.html">PLITA</a><span>2026-10-11 · 0.0.1</span></header>
+<nav class="languages" aria-label="Language"><a href="en.html" lang="en" hreflang="en" aria-current="page">English</a> <a href="ja.html" lang="ja" hreflang="ja">日本語</a> <a href="ko.html" lang="ko" hreflang="ko">한국어</a> <a href="zh-CN.html" lang="zh-CN" hreflang="zh-CN">简体中文</a> <a href="zh-TW.html" lang="zh-TW" hreflang="zh-TW">繁體中文</a> <a href="fr.html" lang="fr" hreflang="fr">Français</a> <a href="es.html" lang="es" hreflang="es">Español</a> <a href="de.html" lang="de" hreflang="de">Deutsch</a></nav>
+<div class="layout"><aside><nav aria-label="Contents"><h2>Contents</h2><a href="#section-1">1. What is included</a><a href="#section-2">2. Requirements and build</a><a href="#section-3">3. Start the examples</a><a href="#section-4">4. Launch an application</a><a href="#section-5">5. Input and auxiliary windows</a><a href="#section-6">6. Docking, canvas and persistence</a><a href="#section-7">7. Fonts and icons</a><a href="#section-8">8. Optional rendering worker</a><a href="#section-9">9. Optional Python helpers</a><a href="#section-10">10. Troubleshooting and verification</a><a href="#section-11">11. License and redistribution</a><a href="#section-12">12. Source map</a></nav><p><a href="en.md">Markdown</a></p></aside><main id="main"><h1>PLITA — User and developer manual</h1>
+<p>DAISUKE OBA · Source edition 2026-10-11 · Cargo package version 0.0.1</p>
+<h2 id="section-1">1. What is included</h2>
+<p>PLITA is a Rust GUI foundation for creative desktop applications. This repository contains five framework crates and three executable examples. It provides native windows, input routing, GPU drawing, widgets, docking and canvas models. Application-specific emulator GUIs, ROMs and prebuilt executables are outside this distribution.</p>
+<ul>
+<li><code>plita</code>: public API and <code>prelude</code> re-exports; optional Python helpers.</li>
+<li><code>plita_app</code>: <code>App</code> builder and launch configuration.</li>
+<li><code>plita_window</code>: native event loop and the <code>PlitaProgram</code> interface.</li>
+<li><code>plita_render</code>: GPU resources and rendering.</li>
+<li><code>plita_ui</code>: geometry, draw lists, widgets, docking, canvas and history models.</li>
+</ul>
+<h2 id="section-2">2. Requirements and build</h2>
+<p>Install Git and Rust 1.92 or later, including the native linker/toolchain for your target. On Windows with the MSVC target, install Visual Studio Build Tools with the C++ workload and Windows SDK. A compatible GPU and driver are needed to open a window. The first build downloads Cargo dependencies; keep <code>Cargo.lock</code> for reproducibility.</p>
+<pre><code class="language-powershell">git clone https://github.com/bartaro/plita.git
+cd plita
+cargo check --workspace --locked
+cargo test --workspace --locked
+</code></pre>
+<p>The workspace explicitly enables the wgpu DX12, GLES and Vulkan backends. Metal is not enabled in the manifest. Do not assume that every OS or GPU configuration has been validated; target-specific dependencies and display libraries may require additional setup. The commands above are verification instructions, not a claim that every platform passed testing.</p>
+<h2 id="section-3">3. Start the examples</h2>
+<p>Run one command at a time from the repository root. Close the window before launching the next example.</p>
+<pre><code class="language-powershell">cargo run --locked -p hello_plita
+cargo run --locked -p docking_demo
+cargo run --locked -p canvas_demo
+</code></pre>
+<p>All three examples currently start the same <code>CreativeShell</code>; they differ in window title and, for <code>canvas_demo</code>, initial size. Their names do not identify three separate finished applications. The shell shows a menu bar, tool strip, grid/artboard canvas, inspector, timeline and status bar. Use the demos to explore the shared UI and consult the source when integrating a feature into your own application.</p>
+<p>With text and memory input unfocused, try these shell controls:</p>
+<ul>
+<li><code>1</code> / <code>V</code>: select; <code>2</code> / <code>H</code>: pan; <code>3</code> / <code>R</code>: box; <code>4</code> / <code>T</code>: text; <code>5</code> / <code>G</code>: grid. Drag the canvas with the pan tool, use the wheel to zoom, and press <code>F</code> to reset the view.</li>
+<li>Select an object and drag it or its corner handles. <code>Ctrl+D</code> duplicates; <code>Delete</code> / <code>Backspace</code> deletes; arrow keys move by 1 world unit and <code>Shift</code> + arrow keys by 10. <code>Ctrl+Z</code> undoes; <code>Ctrl+Y</code> / <code>Ctrl+Shift+Z</code> redoes.</li>
+<li><code>Ctrl+1</code> through <code>Ctrl+6</code> select Properties, Layers, Memory, Timeline, Log and Diagnostics panels. <code>Ctrl+Shift+1</code> through <code>Ctrl+Shift+6</code> open floating panels; <code>Ctrl+0</code> closes them. <code>M</code> toggles the memory editor.</li>
+<li>In this demo, <code>Ctrl+S</code> reports a snapshot size in the status bar; it does not write a file. <code>Ctrl+O</code> resets the demo document. Do not treat these shortcuts as completed file-save/open dialogs.</li>
+</ul>
+<h2 id="section-4">4. Launch an application</h2>
+<p>The complete <code>hello_plita</code> entry point is:</p>
+<pre><code class="language-rust">use plita::prelude::*;
+
+fn main() -&gt; Result&lt;()&gt; {
+    App::new()
+        .title(&quot;PLITA UI v1.0 - Creative Shell&quot;)
+        .window_size(1280, 800)
+        .clear_color(ClearColor::rgb(0.105, 0.111, 0.125))
+        .continuous_redraw(false)
+        .run()
+}
+</code></pre>
+<p><code>App::new()</code> creates an <code>AppBuilder</code>. <code>run()</code> launches the built-in shell. To supply your own application state, use <code>run_program</code> with a factory receiving the initial <code>Size</code> and returning an implementation of <code>PlitaProgram</code>. Implement <code>resize</code>, <code>handle_event</code> and <code>draw_list</code>; use <code>tick</code> when periodic updates are needed. Return <code>UiResponse</code> to report the required UI response instead of drawing directly inside an OS event callback.</p>
+<p>With <code>continuous_redraw(false)</code>, drawing is driven by updates and redraw requests. Enable continuous redraw only when the application needs it. <code>draw_list</code> describes drawing commands; the renderer owns GPU submission.</p>
+<h2 id="section-5">5. Input and auxiliary windows</h2>
+<p>Use PLITA&#x27;s logical coordinates for UI hit testing and layout; the window layer handles DPI conversion. Events cover pointer, keyboard, IME and file drops. A received file path is input to your application: opening, parsing and saving that file remain application responsibilities.</p>
+<p><code>PointerDoubleClick</code> follows the second <code>PointerUp</code>. Recognition requires the same button, two completed clicks within 500 ms and positions within 6 logical pixels. Drag gestures are excluded. Each native window has independent detection state.</p>
+<p>Custom applications can describe auxiliary windows through <code>AuxiliaryWindowDescriptor</code> and implement their resize, event and draw-list callbacks. The shell&#x27;s detached memory editor works on its retained demonstration buffer; it is not automatically connected to an emulator or another process.</p>
+<h2 id="section-6">6. Docking, canvas and persistence</h2>
+<p><code>DockLayoutState</code> and the dock geometry types describe panel placement. <code>DockLayoutProfile</code> represents a versioned layout profile. The shell supports layout profile text, and <code>AppBuilder::startup_layout_profile</code> restores it when launching the built-in shell. Your application must decide where and when to save that text; in-memory layout slots do not replace durable file storage.</p>
+<p><code>CanvasDocument</code> and <code>LayerNode</code> provide the document and layer model. Selection, marquee and snapping helpers, together with <code>CommandHistory</code>, support editor behavior. <code>CommandRegistry</code> and <code>CommandDescriptor</code> describe commands and shortcuts. These APIs do not supply a complete application file format or an automatic project-save system. Connect the models to your own commands and serialization.</p>
+<h2 id="section-7">7. Fonts and icons</h2>
+<p>Roboto and Roboto Mono are bundled under <code>assets/fonts</code>. PLITA uses <code>fontdue</code> for text rasterization and retains a small bitmap fallback. Font discovery also checks installed system fonts. <code>PLITA_UI_FONT</code>, <code>PLITA_UI_FONT_FALLBACK</code> and <code>PLITA_MEMORY_FONT</code> can select font files; set them before starting the application. A font must contain the characters you want to display. The bundled Latin fonts alone are not a complete CJK font collection.</p>
+<p><code>active_font_family</code>, <code>active_font_source</code>, <code>active_text_backend</code> and <code>active_memory_font_family</code> help diagnose font selection. Keep the asset directory available when moving an executable, or configure an appropriate font path. System fonts are not bundled merely because their paths appear in the loader.</p>
+<p>The repository includes 52 Lucide SVG icons. <code>lucide_icon_names()</code> lists supported names and <code>draw_lucide_icon</code> draws them. Preserve the SVGs and their notices when regenerating the Rust paths with <code>crates/plita_ui/assets/build_icons.py</code>.</p>
+<h2 id="section-8">8. Optional rendering worker</h2>
+<p>Add this method to your <code>PlitaProgram</code> implementation to opt in:</p>
+<pre><code class="language-rust">fn render_on_worker_thread(&amp;self) -&gt; bool {
+    true
+}
+</code></pre>
+<p>GPU work and presentation move to a worker for each window. Window management, input, <code>tick</code> and draw-list construction stay on the event-loop thread. Slow rendering coalesces pending requests to the latest frame; it is not a lossless frame-recording API. Update a shared RGBA image entirely under the same mutex and keep that lock short. The option is read when a renderer is created, rather than acting as a live toggle. The default is synchronous rendering.</p>
+<h2 id="section-9">9. Optional Python helpers</h2>
+<p>Python support requires Python 3.10 or later and maturin 1.8 or later, below 2, in a suitable Python environment. From the repository root:</p>
+<pre><code class="language-powershell">cd crates/plita
+maturin develop --features python
+</code></pre>
+<p>The <code>python</code> feature provides PyO3 wrappers for common values and registration helpers. It does not turn every Rust GUI into a complete Python application. Application crates using <code>#[pyclass]</code> or <code>#[pymodule]</code> still need their own optional <code>pyo3</code> dependency, because those macros refer to <code>::pyo3</code>. Return to the repository root before using the earlier commands.</p>
+<h2 id="section-10">10. Troubleshooting and verification</h2>
+<ul>
+<li>Build failure: read the first compiler or linker error, check the Rust version and target toolchain, and preserve the lockfile.</li>
+<li>No window or GPU initialization error: inspect logs and the installed graphics driver. A build alone does not prove GUI behavior.</li>
+<li>Missing characters: select a font containing those glyphs and check <code>active_font_source</code>.</li>
+<li>UI stalls: keep event handlers, <code>tick</code> and draw-list generation short. A rendering worker does not parallelize application logic.</li>
+<li>Native window tests require an interactive desktop; ordinary unit tests do not replace visual verification.</li>
+</ul>
+<p>For diagnostic logging in PowerShell:</p>
+<pre><code class="language-powershell">$env:RUST_LOG=&quot;debug,plita_window=trace,plita_render=trace&quot;
+cargo run --locked -p hello_plita
+</code></pre>
+<p>The manuals describe the published source. They do not certify runtime testing on every platform. API documentation can also be generated with <code>cargo doc --workspace --no-deps --locked</code>.</p>
+<h2 id="section-11">11. License and redistribution</h2>
+<p>PLITA code and these manuals use the MIT License, copyright (c) 2026 DAISUKE OBA. Preserve the MIT copyright and permission notice when redistributing copies or substantial portions. Third-party assets retain their own licenses: Roboto and Roboto Mono use OFL-1.1; Lucide uses ISC and includes the inherited Feather MIT notice.</p>
+<p>Read <a href="../../LICENSE">LICENSE</a>, <a href="../../THIRD_PARTY_NOTICES.md">THIRD_PARTY_NOTICES</a>, <a href="../../licenses/DEPENDENCIES.md">dependency notices</a> and <a href="../../licenses/ASSET_PROVENANCE.json">asset provenance</a>. Include the relevant notices with distributed fonts, icons and binaries. Before distributing macOS binaries, resolve the standalone notice gaps recorded for <code>dispatch</code> and <code>malloc_buf</code>. This repository publishes source and notices; a future binary release needs a review of its actual linked dependencies.</p>
+<h2 id="section-12">12. Source map</h2>
+<ul>
+<li><a href="../../crates/plita_app/src/lib.rs">Application builder</a></li>
+<li><a href="../../crates/plita_window/src/lib.rs">Window and program interface</a></li>
+<li><a href="../../crates/plita_ui/src/lib.rs">UI and model APIs</a></li>
+<li><a href="../../crates/plita_render/src/lib.rs">Renderer</a></li>
+<li><a href="../../crates/plita_ui/assets/README.md">Icon assets and generation</a></li>
+<li><a href="../render_worker_ja.md">Rendering-worker details (Japanese)</a></li>
+</ul>
+<footer>Copyright (c) 2026 DAISUKE OBA · <a href="../../LICENSE">MIT</a></footer>
+</main></div>
+</body>
+</html>

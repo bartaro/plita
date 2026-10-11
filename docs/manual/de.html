@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>PLITA — Benutzer- und Entwicklerhandbuch</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<a class="skip" href="#main">Zum Inhalt</a>
+<header><a class="brand" href="index.html">PLITA</a><span>2026-10-11 · 0.0.1</span></header>
+<nav class="languages" aria-label="Language"><a href="en.html" lang="en" hreflang="en">English</a> <a href="ja.html" lang="ja" hreflang="ja">日本語</a> <a href="ko.html" lang="ko" hreflang="ko">한국어</a> <a href="zh-CN.html" lang="zh-CN" hreflang="zh-CN">简体中文</a> <a href="zh-TW.html" lang="zh-TW" hreflang="zh-TW">繁體中文</a> <a href="fr.html" lang="fr" hreflang="fr">Français</a> <a href="es.html" lang="es" hreflang="es">Español</a> <a href="de.html" lang="de" hreflang="de" aria-current="page">Deutsch</a></nav>
+<div class="layout"><aside><nav aria-label="Inhalt"><h2>Inhalt</h2><a href="#section-1">1. Lieferumfang</a><a href="#section-2">2. Voraussetzungen und Build</a><a href="#section-3">3. Beispiele starten</a><a href="#section-4">4. Eine Anwendung starten</a><a href="#section-5">5. Eingaben und Zusatzfenster</a><a href="#section-6">6. Docking, Canvas und Speicherung</a><a href="#section-7">7. Schriftarten und Symbole</a><a href="#section-8">8. Optionaler Rendering-Thread</a><a href="#section-9">9. Optionale Python-Hilfsfunktionen</a><a href="#section-10">10. Fehlersuche und Prüfung</a><a href="#section-11">11. Lizenz und Weitergabe</a><a href="#section-12">12. Orientierung im Quelltext</a></nav><p><a href="de.md">Markdown</a></p></aside><main id="main"><h1>PLITA — Benutzer- und Entwicklerhandbuch</h1>
+<p>DAISUKE OBA · Quelltextausgabe vom 2026-10-11 · Cargo-Paketversion 0.0.1</p>
+<h2 id="section-1">1. Lieferumfang</h2>
+<p>PLITA ist eine Rust-GUI-Grundlage für kreative Desktop-Anwendungen. Dieses Repository enthält fünf Framework-Crates und drei ausführbare Beispiele. Es stellt native Fenster, Eingabeverarbeitung, GPU-Zeichnen, Widgets, andockbare Bedienfelder und Canvas-Modelle bereit. Anwendungsspezifische Emulator-Oberflächen, ROMs und vorkompilierte Programme gehören nicht zum Lieferumfang.</p>
+<ul>
+<li><code>plita</code>: öffentliche API, <code>prelude</code>-Reexporte und optionale Python-Hilfsfunktionen.</li>
+<li><code>plita_app</code>: <code>App</code>-Builder und Startkonfiguration.</li>
+<li><code>plita_window</code>: native Ereignisschleife und Schnittstelle <code>PlitaProgram</code>.</li>
+<li><code>plita_render</code>: GPU-Ressourcen und Rendering.</li>
+<li><code>plita_ui</code>: Geometrie, Zeichenlisten, Widgets, Docking-, Canvas- und Verlaufsmodelle.</li>
+</ul>
+<h2 id="section-2">2. Voraussetzungen und Build</h2>
+<p>Installieren Sie Git, Rust ab Version 1.92 sowie Linker und native Entwicklungswerkzeuge für das Zielsystem. Unter Windows mit dem MSVC-Ziel werden die C++-Werkzeuge der Visual Studio Build Tools und das Windows SDK benötigt. Ein Fenster erfordert eine kompatible GPU mit passendem Treiber. Beim ersten Build lädt Cargo Abhängigkeiten herunter. Behalten Sie <code>Cargo.lock</code> für reproduzierbare Builds bei.</p>
+<pre><code class="language-powershell">git clone https://github.com/bartaro/plita.git
+cd plita
+cargo check --workspace --locked
+cargo test --workspace --locked
+</code></pre>
+<p>Der Workspace aktiviert ausdrücklich die wgpu-Backends DX12, GLES und Vulkan. Metal ist im Manifest nicht aktiviert. Gehen Sie nicht davon aus, dass jedes Betriebssystem und jede GPU-Konfiguration geprüft wurde. Zielspezifische Abhängigkeiten und Anzeigebibliotheken können zusätzliche Einrichtung erfordern. Die obigen Befehle sind Prüfanweisungen und keine Bestätigung erfolgreicher Tests auf allen Plattformen.</p>
+<h2 id="section-3">3. Beispiele starten</h2>
+<p>Führen Sie jeweils einen Befehl im Stammverzeichnis des Repositorys aus. Schließen Sie das Fenster, bevor Sie das nächste Beispiel starten.</p>
+<pre><code class="language-powershell">cargo run --locked -p hello_plita
+cargo run --locked -p docking_demo
+cargo run --locked -p canvas_demo
+</code></pre>
+<p>Alle drei Beispiele starten derzeit dieselbe <code>CreativeShell</code>. Sie unterscheiden sich im Fenstertitel und bei <code>canvas_demo</code> auch in der Anfangsgröße. Die Namen bezeichnen keine drei eigenständigen fertigen Anwendungen. Die gemeinsame Oberfläche zeigt Menüleiste, Werkzeuge, Canvas mit Raster und Zeichenfläche, Inspektor, Zeitleiste und Statusleiste. Erkunden Sie diese Oberfläche und lesen Sie beim Einbau einer Funktion auch den Quelltext.</p>
+<p>Wenn Text- und Speichereingaben keinen Fokus haben, können Sie diese Bedienung ausprobieren:</p>
+<ul>
+<li><code>1</code> / <code>V</code>: Auswahl; <code>2</code> / <code>H</code>: Ansicht verschieben; <code>3</code> / <code>R</code>: Rechteck; <code>4</code> / <code>T</code>: Text; <code>5</code> / <code>G</code>: Raster. Ziehen Sie den Canvas mit dem Verschiebewerkzeug, zoomen Sie mit dem Mausrad und setzen Sie die Ansicht mit <code>F</code> zurück.</li>
+<li>Wählen Sie ein Objekt und ziehen Sie es oder seine Eckgriffe. <code>Ctrl+D</code> dupliziert; <code>Delete</code> / <code>Backspace</code> löscht; Pfeiltasten verschieben um 1 Welteinheit, mit <code>Shift</code> um 10. <code>Ctrl+Z</code> macht rückgängig; <code>Ctrl+Y</code> / <code>Ctrl+Shift+Z</code> stellt wieder her.</li>
+<li><code>Ctrl+1</code> bis <code>Ctrl+6</code> wählen Eigenschaften, Ebenen, Speicher, Zeitleiste, Protokoll und Diagnose. <code>Ctrl+Shift+1</code> bis <code>Ctrl+Shift+6</code> öffnen schwebende Bedienfelder; <code>Ctrl+0</code> schließt sie. <code>M</code> blendet den Speichereditor ein oder aus.</li>
+<li>In dieser Demo zeigt <code>Ctrl+S</code> nur die Größe eines Schnappschusses in der Statusleiste an und schreibt keine Datei. <code>Ctrl+O</code> setzt das Demo-Dokument zurück. Diese Kürzel sind keine vollständigen Dateiöffnungs- oder Speicherdialoge.</li>
+</ul>
+<h2 id="section-4">4. Eine Anwendung starten</h2>
+<p>Dies ist der vollständige Einstiegspunkt von <code>hello_plita</code>:</p>
+<pre><code class="language-rust">use plita::prelude::*;
+
+fn main() -&gt; Result&lt;()&gt; {
+    App::new()
+        .title(&quot;PLITA UI v1.0 - Creative Shell&quot;)
+        .window_size(1280, 800)
+        .clear_color(ClearColor::rgb(0.105, 0.111, 0.125))
+        .continuous_redraw(false)
+        .run()
+}
+</code></pre>
+<p><code>App::new()</code> erzeugt einen <code>AppBuilder</code>. <code>run()</code> startet die eingebaute Oberfläche. Für einen eigenen Anwendungszustand übergeben Sie an <code>run_program</code> eine Factory, die die anfängliche <code>Size</code> erhält und eine Implementierung von <code>PlitaProgram</code> zurückgibt. Implementieren Sie <code>resize</code>, <code>handle_event</code> und <code>draw_list</code>; nutzen Sie <code>tick</code> für regelmäßige Aktualisierungen. Geben Sie die nötige UI-Reaktion über <code>UiResponse</code> zurück, statt direkt in einem Betriebssystem-Ereignisrückruf zu zeichnen.</p>
+<p>Mit <code>continuous_redraw(false)</code> wird aufgrund von Aktualisierungen und Neuzeichnungsanforderungen gezeichnet. Aktivieren Sie kontinuierliches Neuzeichnen nur bei Bedarf. <code>draw_list</code> beschreibt Zeichenbefehle; der Renderer übernimmt deren Übergabe an die GPU.</p>
+<h2 id="section-5">5. Eingaben und Zusatzfenster</h2>
+<p>Verwenden Sie die logischen Koordinaten von PLITA für Treffertests und Layout. Die Fensterschicht übernimmt die DPI-Umrechnung. Ereignisse umfassen Zeiger, Tastatur, IME und abgelegte Dateien. Das Öffnen, Auswerten und Speichern einer empfangenen Datei bleibt Aufgabe der Anwendung.</p>
+<p><code>PointerDoubleClick</code> folgt auf das zweite <code>PointerUp</code>. Erforderlich sind zwei abgeschlossene Klicks mit derselben Taste innerhalb von 500 ms und mit höchstens 6 logischen Pixeln Abstand. Ziehgesten werden ausgeschlossen. Jedes native Fenster führt seine eigene Erkennung.</p>
+<p>Eigene Anwendungen können Zusatzfenster mit <code>AuxiliaryWindowDescriptor</code> beschreiben und Rückrufe für Größenänderung, Ereignisse und Zeichenlisten implementieren. Der abgetrennte Speichereditor der eingebauten Oberfläche bearbeitet deren Demonstrationspuffer. Er verbindet sich nicht automatisch mit einem Emulator oder einem anderen Prozess.</p>
+<h2 id="section-6">6. Docking, Canvas und Speicherung</h2>
+<p><code>DockLayoutState</code> und die Docking-Geometrietypen beschreiben die Anordnung der Bedienfelder. <code>DockLayoutProfile</code> ist ein versioniertes Layoutprofil. Die eingebaute Oberfläche verarbeitet Profiltext; <code>AppBuilder::startup_layout_profile</code> stellt ihn beim Start dieser Oberfläche wieder her. Wann und wo der Text gespeichert wird, entscheidet die Anwendung. Layoutplätze im Arbeitsspeicher ersetzen keine dauerhafte Speicherung in Dateien.</p>
+<p><code>CanvasDocument</code> und <code>LayerNode</code> stellen Dokument- und Ebenenmodelle bereit. Auswahl, Rechteckauswahl und Einrasthilfen ermöglichen zusammen mit <code>CommandHistory</code> die Umsetzung von Bearbeitungsfunktionen. <code>CommandRegistry</code> und <code>CommandDescriptor</code> beschreiben Befehle und Tastenkürzel. Diese APIs liefern weder ein vollständiges Anwendungsdateiformat noch eine automatische Projektspeicherung. Verbinden Sie die Modelle mit eigenen Befehlen und Ihrer Serialisierung.</p>
+<h2 id="section-7">7. Schriftarten und Symbole</h2>
+<p>Roboto und Roboto Mono liegen unter <code>assets/fonts</code>. PLITA rastert Text mit <code>fontdue</code> und behält eine kleine Bitmap-Ersatzschrift bei. Es sucht außerdem nach installierten Systemschriften. Mit <code>PLITA_UI_FONT</code>, <code>PLITA_UI_FONT_FALLBACK</code> und <code>PLITA_MEMORY_FONT</code> lassen sich Schriftdateien auswählen; setzen Sie diese Variablen vor dem Programmstart. Die Schrift muss die gewünschten Zeichen enthalten. Die mitgelieferten lateinischen Schriften decken Chinesisch, Japanisch und Koreanisch nicht vollständig ab.</p>
+<p><code>active_font_family</code>, <code>active_font_source</code>, <code>active_text_backend</code> und <code>active_memory_font_family</code> helfen bei der Diagnose der Schriftauswahl. Wenn Sie ein Programm verschieben, erhalten Sie den Zugriff auf das Ressourcenverzeichnis oder konfigurieren Sie einen passenden Schriftpfad. Ein Systemschriftpfad im Ladecode bedeutet nicht, dass diese Schriftdatei mitgeliefert wird.</p>
+<p>Das Repository enthält 52 Lucide-SVG-Symbole. <code>lucide_icon_names()</code> listet ihre Namen auf; <code>draw_lucide_icon</code> zeichnet sie. Behalten Sie die SVGs und Lizenzhinweise bei, wenn Sie mit <code>crates/plita_ui/assets/build_icons.py</code> die Rust-Pfaddaten neu erzeugen.</p>
+<h2 id="section-8">8. Optionaler Rendering-Thread</h2>
+<p>Fügen Sie Ihrer <code>PlitaProgram</code>-Implementierung diese Methode hinzu, um ihn zu aktivieren:</p>
+<pre><code class="language-rust">fn render_on_worker_thread(&amp;self) -&gt; bool {
+    true
+}
+</code></pre>
+<p>Ein Arbeitsthread pro Fenster übernimmt GPU-Arbeit und Bildausgabe. Fensterverwaltung, Eingaben, <code>tick</code> und der Aufbau der Zeichenlisten bleiben auf dem Thread der Ereignisschleife. Bei langsamem Rendering werden ausstehende Anforderungen auf das neueste Bild zusammengefasst. Dies ist keine API zur lückenlosen Aufnahme aller Bilder. Aktualisieren Sie ein geteiltes RGBA-Bild vollständig unter demselben Mutex und halten Sie die Sperre kurz. Die Option wird beim Erzeugen des Renderers gelesen und ist kein Schalter für den laufenden Betrieb. Standardmäßig wird synchron gerendert.</p>
+<h2 id="section-9">9. Optionale Python-Hilfsfunktionen</h2>
+<p>Richten Sie Python ab Version 3.10 und maturin ab 1.8, aber unter 2, in einer geeigneten Python-Umgebung ein. Vom Stammverzeichnis des Repositorys aus:</p>
+<pre><code class="language-powershell">cd crates/plita
+maturin develop --features python
+</code></pre>
+<p>Das Feature <code>python</code> liefert PyO3-Wrapper für gemeinsame Wertetypen und Registrierungshilfen. Es verwandelt nicht automatisch eine ganze Rust-Oberfläche in eine vollständige Python-Anwendung. Anwendungs-Crates mit <code>#[pyclass]</code> oder <code>#[pymodule]</code> benötigen weiterhin eine eigene optionale Abhängigkeit von <code>pyo3</code>, da diese Makros auf <code>::pyo3</code> verweisen. Wechseln Sie vor den früheren Befehlen wieder ins Stammverzeichnis des Repositorys.</p>
+<h2 id="section-10">10. Fehlersuche und Prüfung</h2>
+<ul>
+<li>Build-Fehler: Lesen Sie den ersten Compiler- oder Linkerfehler, prüfen Sie Rust-Version und Ziel-Toolchain und behalten Sie die Lockdatei bei.</li>
+<li>Kein Fenster oder fehlgeschlagene GPU-Initialisierung: Prüfen Sie Protokolle und Grafiktreiber. Ein erfolgreicher Build bestätigt noch keine funktionierende Oberfläche.</li>
+<li>Fehlende Zeichen: Wählen Sie eine Schrift mit den nötigen Glyphen und prüfen Sie <code>active_font_source</code>.</li>
+<li>Stockende Oberfläche: Halten Sie Ereignisbehandlung, <code>tick</code> und Zeichenlistenerstellung kurz. Der Rendering-Thread parallelisiert keine Anwendungslogik.</li>
+<li>Tests nativer Fenster benötigen einen interaktiven Desktop. Gewöhnliche Unit-Tests ersetzen keine Sichtprüfung.</li>
+</ul>
+<p>Diagnoseprotokolle in PowerShell aktivieren:</p>
+<pre><code class="language-powershell">$env:RUST_LOG=&quot;debug,plita_window=trace,plita_render=trace&quot;
+cargo run --locked -p hello_plita
+</code></pre>
+<p>Dieses Handbuch beschreibt den veröffentlichten Quelltext und bestätigt keine Laufzeittests auf sämtlichen Plattformen. Mit <code>cargo doc --workspace --no-deps --locked</code> können Sie zusätzlich die API-Dokumentation erzeugen.</p>
+<h2 id="section-11">11. Lizenz und Weitergabe</h2>
+<p>PLITA-Code und diese Handbücher stehen unter der MIT-Lizenz, Copyright (c) 2026 DAISUKE OBA. Behalten Sie bei der Weitergabe von Kopien oder wesentlichen Teilen den MIT-Urheberrechts- und Erlaubnisvermerk bei. Fremde Ressourcen behalten ihre eigenen Lizenzen: Roboto und Roboto Mono verwenden OFL-1.1; Lucide verwendet ISC einschließlich des übernommenen MIT-Hinweises von Feather.</p>
+<p>Lesen Sie <a href="../../LICENSE">LICENSE</a>, die <a href="../../THIRD_PARTY_NOTICES.md">Drittanbieterhinweise</a>, die <a href="../../licenses/DEPENDENCIES.md">Abhängigkeitshinweise</a> und die <a href="../../licenses/ASSET_PROVENANCE.json">Herkunft der Ressourcen</a>. Legen Sie weitergegebenen Schriften, Symbolen und Binärdateien die jeweils nötigen Hinweise bei. Klären Sie vor der Weitergabe von macOS-Binärdateien die dokumentierten Lücken bei eigenständigen Erlaubnistexten für <code>dispatch</code> und <code>malloc_buf</code>. Dieses Repository veröffentlicht Quelltext und Hinweise; eine spätere Binärverteilung erfordert die Prüfung der tatsächlich eingebundenen Abhängigkeiten.</p>
+<h2 id="section-12">12. Orientierung im Quelltext</h2>
+<ul>
+<li><a href="../../crates/plita_app/src/lib.rs">Anwendungs-Builder</a></li>
+<li><a href="../../crates/plita_window/src/lib.rs">Fenster- und Programmschnittstelle</a></li>
+<li><a href="../../crates/plita_ui/src/lib.rs">UI- und Modell-APIs</a></li>
+<li><a href="../../crates/plita_render/src/lib.rs">Renderer</a></li>
+<li><a href="../../crates/plita_ui/assets/README.md">Symbole und Erzeugung</a></li>
+<li><a href="../render_worker_ja.md">Einzelheiten zum Rendering-Thread auf Japanisch</a></li>
+</ul>
+<footer>Copyright (c) 2026 DAISUKE OBA · <a href="../../LICENSE">MIT</a></footer>
+</main></div>
+</body>
+</html>

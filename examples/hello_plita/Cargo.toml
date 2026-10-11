@@ -1,0 +1,11 @@
+[package]
+name = "hello_plita"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+publish = false
+
+[dependencies]
+plita = { path = "../../crates/plita" }

@@ -1,0 +1,3582 @@
+[
+  {
+    "name": "ab_glyph",
+    "version": "0.2.32",
+    "license": "Apache-2.0",
+    "repository": "https://github.com/alexheretic/ab-glyph",
+    "license_files": [
+      "licenses/dependencies/ab_glyph-0.2.32/Cargo.toml.orig",
+      "licenses/dependencies/ab_glyph-0.2.32/LICENSE"
+    ]
+  },
+  {
+    "name": "ab_glyph_rasterizer",
+    "version": "0.1.10",
+    "license": "Apache-2.0",
+    "repository": "https://github.com/alexheretic/ab-glyph",
+    "license_files": [
+      "licenses/dependencies/ab_glyph_rasterizer-0.1.10/Cargo.toml.orig",
+      "licenses/dependencies/ab_glyph_rasterizer-0.1.10/LICENSE"
+    ]
+  },
+  {
+    "name": "adler2",
+    "version": "2.0.1",
+    "license": "0BSD OR MIT OR Apache-2.0",
+    "repository": "https://github.com/oyvindln/adler2",
+    "license_files": [
+      "licenses/dependencies/adler2-2.0.1/Cargo.toml.orig",
+      "licenses/dependencies/adler2-2.0.1/LICENSE-0BSD",
+      "licenses/dependencies/adler2-2.0.1/LICENSE-APACHE",
+      "licenses/dependencies/adler2-2.0.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "ahash",
+    "version": "0.8.12",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/tkaitchuck/ahash",
+    "license_files": [
+      "licenses/dependencies/ahash-0.8.12/Cargo.toml.orig",
+      "licenses/dependencies/ahash-0.8.12/LICENSE-APACHE",
+      "licenses/dependencies/ahash-0.8.12/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "aho-corasick",
+    "version": "1.1.4",
+    "license": "Unlicense OR MIT",
+    "repository": "https://github.com/BurntSushi/aho-corasick",
+    "license_files": [
+      "licenses/dependencies/aho-corasick-1.1.4/COPYING",
+      "licenses/dependencies/aho-corasick-1.1.4/Cargo.toml.orig",
+      "licenses/dependencies/aho-corasick-1.1.4/LICENSE-MIT",
+      "licenses/dependencies/aho-corasick-1.1.4/UNLICENSE"
+    ]
+  },
+  {
+    "name": "allocator-api2",
+    "version": "0.2.21",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/zakarumych/allocator-api2",
+    "license_files": [
+      "licenses/dependencies/allocator-api2-0.2.21/Cargo.toml.orig",
+      "licenses/dependencies/allocator-api2-0.2.21/LICENSE-APACHE",
+      "licenses/dependencies/allocator-api2-0.2.21/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "android-activity",
+    "version": "0.6.1",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rust-mobile/android-activity",
+    "license_files": [
+      "licenses/dependencies/android-activity-0.6.1/Cargo.toml.orig",
+      "licenses/dependencies/android-activity-0.6.1/LICENSE",
+      "licenses/dependencies/android-activity-0.6.1/LICENSE-APACHE",
+      "licenses/dependencies/android-activity-0.6.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "android-properties",
+    "version": "0.2.2",
+    "license": "MIT",
+    "repository": "https://github.com/miklelappo/android-properties",
+    "license_files": [
+      "licenses/dependencies/android-properties-0.2.2/Cargo.toml.orig",
+      "licenses/dependencies/android-properties-0.2.2/LICENSE"
+    ]
+  },
+  {
+    "name": "android_system_properties",
+    "version": "0.1.5",
+    "license": "MIT/Apache-2.0",
+    "repository": "https://github.com/nical/android_system_properties",
+    "license_files": [
+      "licenses/dependencies/android_system_properties-0.1.5/Cargo.toml.orig",
+      "licenses/dependencies/android_system_properties-0.1.5/LICENSE-APACHE",
+      "licenses/dependencies/android_system_properties-0.1.5/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "arrayref",
+    "version": "0.3.9",
+    "license": "BSD-2-Clause",
+    "repository": "https://github.com/droundy/arrayref",
+    "license_files": [
+      "licenses/dependencies/arrayref-0.3.9/Cargo.toml.orig",
+      "licenses/dependencies/arrayref-0.3.9/LICENSE"
+    ]
+  },
+  {
+    "name": "arrayvec",
+    "version": "0.7.6",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/bluss/arrayvec",
+    "license_files": [
+      "licenses/dependencies/arrayvec-0.7.6/Cargo.toml.orig",
+      "licenses/dependencies/arrayvec-0.7.6/LICENSE-APACHE",
+      "licenses/dependencies/arrayvec-0.7.6/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "as-raw-xcb-connection",
+    "version": "1.0.1",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/psychon/as-raw-xcb-connection",
+    "license_files": [
+      "licenses/dependencies/as-raw-xcb-connection-1.0.1/Cargo.toml.orig",
+      "licenses/dependencies/as-raw-xcb-connection-1.0.1/LICENSE-APACHE",
+      "licenses/dependencies/as-raw-xcb-connection-1.0.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "ash",
+    "version": "0.38.0+1.3.281",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/ash-rs/ash",
+    "license_files": [
+      "licenses/dependencies/ash-0.38.0+1.3.281/Cargo.toml.orig",
+      "licenses/dependencies/ash-0.38.0+1.3.281/LICENSE-APACHE",
+      "licenses/dependencies/ash-0.38.0+1.3.281/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "atomic-waker",
+    "version": "1.1.2",
+    "license": "Apache-2.0 OR MIT",
+    "repository": "https://github.com/smol-rs/atomic-waker",
+    "license_files": [
+      "licenses/dependencies/atomic-waker-1.1.2/Cargo.toml.orig",
+      "licenses/dependencies/atomic-waker-1.1.2/LICENSE-APACHE",
+      "licenses/dependencies/atomic-waker-1.1.2/LICENSE-MIT",
+      "licenses/dependencies/atomic-waker-1.1.2/LICENSE-THIRD-PARTY"
+    ]
+  },
+  {
+    "name": "autocfg",
+    "version": "1.5.0",
+    "license": "Apache-2.0 OR MIT",
+    "repository": "https://github.com/cuviper/autocfg",
+    "license_files": [
+      "licenses/dependencies/autocfg-1.5.0/Cargo.toml.orig",
+      "licenses/dependencies/autocfg-1.5.0/LICENSE-APACHE",
+      "licenses/dependencies/autocfg-1.5.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "bit-set",
+    "version": "0.8.0",
+    "license": "Apache-2.0 OR MIT",
+    "repository": "https://github.com/contain-rs/bit-set",
+    "license_files": [
+      "licenses/dependencies/bit-set-0.8.0/Cargo.toml.orig",
+      "licenses/dependencies/bit-set-0.8.0/LICENSE-APACHE",
+      "licenses/dependencies/bit-set-0.8.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "bit-vec",
+    "version": "0.8.0",
+    "license": "Apache-2.0 OR MIT",
+    "repository": "https://github.com/contain-rs/bit-vec",
+    "license_files": [
+      "licenses/dependencies/bit-vec-0.8.0/Cargo.toml.orig",
+      "licenses/dependencies/bit-vec-0.8.0/LICENSE-APACHE",
+      "licenses/dependencies/bit-vec-0.8.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "bitflags",
+    "version": "1.3.2",
+    "license": "MIT/Apache-2.0",
+    "repository": "https://github.com/bitflags/bitflags",
+    "license_files": [
+      "licenses/dependencies/bitflags-1.3.2/Cargo.toml.orig",
+      "licenses/dependencies/bitflags-1.3.2/LICENSE-APACHE",
+      "licenses/dependencies/bitflags-1.3.2/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "bitflags",
+    "version": "2.11.1",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/bitflags/bitflags",
+    "license_files": [
+      "licenses/dependencies/bitflags-2.11.1/Cargo.toml.orig",
+      "licenses/dependencies/bitflags-2.11.1/LICENSE-APACHE",
+      "licenses/dependencies/bitflags-2.11.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "block2",
+    "version": "0.5.1",
+    "license": "MIT",
+    "repository": "https://github.com/madsmtm/objc2",
+    "license_files": [
+      "licenses/dependencies/block2-0.5.1/Cargo.toml.orig",
+      "licenses/dependencies/block2-0.5.1/upstream/LICENSE.txt"
+    ],
+    "upstream_supplement": {
+      "name": "block2",
+      "version": "0.5.1",
+      "commit": "4fc083f1c6d6784577e38b0ee8dbd344481e2fd2",
+      "files": [
+        {
+          "path": "licenses/dependencies/block2-0.5.1/upstream/LICENSE.txt",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/4fc083f1c6d6784577e38b0ee8dbd344481e2fd2/LICENSE.txt",
+          "sha256": "e353f37b12aefbb9f9b29490e837cfee05d9bda70804b3562839a3285c1df1e5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "bumpalo",
+    "version": "3.20.2",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/fitzgen/bumpalo",
+    "license_files": [
+      "licenses/dependencies/bumpalo-3.20.2/Cargo.toml.orig",
+      "licenses/dependencies/bumpalo-3.20.2/LICENSE-APACHE",
+      "licenses/dependencies/bumpalo-3.20.2/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "bytemuck",
+    "version": "1.25.0",
+    "license": "Zlib OR Apache-2.0 OR MIT",
+    "repository": "https://github.com/Lokathor/bytemuck",
+    "license_files": [
+      "licenses/dependencies/bytemuck-1.25.0/Cargo.toml.orig",
+      "licenses/dependencies/bytemuck-1.25.0/LICENSE-APACHE",
+      "licenses/dependencies/bytemuck-1.25.0/LICENSE-MIT",
+      "licenses/dependencies/bytemuck-1.25.0/LICENSE-ZLIB"
+    ]
+  },
+  {
+    "name": "bytemuck_derive",
+    "version": "1.10.2",
+    "license": "Zlib OR Apache-2.0 OR MIT",
+    "repository": "https://github.com/Lokathor/bytemuck",
+    "license_files": [
+      "licenses/dependencies/bytemuck_derive-1.10.2/Cargo.toml.orig",
+      "licenses/dependencies/bytemuck_derive-1.10.2/LICENSE-APACHE",
+      "licenses/dependencies/bytemuck_derive-1.10.2/LICENSE-MIT",
+      "licenses/dependencies/bytemuck_derive-1.10.2/LICENSE-ZLIB"
+    ]
+  },
+  {
+    "name": "bytes",
+    "version": "1.11.1",
+    "license": "MIT",
+    "repository": "https://github.com/tokio-rs/bytes",
+    "license_files": [
+      "licenses/dependencies/bytes-1.11.1/Cargo.toml.orig",
+      "licenses/dependencies/bytes-1.11.1/LICENSE"
+    ]
+  },
+  {
+    "name": "calloop",
+    "version": "0.13.0",
+    "license": "MIT",
+    "repository": "https://github.com/Smithay/calloop",
+    "license_files": [
+      "licenses/dependencies/calloop-0.13.0/Cargo.toml.orig",
+      "licenses/dependencies/calloop-0.13.0/LICENSE.txt"
+    ]
+  },
+  {
+    "name": "calloop-wayland-source",
+    "version": "0.3.0",
+    "license": "MIT",
+    "repository": "https://github.com/smithay/calloop-wayland-source",
+    "license_files": [
+      "licenses/dependencies/calloop-wayland-source-0.3.0/Cargo.toml.orig",
+      "licenses/dependencies/calloop-wayland-source-0.3.0/LICENSE.txt"
+    ]
+  },
+  {
+    "name": "cc",
+    "version": "1.2.62",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rust-lang/cc-rs",
+    "license_files": [
+      "licenses/dependencies/cc-1.2.62/Cargo.toml.orig",
+      "licenses/dependencies/cc-1.2.62/LICENSE-APACHE",
+      "licenses/dependencies/cc-1.2.62/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "cfg-if",
+    "version": "1.0.4",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rust-lang/cfg-if",
+    "license_files": [
+      "licenses/dependencies/cfg-if-1.0.4/Cargo.toml.orig",
+      "licenses/dependencies/cfg-if-1.0.4/LICENSE-APACHE",
+      "licenses/dependencies/cfg-if-1.0.4/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "cfg_aliases",
+    "version": "0.2.1",
+    "license": "MIT",
+    "repository": "https://github.com/katharostech/cfg_aliases",
+    "license_files": [
+      "licenses/dependencies/cfg_aliases-0.2.1/Cargo.toml.orig",
+      "licenses/dependencies/cfg_aliases-0.2.1/LICENSE"
+    ]
+  },
+  {
+    "name": "codespan-reporting",
+    "version": "0.12.0",
+    "license": "Apache-2.0",
+    "repository": "https://github.com/brendanzab/codespan",
+    "license_files": [
+      "licenses/dependencies/codespan-reporting-0.12.0/Cargo.toml.orig",
+      "licenses/dependencies/codespan-reporting-0.12.0/LICENSE"
+    ]
+  },
+  {
+    "name": "color",
+    "version": "0.3.3",
+    "license": "Apache-2.0 OR MIT",
+    "repository": "https://github.com/linebender/color",
+    "license_files": [
+      "licenses/dependencies/color-0.3.3/Cargo.toml.orig",
+      "licenses/dependencies/color-0.3.3/LICENSE-APACHE",
+      "licenses/dependencies/color-0.3.3/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "combine",
+    "version": "4.6.7",
+    "license": "MIT",
+    "repository": "https://github.com/Marwes/combine",
+    "license_files": [
+      "licenses/dependencies/combine-4.6.7/Cargo.toml.orig",
+      "licenses/dependencies/combine-4.6.7/LICENSE"
+    ]
+  },
+  {
+    "name": "concurrent-queue",
+    "version": "2.5.0",
+    "license": "Apache-2.0 OR MIT",
+    "repository": "https://github.com/smol-rs/concurrent-queue",
+    "license_files": [
+      "licenses/dependencies/concurrent-queue-2.5.0/Cargo.toml.orig",
+      "licenses/dependencies/concurrent-queue-2.5.0/LICENSE-APACHE",
+      "licenses/dependencies/concurrent-queue-2.5.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "core-foundation",
+    "version": "0.9.4",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/servo/core-foundation-rs",
+    "license_files": [
+      "licenses/dependencies/core-foundation-0.9.4/Cargo.toml.orig",
+      "licenses/dependencies/core-foundation-0.9.4/LICENSE-APACHE",
+      "licenses/dependencies/core-foundation-0.9.4/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "core-foundation-sys",
+    "version": "0.8.7",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/servo/core-foundation-rs",
+    "license_files": [
+      "licenses/dependencies/core-foundation-sys-0.8.7/Cargo.toml.orig",
+      "licenses/dependencies/core-foundation-sys-0.8.7/LICENSE-APACHE",
+      "licenses/dependencies/core-foundation-sys-0.8.7/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "core-graphics",
+    "version": "0.23.2",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/servo/core-foundation-rs",
+    "license_files": [
+      "licenses/dependencies/core-graphics-0.23.2/COPYRIGHT",
+      "licenses/dependencies/core-graphics-0.23.2/Cargo.toml.orig",
+      "licenses/dependencies/core-graphics-0.23.2/LICENSE-APACHE",
+      "licenses/dependencies/core-graphics-0.23.2/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "core-graphics-types",
+    "version": "0.1.3",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/servo/core-foundation-rs",
+    "license_files": [
+      "licenses/dependencies/core-graphics-types-0.1.3/Cargo.toml.orig",
+      "licenses/dependencies/core-graphics-types-0.1.3/LICENSE-APACHE",
+      "licenses/dependencies/core-graphics-types-0.1.3/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "crc32fast",
+    "version": "1.5.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/srijs/rust-crc32fast",
+    "license_files": [
+      "licenses/dependencies/crc32fast-1.5.0/Cargo.toml.orig",
+      "licenses/dependencies/crc32fast-1.5.0/LICENSE-APACHE",
+      "licenses/dependencies/crc32fast-1.5.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "crossbeam-utils",
+    "version": "0.8.21",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/crossbeam-rs/crossbeam",
+    "license_files": [
+      "licenses/dependencies/crossbeam-utils-0.8.21/Cargo.toml.orig",
+      "licenses/dependencies/crossbeam-utils-0.8.21/LICENSE-APACHE",
+      "licenses/dependencies/crossbeam-utils-0.8.21/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "crunchy",
+    "version": "0.2.4",
+    "license": "MIT",
+    "repository": "https://github.com/eira-fransham/crunchy",
+    "license_files": [
+      "licenses/dependencies/crunchy-0.2.4/Cargo.toml.orig",
+      "licenses/dependencies/crunchy-0.2.4/LICENSE"
+    ]
+  },
+  {
+    "name": "cursor-icon",
+    "version": "1.2.0",
+    "license": "MIT OR Apache-2.0 OR Zlib",
+    "repository": "https://github.com/rust-windowing/cursor-icon",
+    "license_files": [
+      "licenses/dependencies/cursor-icon-1.2.0/Cargo.toml.orig",
+      "licenses/dependencies/cursor-icon-1.2.0/LICENSE-APACHE",
+      "licenses/dependencies/cursor-icon-1.2.0/LICENSE-MIT",
+      "licenses/dependencies/cursor-icon-1.2.0/LICENSE-ZLIB"
+    ]
+  },
+  {
+    "name": "dispatch",
+    "version": "0.2.0",
+    "license": "MIT",
+    "repository": "http://github.com/SSheldon/rust-dispatch",
+    "license_files": [
+      "licenses/dependencies/dispatch-0.2.0/Cargo.toml.orig"
+    ],
+    "upstream_supplement": {
+      "name": "dispatch",
+      "version": "0.2.0",
+      "commit": "82d6c7a5b75dc0c71c3f46f87bb6c16a476f7748",
+      "files": []
+    },
+    "notice_status": "MIT declared in upstream manifest; standalone copyright/permission text not found in release; verify before macOS binary distribution"
+  },
+  {
+    "name": "dlib",
+    "version": "0.5.3",
+    "license": "MIT",
+    "repository": "https://github.com/elinorbgr/dlib",
+    "license_files": [
+      "licenses/dependencies/dlib-0.5.3/Cargo.toml.orig",
+      "licenses/dependencies/dlib-0.5.3/LICENSE.txt"
+    ]
+  },
+  {
+    "name": "document-features",
+    "version": "0.2.12",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/slint-ui/document-features",
+    "license_files": [
+      "licenses/dependencies/document-features-0.2.12/Cargo.toml.orig",
+      "licenses/dependencies/document-features-0.2.12/LICENSE-APACHE",
+      "licenses/dependencies/document-features-0.2.12/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "downcast-rs",
+    "version": "1.2.1",
+    "license": "MIT/Apache-2.0",
+    "repository": "https://github.com/marcianx/downcast-rs",
+    "license_files": [
+      "licenses/dependencies/downcast-rs-1.2.1/Cargo.toml.orig",
+      "licenses/dependencies/downcast-rs-1.2.1/LICENSE-APACHE",
+      "licenses/dependencies/downcast-rs-1.2.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "dpi",
+    "version": "0.1.2",
+    "license": "Apache-2.0 AND MIT",
+    "repository": "https://github.com/rust-windowing/winit",
+    "license_files": [
+      "licenses/dependencies/dpi-0.1.2/Cargo.toml.orig",
+      "licenses/dependencies/dpi-0.1.2/LICENSE",
+      "licenses/dependencies/dpi-0.1.2/LICENSE-LIBM-MIT"
+    ]
+  },
+  {
+    "name": "equivalent",
+    "version": "1.0.2",
+    "license": "Apache-2.0 OR MIT",
+    "repository": "https://github.com/indexmap-rs/equivalent",
+    "license_files": [
+      "licenses/dependencies/equivalent-1.0.2/Cargo.toml.orig",
+      "licenses/dependencies/equivalent-1.0.2/LICENSE-APACHE",
+      "licenses/dependencies/equivalent-1.0.2/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "errno",
+    "version": "0.3.14",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/lambda-fairy/rust-errno",
+    "license_files": [
+      "licenses/dependencies/errno-0.3.14/Cargo.toml.orig",
+      "licenses/dependencies/errno-0.3.14/LICENSE-APACHE",
+      "licenses/dependencies/errno-0.3.14/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "euclid",
+    "version": "0.22.14",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/servo/euclid",
+    "license_files": [
+      "licenses/dependencies/euclid-0.22.14/COPYRIGHT",
+      "licenses/dependencies/euclid-0.22.14/Cargo.toml.orig",
+      "licenses/dependencies/euclid-0.22.14/LICENSE-APACHE",
+      "licenses/dependencies/euclid-0.22.14/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "fdeflate",
+    "version": "0.3.7",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/image-rs/fdeflate",
+    "license_files": [
+      "licenses/dependencies/fdeflate-0.3.7/Cargo.toml.orig",
+      "licenses/dependencies/fdeflate-0.3.7/LICENSE-APACHE",
+      "licenses/dependencies/fdeflate-0.3.7/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "find-msvc-tools",
+    "version": "0.1.9",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rust-lang/cc-rs",
+    "license_files": [
+      "licenses/dependencies/find-msvc-tools-0.1.9/Cargo.toml.orig",
+      "licenses/dependencies/find-msvc-tools-0.1.9/LICENSE-APACHE",
+      "licenses/dependencies/find-msvc-tools-0.1.9/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "flate2",
+    "version": "1.1.9",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rust-lang/flate2-rs",
+    "license_files": [
+      "licenses/dependencies/flate2-1.1.9/Cargo.toml.orig",
+      "licenses/dependencies/flate2-1.1.9/LICENSE-APACHE",
+      "licenses/dependencies/flate2-1.1.9/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "foldhash",
+    "version": "0.1.5",
+    "license": "Zlib",
+    "repository": "https://github.com/orlp/foldhash",
+    "license_files": [
+      "licenses/dependencies/foldhash-0.1.5/Cargo.toml.orig",
+      "licenses/dependencies/foldhash-0.1.5/LICENSE"
+    ]
+  },
+  {
+    "name": "foldhash",
+    "version": "0.2.0",
+    "license": "Zlib",
+    "repository": "https://github.com/orlp/foldhash",
+    "license_files": [
+      "licenses/dependencies/foldhash-0.2.0/Cargo.toml.orig",
+      "licenses/dependencies/foldhash-0.2.0/LICENSE"
+    ]
+  },
+  {
+    "name": "font-types",
+    "version": "0.11.3",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/googlefonts/fontations",
+    "license_files": [
+      "licenses/dependencies/font-types-0.11.3/Cargo.toml.orig",
+      "licenses/dependencies/font-types-0.11.3/LICENSE-APACHE",
+      "licenses/dependencies/font-types-0.11.3/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "fontdue",
+    "version": "0.9.3",
+    "license": "MIT OR Apache-2.0 OR Zlib",
+    "repository": "https://github.com/mooman219/fontdue",
+    "license_files": [
+      "licenses/dependencies/fontdue-0.9.3/Cargo.toml.orig",
+      "licenses/dependencies/fontdue-0.9.3/LICENSE-APACHE",
+      "licenses/dependencies/fontdue-0.9.3/LICENSE-MIT",
+      "licenses/dependencies/fontdue-0.9.3/LICENSE-ZLIB"
+    ]
+  },
+  {
+    "name": "foreign-types",
+    "version": "0.5.0",
+    "license": "MIT/Apache-2.0",
+    "repository": "https://github.com/sfackler/foreign-types",
+    "license_files": [
+      "licenses/dependencies/foreign-types-0.5.0/Cargo.toml.orig",
+      "licenses/dependencies/foreign-types-0.5.0/LICENSE-APACHE",
+      "licenses/dependencies/foreign-types-0.5.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "foreign-types-macros",
+    "version": "0.2.3",
+    "license": "MIT/Apache-2.0",
+    "repository": "https://github.com/sfackler/foreign-types",
+    "license_files": [
+      "licenses/dependencies/foreign-types-macros-0.2.3/Cargo.toml.orig",
+      "licenses/dependencies/foreign-types-macros-0.2.3/LICENSE-APACHE",
+      "licenses/dependencies/foreign-types-macros-0.2.3/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "foreign-types-shared",
+    "version": "0.3.1",
+    "license": "MIT/Apache-2.0",
+    "repository": "https://github.com/sfackler/foreign-types",
+    "license_files": [
+      "licenses/dependencies/foreign-types-shared-0.3.1/Cargo.toml.orig",
+      "licenses/dependencies/foreign-types-shared-0.3.1/LICENSE-APACHE",
+      "licenses/dependencies/foreign-types-shared-0.3.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "futures-core",
+    "version": "0.3.32",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rust-lang/futures-rs",
+    "license_files": [
+      "licenses/dependencies/futures-core-0.3.32/Cargo.toml.orig",
+      "licenses/dependencies/futures-core-0.3.32/LICENSE-APACHE",
+      "licenses/dependencies/futures-core-0.3.32/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "futures-intrusive",
+    "version": "0.5.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/Matthias247/futures-intrusive",
+    "license_files": [
+      "licenses/dependencies/futures-intrusive-0.5.0/Cargo.toml.orig",
+      "licenses/dependencies/futures-intrusive-0.5.0/LICENSE-APACHE",
+      "licenses/dependencies/futures-intrusive-0.5.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "futures-task",
+    "version": "0.3.32",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rust-lang/futures-rs",
+    "license_files": [
+      "licenses/dependencies/futures-task-0.3.32/Cargo.toml.orig",
+      "licenses/dependencies/futures-task-0.3.32/LICENSE-APACHE",
+      "licenses/dependencies/futures-task-0.3.32/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "futures-util",
+    "version": "0.3.32",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rust-lang/futures-rs",
+    "license_files": [
+      "licenses/dependencies/futures-util-0.3.32/Cargo.toml.orig",
+      "licenses/dependencies/futures-util-0.3.32/LICENSE-APACHE",
+      "licenses/dependencies/futures-util-0.3.32/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "gethostname",
+    "version": "1.1.0",
+    "license": "Apache-2.0",
+    "repository": "https://codeberg.org/swsnr/gethostname.rs.git",
+    "license_files": [
+      "licenses/dependencies/gethostname-1.1.0/Cargo.toml.orig",
+      "licenses/dependencies/gethostname-1.1.0/LICENSE"
+    ]
+  },
+  {
+    "name": "getrandom",
+    "version": "0.3.4",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rust-random/getrandom",
+    "license_files": [
+      "licenses/dependencies/getrandom-0.3.4/Cargo.toml.orig",
+      "licenses/dependencies/getrandom-0.3.4/LICENSE-APACHE",
+      "licenses/dependencies/getrandom-0.3.4/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "gl_generator",
+    "version": "0.14.0",
+    "license": "Apache-2.0",
+    "repository": "https://github.com/brendanzab/gl-rs/",
+    "license_files": [
+      "licenses/dependencies/gl_generator-0.14.0/Cargo.toml.orig",
+      "licenses/dependencies/gl_generator-0.14.0/upstream/LICENSE"
+    ],
+    "upstream_supplement": {
+      "name": "gl_generator",
+      "version": "0.14.0",
+      "commit": "ea503e8d5fb6d73c6030e6191ce738cd3bf3433e",
+      "files": [
+        {
+          "path": "licenses/dependencies/gl_generator-0.14.0/upstream/LICENSE",
+          "url": "https://raw.githubusercontent.com/brendanzab/gl-rs/ea503e8d5fb6d73c6030e6191ce738cd3bf3433e/LICENSE",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        }
+      ]
+    }
+  },
+  {
+    "name": "glow",
+    "version": "0.16.0",
+    "license": "MIT OR Apache-2.0 OR Zlib",
+    "repository": "https://github.com/grovesNL/glow",
+    "license_files": [
+      "licenses/dependencies/glow-0.16.0/Cargo.toml.orig",
+      "licenses/dependencies/glow-0.16.0/LICENSE-APACHE",
+      "licenses/dependencies/glow-0.16.0/LICENSE-MIT",
+      "licenses/dependencies/glow-0.16.0/LICENSE-ZLIB"
+    ]
+  },
+  {
+    "name": "glutin_wgl_sys",
+    "version": "0.6.1",
+    "license": "Apache-2.0",
+    "repository": "https://github.com/rust-windowing/glutin",
+    "license_files": [
+      "licenses/dependencies/glutin_wgl_sys-0.6.1/Cargo.toml.orig",
+      "licenses/dependencies/glutin_wgl_sys-0.6.1/LICENSE"
+    ]
+  },
+  {
+    "name": "gpu-allocator",
+    "version": "0.28.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/Traverse-Research/gpu-allocator",
+    "license_files": [
+      "licenses/dependencies/gpu-allocator-0.28.0/Cargo.toml.orig",
+      "licenses/dependencies/gpu-allocator-0.28.0/LICENSE-APACHE",
+      "licenses/dependencies/gpu-allocator-0.28.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "gpu-descriptor",
+    "version": "0.3.2",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/zakarumych/gpu-descriptor",
+    "license_files": [
+      "licenses/dependencies/gpu-descriptor-0.3.2/Cargo.toml.orig",
+      "licenses/dependencies/gpu-descriptor-0.3.2/upstream/COPYING"
+    ],
+    "upstream_supplement": {
+      "name": "gpu-descriptor",
+      "version": "0.3.2",
+      "commit": "bb28b4e55b742e0ea3e7a0968e7ee6287ba0e06a",
+      "files": [
+        {
+          "path": "licenses/dependencies/gpu-descriptor-0.3.2/upstream/COPYING",
+          "url": "https://raw.githubusercontent.com/zakarumych/gpu-descriptor/bb28b4e55b742e0ea3e7a0968e7ee6287ba0e06a/COPYING",
+          "sha256": "f72143f7e9d9fb8bd336b139fa22f825a299591c29f2f7338c5566347b137613"
+        }
+      ]
+    }
+  },
+  {
+    "name": "gpu-descriptor-types",
+    "version": "0.2.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/zakarumych/gpu-descriptor",
+    "license_files": [
+      "licenses/dependencies/gpu-descriptor-types-0.2.0/Cargo.toml.orig",
+      "licenses/dependencies/gpu-descriptor-types-0.2.0/upstream/COPYING"
+    ],
+    "upstream_supplement": {
+      "name": "gpu-descriptor-types",
+      "version": "0.2.0",
+      "commit": "9f2fb9546591322e7b77ee1e79385e01effd85e4",
+      "files": [
+        {
+          "path": "licenses/dependencies/gpu-descriptor-types-0.2.0/upstream/COPYING",
+          "url": "https://raw.githubusercontent.com/zakarumych/gpu-descriptor/9f2fb9546591322e7b77ee1e79385e01effd85e4/COPYING",
+          "sha256": "f72143f7e9d9fb8bd336b139fa22f825a299591c29f2f7338c5566347b137613"
+        }
+      ]
+    }
+  },
+  {
+    "name": "guillotiere",
+    "version": "0.7.0",
+    "license": "MIT/Apache-2.0",
+    "repository": "https://github.com/nical/guillotiere",
+    "license_files": [
+      "licenses/dependencies/guillotiere-0.7.0/Cargo.toml.orig",
+      "licenses/dependencies/guillotiere-0.7.0/LICENSE-APACHE",
+      "licenses/dependencies/guillotiere-0.7.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "half",
+    "version": "2.7.1",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/VoidStarKat/half-rs",
+    "license_files": [
+      "licenses/dependencies/half-2.7.1/Cargo.toml.orig",
+      "licenses/dependencies/half-2.7.1/LICENSE-APACHE",
+      "licenses/dependencies/half-2.7.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "hashbrown",
+    "version": "0.15.5",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rust-lang/hashbrown",
+    "license_files": [
+      "licenses/dependencies/hashbrown-0.15.5/Cargo.toml.orig",
+      "licenses/dependencies/hashbrown-0.15.5/LICENSE-APACHE",
+      "licenses/dependencies/hashbrown-0.15.5/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "hashbrown",
+    "version": "0.16.1",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rust-lang/hashbrown",
+    "license_files": [
+      "licenses/dependencies/hashbrown-0.16.1/Cargo.toml.orig",
+      "licenses/dependencies/hashbrown-0.16.1/LICENSE-APACHE",
+      "licenses/dependencies/hashbrown-0.16.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "hashbrown",
+    "version": "0.17.1",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rust-lang/hashbrown",
+    "license_files": [
+      "licenses/dependencies/hashbrown-0.17.1/Cargo.toml.orig",
+      "licenses/dependencies/hashbrown-0.17.1/LICENSE-APACHE",
+      "licenses/dependencies/hashbrown-0.17.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "heck",
+    "version": "0.4.1",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/withoutboats/heck",
+    "license_files": [
+      "licenses/dependencies/heck-0.4.1/Cargo.toml.orig",
+      "licenses/dependencies/heck-0.4.1/LICENSE-APACHE",
+      "licenses/dependencies/heck-0.4.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "hermit-abi",
+    "version": "0.5.2",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/hermit-os/hermit-rs",
+    "license_files": [
+      "licenses/dependencies/hermit-abi-0.5.2/Cargo.toml.orig",
+      "licenses/dependencies/hermit-abi-0.5.2/LICENSE-APACHE",
+      "licenses/dependencies/hermit-abi-0.5.2/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "hexf-parse",
+    "version": "0.2.1",
+    "license": "CC0-1.0",
+    "repository": "https://github.com/lifthrasiir/hexf",
+    "license_files": [
+      "licenses/dependencies/hexf-parse-0.2.1/CC0-1.0.txt",
+      "licenses/dependencies/hexf-parse-0.2.1/Cargo.toml.orig"
+    ],
+    "upstream_supplement": {
+      "name": "hexf-parse",
+      "version": "0.2.1",
+      "commit": "4225763d744183d720f575ae96d04161b4d08ea0",
+      "files": []
+    },
+    "notice_status": "CC0 declared in upstream manifest; canonical CC0 text from Creative Commons",
+    "canonical_license_source": "https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt"
+  },
+  {
+    "name": "indexmap",
+    "version": "2.14.0",
+    "license": "Apache-2.0 OR MIT",
+    "repository": "https://github.com/indexmap-rs/indexmap",
+    "license_files": [
+      "licenses/dependencies/indexmap-2.14.0/Cargo.toml.orig",
+      "licenses/dependencies/indexmap-2.14.0/LICENSE-APACHE",
+      "licenses/dependencies/indexmap-2.14.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "indoc",
+    "version": "2.0.7",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/dtolnay/indoc",
+    "license_files": [
+      "licenses/dependencies/indoc-2.0.7/Cargo.toml.orig",
+      "licenses/dependencies/indoc-2.0.7/LICENSE-APACHE",
+      "licenses/dependencies/indoc-2.0.7/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "jni",
+    "version": "0.22.4",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/jni-rs/jni-rs",
+    "license_files": [
+      "licenses/dependencies/jni-0.22.4/Cargo.toml.orig",
+      "licenses/dependencies/jni-0.22.4/upstream/LICENSE-APACHE",
+      "licenses/dependencies/jni-0.22.4/upstream/LICENSE-MIT"
+    ],
+    "upstream_supplement": {
+      "name": "jni",
+      "version": "0.22.4",
+      "commit": "5ae9458a4ec44c5318f37ddc7569c1d4ae8a69e7",
+      "files": [
+        {
+          "path": "licenses/dependencies/jni-0.22.4/upstream/LICENSE-APACHE",
+          "url": "https://raw.githubusercontent.com/jni-rs/jni-rs/5ae9458a4ec44c5318f37ddc7569c1d4ae8a69e7/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        },
+        {
+          "path": "licenses/dependencies/jni-0.22.4/upstream/LICENSE-MIT",
+          "url": "https://raw.githubusercontent.com/jni-rs/jni-rs/5ae9458a4ec44c5318f37ddc7569c1d4ae8a69e7/LICENSE-MIT",
+          "sha256": "fea1d5bf3dd71605ce5d7d2ff695c1837e914c77195e523a86b5391716477960"
+        }
+      ]
+    }
+  },
+  {
+    "name": "jni-macros",
+    "version": "0.22.4",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/jni-rs/jni-rs",
+    "license_files": [
+      "licenses/dependencies/jni-macros-0.22.4/Cargo.toml.orig",
+      "licenses/dependencies/jni-macros-0.22.4/upstream/LICENSE-APACHE",
+      "licenses/dependencies/jni-macros-0.22.4/upstream/LICENSE-MIT"
+    ],
+    "upstream_supplement": {
+      "name": "jni-macros",
+      "version": "0.22.4",
+      "commit": "33045a124105c939d1e2cbdcb5a39e5d868ffa03",
+      "files": [
+        {
+          "path": "licenses/dependencies/jni-macros-0.22.4/upstream/LICENSE-APACHE",
+          "url": "https://raw.githubusercontent.com/jni-rs/jni-rs/33045a124105c939d1e2cbdcb5a39e5d868ffa03/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        },
+        {
+          "path": "licenses/dependencies/jni-macros-0.22.4/upstream/LICENSE-MIT",
+          "url": "https://raw.githubusercontent.com/jni-rs/jni-rs/33045a124105c939d1e2cbdcb5a39e5d868ffa03/LICENSE-MIT",
+          "sha256": "fea1d5bf3dd71605ce5d7d2ff695c1837e914c77195e523a86b5391716477960"
+        }
+      ]
+    }
+  },
+  {
+    "name": "jni-sys",
+    "version": "0.3.1",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/jni-rs/jni-sys",
+    "license_files": [
+      "licenses/dependencies/jni-sys-0.3.1/Cargo.toml.orig",
+      "licenses/dependencies/jni-sys-0.3.1/LICENSE-APACHE",
+      "licenses/dependencies/jni-sys-0.3.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "jni-sys",
+    "version": "0.4.1",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/jni-rs/jni-sys",
+    "license_files": [
+      "licenses/dependencies/jni-sys-0.4.1/Cargo.toml.orig",
+      "licenses/dependencies/jni-sys-0.4.1/LICENSE-APACHE",
+      "licenses/dependencies/jni-sys-0.4.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "jni-sys-macros",
+    "version": "0.4.1",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/jni-rs/jni-sys",
+    "license_files": [
+      "licenses/dependencies/jni-sys-macros-0.4.1/Cargo.toml.orig",
+      "licenses/dependencies/jni-sys-macros-0.4.1/upstream/LICENSE-APACHE",
+      "licenses/dependencies/jni-sys-macros-0.4.1/upstream/LICENSE-MIT"
+    ],
+    "upstream_supplement": {
+      "name": "jni-sys-macros",
+      "version": "0.4.1",
+      "commit": "64d77b7a5f119d7b55b4e2c169a4668067ff59e6",
+      "files": [
+        {
+          "path": "licenses/dependencies/jni-sys-macros-0.4.1/upstream/LICENSE-APACHE",
+          "url": "https://raw.githubusercontent.com/jni-rs/jni-sys/64d77b7a5f119d7b55b4e2c169a4668067ff59e6/LICENSE-APACHE",
+          "sha256": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08"
+        },
+        {
+          "path": "licenses/dependencies/jni-sys-macros-0.4.1/upstream/LICENSE-MIT",
+          "url": "https://raw.githubusercontent.com/jni-rs/jni-sys/64d77b7a5f119d7b55b4e2c169a4668067ff59e6/LICENSE-MIT",
+          "sha256": "1d85bd754b04ceec93e98e890edd1fa3c6a22e81bcb32135806beeccefa51cd1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "jobserver",
+    "version": "0.1.34",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rust-lang/jobserver-rs",
+    "license_files": [
+      "licenses/dependencies/jobserver-0.1.34/Cargo.toml.orig",
+      "licenses/dependencies/jobserver-0.1.34/LICENSE-APACHE",
+      "licenses/dependencies/jobserver-0.1.34/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "js-sys",
+    "version": "0.3.98",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/js-sys",
+    "license_files": [
+      "licenses/dependencies/js-sys-0.3.98/Cargo.toml.orig",
+      "licenses/dependencies/js-sys-0.3.98/LICENSE-APACHE",
+      "licenses/dependencies/js-sys-0.3.98/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "khronos-egl",
+    "version": "6.0.0",
+    "license": "MIT/Apache-2.0",
+    "repository": "https://github.com/timothee-haudebourg/khronos-egl",
+    "license_files": [
+      "licenses/dependencies/khronos-egl-6.0.0/Cargo.toml.orig",
+      "licenses/dependencies/khronos-egl-6.0.0/LICENSE-APACHE",
+      "licenses/dependencies/khronos-egl-6.0.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "khronos_api",
+    "version": "3.1.0",
+    "license": "Apache-2.0",
+    "repository": "https://github.com/brendanzab/gl-rs/",
+    "license_files": [
+      "licenses/dependencies/khronos_api-3.1.0/Cargo.toml.orig",
+      "licenses/dependencies/khronos_api-3.1.0/upstream/LICENSE"
+    ],
+    "upstream_supplement": {
+      "name": "khronos_api",
+      "version": "3.1.0",
+      "commit": "f150967b1c44ae888e6676f93f639ebc82771bdc",
+      "files": [
+        {
+          "path": "licenses/dependencies/khronos_api-3.1.0/upstream/LICENSE",
+          "url": "https://raw.githubusercontent.com/brendanzab/gl-rs/f150967b1c44ae888e6676f93f639ebc82771bdc/LICENSE",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        }
+      ]
+    }
+  },
+  {
+    "name": "kurbo",
+    "version": "0.13.1",
+    "license": "Apache-2.0 OR MIT",
+    "repository": "https://github.com/linebender/kurbo",
+    "license_files": [
+      "licenses/dependencies/kurbo-0.13.1/Cargo.toml.orig",
+      "licenses/dependencies/kurbo-0.13.1/LICENSE-APACHE",
+      "licenses/dependencies/kurbo-0.13.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "lazy_static",
+    "version": "1.5.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rust-lang-nursery/lazy-static.rs",
+    "license_files": [
+      "licenses/dependencies/lazy_static-1.5.0/Cargo.toml.orig",
+      "licenses/dependencies/lazy_static-1.5.0/LICENSE-APACHE",
+      "licenses/dependencies/lazy_static-1.5.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "libc",
+    "version": "0.2.186",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rust-lang/libc",
+    "license_files": [
+      "licenses/dependencies/libc-0.2.186/Cargo.toml.orig",
+      "licenses/dependencies/libc-0.2.186/LICENSE-APACHE",
+      "licenses/dependencies/libc-0.2.186/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "libloading",
+    "version": "0.8.9",
+    "license": "ISC",
+    "repository": "https://github.com/nagisa/rust_libloading/",
+    "license_files": [
+      "licenses/dependencies/libloading-0.8.9/Cargo.toml.orig",
+      "licenses/dependencies/libloading-0.8.9/LICENSE"
+    ]
+  },
+  {
+    "name": "libm",
+    "version": "0.2.16",
+    "license": "MIT",
+    "repository": "https://github.com/rust-lang/compiler-builtins",
+    "license_files": [
+      "licenses/dependencies/libm-0.2.16/Cargo.toml.orig",
+      "licenses/dependencies/libm-0.2.16/LICENSE.txt"
+    ]
+  },
+  {
+    "name": "libredox",
+    "version": "0.1.16",
+    "license": "MIT",
+    "repository": "https://gitlab.redox-os.org/redox-os/libredox.git",
+    "license_files": [
+      "licenses/dependencies/libredox-0.1.16/Cargo.toml.orig",
+      "licenses/dependencies/libredox-0.1.16/LICENSE"
+    ]
+  },
+  {
+    "name": "linebender_resource_handle",
+    "version": "0.1.1",
+    "license": "Apache-2.0 OR MIT",
+    "repository": "https://github.com/linebender/raw_resource_handle",
+    "license_files": [
+      "licenses/dependencies/linebender_resource_handle-0.1.1/AUTHORS",
+      "licenses/dependencies/linebender_resource_handle-0.1.1/Cargo.toml.orig",
+      "licenses/dependencies/linebender_resource_handle-0.1.1/LICENSE-APACHE",
+      "licenses/dependencies/linebender_resource_handle-0.1.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "linux-raw-sys",
+    "version": "0.12.1",
+    "license": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+    "repository": "https://github.com/sunfishcode/linux-raw-sys",
+    "license_files": [
+      "licenses/dependencies/linux-raw-sys-0.12.1/COPYRIGHT",
+      "licenses/dependencies/linux-raw-sys-0.12.1/Cargo.toml.orig",
+      "licenses/dependencies/linux-raw-sys-0.12.1/LICENSE-APACHE",
+      "licenses/dependencies/linux-raw-sys-0.12.1/LICENSE-Apache-2.0_WITH_LLVM-exception",
+      "licenses/dependencies/linux-raw-sys-0.12.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "linux-raw-sys",
+    "version": "0.4.15",
+    "license": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+    "repository": "https://github.com/sunfishcode/linux-raw-sys",
+    "license_files": [
+      "licenses/dependencies/linux-raw-sys-0.4.15/COPYRIGHT",
+      "licenses/dependencies/linux-raw-sys-0.4.15/Cargo.toml.orig",
+      "licenses/dependencies/linux-raw-sys-0.4.15/LICENSE-APACHE",
+      "licenses/dependencies/linux-raw-sys-0.4.15/LICENSE-Apache-2.0_WITH_LLVM-exception",
+      "licenses/dependencies/linux-raw-sys-0.4.15/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "litrs",
+    "version": "1.0.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/LukasKalbertodt/litrs",
+    "license_files": [
+      "licenses/dependencies/litrs-1.0.0/Cargo.toml.orig",
+      "licenses/dependencies/litrs-1.0.0/LICENSE-APACHE",
+      "licenses/dependencies/litrs-1.0.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "lock_api",
+    "version": "0.4.14",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/Amanieu/parking_lot",
+    "license_files": [
+      "licenses/dependencies/lock_api-0.4.14/Cargo.toml.orig",
+      "licenses/dependencies/lock_api-0.4.14/LICENSE-APACHE",
+      "licenses/dependencies/lock_api-0.4.14/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "log",
+    "version": "0.4.29",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rust-lang/log",
+    "license_files": [
+      "licenses/dependencies/log-0.4.29/Cargo.toml.orig",
+      "licenses/dependencies/log-0.4.29/LICENSE-APACHE",
+      "licenses/dependencies/log-0.4.29/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "malloc_buf",
+    "version": "0.0.6",
+    "license": "MIT",
+    "repository": "https://github.com/SSheldon/malloc_buf",
+    "license_files": [
+      "licenses/dependencies/malloc_buf-0.0.6/Cargo.toml"
+    ],
+    "upstream_supplement": {
+      "name": "malloc_buf",
+      "version": "0.0.6",
+      "commit": "a7811e5f4c6f9685dd57ad9bfe34e9bf6b0ba4f9",
+      "files": []
+    },
+    "notice_status": "MIT declared in upstream manifest; standalone copyright/permission text not found in release; verify before macOS binary distribution"
+  },
+  {
+    "name": "matchers",
+    "version": "0.2.0",
+    "license": "MIT",
+    "repository": "https://github.com/hawkw/matchers",
+    "license_files": [
+      "licenses/dependencies/matchers-0.2.0/Cargo.toml.orig",
+      "licenses/dependencies/matchers-0.2.0/LICENSE"
+    ]
+  },
+  {
+    "name": "memchr",
+    "version": "2.8.0",
+    "license": "Unlicense OR MIT",
+    "repository": "https://github.com/BurntSushi/memchr",
+    "license_files": [
+      "licenses/dependencies/memchr-2.8.0/COPYING",
+      "licenses/dependencies/memchr-2.8.0/Cargo.toml.orig",
+      "licenses/dependencies/memchr-2.8.0/LICENSE-MIT",
+      "licenses/dependencies/memchr-2.8.0/UNLICENSE"
+    ]
+  },
+  {
+    "name": "memmap2",
+    "version": "0.9.10",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/RazrFalcon/memmap2-rs",
+    "license_files": [
+      "licenses/dependencies/memmap2-0.9.10/Cargo.toml.orig",
+      "licenses/dependencies/memmap2-0.9.10/LICENSE-APACHE",
+      "licenses/dependencies/memmap2-0.9.10/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "memoffset",
+    "version": "0.9.1",
+    "license": "MIT",
+    "repository": "https://github.com/Gilnaa/memoffset",
+    "license_files": [
+      "licenses/dependencies/memoffset-0.9.1/Cargo.toml.orig",
+      "licenses/dependencies/memoffset-0.9.1/LICENSE"
+    ]
+  },
+  {
+    "name": "miniz_oxide",
+    "version": "0.8.9",
+    "license": "MIT OR Zlib OR Apache-2.0",
+    "repository": "https://github.com/Frommi/miniz_oxide/tree/master/miniz_oxide",
+    "license_files": [
+      "licenses/dependencies/miniz_oxide-0.8.9/Cargo.toml.orig",
+      "licenses/dependencies/miniz_oxide-0.8.9/LICENSE",
+      "licenses/dependencies/miniz_oxide-0.8.9/LICENSE-APACHE.md",
+      "licenses/dependencies/miniz_oxide-0.8.9/LICENSE-MIT.md",
+      "licenses/dependencies/miniz_oxide-0.8.9/LICENSE-ZLIB.md"
+    ]
+  },
+  {
+    "name": "naga",
+    "version": "28.0.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/gfx-rs/wgpu",
+    "license_files": [
+      "licenses/dependencies/naga-28.0.0/Cargo.toml.orig",
+      "licenses/dependencies/naga-28.0.0/LICENSE.APACHE",
+      "licenses/dependencies/naga-28.0.0/LICENSE.MIT"
+    ]
+  },
+  {
+    "name": "ndk",
+    "version": "0.9.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rust-mobile/ndk",
+    "license_files": [
+      "licenses/dependencies/ndk-0.9.0/Cargo.toml.orig",
+      "licenses/dependencies/ndk-0.9.0/upstream/LICENSE-APACHE",
+      "licenses/dependencies/ndk-0.9.0/upstream/LICENSE-MIT"
+    ],
+    "upstream_supplement": {
+      "name": "ndk",
+      "version": "0.9.0",
+      "commit": "49bbbba16c58ff63cb8a0ad0eca5a9fb7ecaec25",
+      "files": [
+        {
+          "path": "licenses/dependencies/ndk-0.9.0/upstream/LICENSE-APACHE",
+          "url": "https://raw.githubusercontent.com/rust-mobile/ndk/49bbbba16c58ff63cb8a0ad0eca5a9fb7ecaec25/LICENSE-APACHE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        },
+        {
+          "path": "licenses/dependencies/ndk-0.9.0/upstream/LICENSE-MIT",
+          "url": "https://raw.githubusercontent.com/rust-mobile/ndk/49bbbba16c58ff63cb8a0ad0eca5a9fb7ecaec25/LICENSE-MIT",
+          "sha256": "508a77d2e7b51d98adeed32648ad124b7b30241a8e70b2e72c99f92d8e5874d1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "ndk-context",
+    "version": "0.1.1",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rust-windowing/android-ndk-rs",
+    "license_files": [
+      "licenses/dependencies/ndk-context-0.1.1/Cargo.toml.orig",
+      "licenses/dependencies/ndk-context-0.1.1/upstream/LICENSE-APACHE",
+      "licenses/dependencies/ndk-context-0.1.1/upstream/LICENSE-MIT"
+    ],
+    "upstream_supplement": {
+      "name": "ndk-context",
+      "version": "0.1.1",
+      "commit": "10f2ba388fca20f7349996ebae26ccda7a6fda5c",
+      "files": [
+        {
+          "path": "licenses/dependencies/ndk-context-0.1.1/upstream/LICENSE-APACHE",
+          "url": "https://raw.githubusercontent.com/rust-windowing/android-ndk-rs/10f2ba388fca20f7349996ebae26ccda7a6fda5c/LICENSE-APACHE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        },
+        {
+          "path": "licenses/dependencies/ndk-context-0.1.1/upstream/LICENSE-MIT",
+          "url": "https://raw.githubusercontent.com/rust-windowing/android-ndk-rs/10f2ba388fca20f7349996ebae26ccda7a6fda5c/LICENSE-MIT",
+          "sha256": "508a77d2e7b51d98adeed32648ad124b7b30241a8e70b2e72c99f92d8e5874d1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "ndk-sys",
+    "version": "0.6.0+11769913",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rust-mobile/ndk",
+    "license_files": [
+      "licenses/dependencies/ndk-sys-0.6.0+11769913/Cargo.toml.orig",
+      "licenses/dependencies/ndk-sys-0.6.0+11769913/upstream/LICENSE-APACHE",
+      "licenses/dependencies/ndk-sys-0.6.0+11769913/upstream/LICENSE-MIT"
+    ],
+    "upstream_supplement": {
+      "name": "ndk-sys",
+      "version": "0.6.0+11769913",
+      "commit": "49bbbba16c58ff63cb8a0ad0eca5a9fb7ecaec25",
+      "files": [
+        {
+          "path": "licenses/dependencies/ndk-sys-0.6.0+11769913/upstream/LICENSE-APACHE",
+          "url": "https://raw.githubusercontent.com/rust-mobile/ndk/49bbbba16c58ff63cb8a0ad0eca5a9fb7ecaec25/LICENSE-APACHE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        },
+        {
+          "path": "licenses/dependencies/ndk-sys-0.6.0+11769913/upstream/LICENSE-MIT",
+          "url": "https://raw.githubusercontent.com/rust-mobile/ndk/49bbbba16c58ff63cb8a0ad0eca5a9fb7ecaec25/LICENSE-MIT",
+          "sha256": "508a77d2e7b51d98adeed32648ad124b7b30241a8e70b2e72c99f92d8e5874d1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "nu-ansi-term",
+    "version": "0.50.3",
+    "license": "MIT",
+    "repository": "https://github.com/nushell/nu-ansi-term",
+    "license_files": [
+      "licenses/dependencies/nu-ansi-term-0.50.3/Cargo.toml.orig",
+      "licenses/dependencies/nu-ansi-term-0.50.3/LICENSE"
+    ]
+  },
+  {
+    "name": "num-traits",
+    "version": "0.2.19",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rust-num/num-traits",
+    "license_files": [
+      "licenses/dependencies/num-traits-0.2.19/Cargo.toml.orig",
+      "licenses/dependencies/num-traits-0.2.19/LICENSE-APACHE",
+      "licenses/dependencies/num-traits-0.2.19/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "num_enum",
+    "version": "0.7.6",
+    "license": "BSD-3-Clause OR MIT OR Apache-2.0",
+    "repository": "https://github.com/illicitonion/num_enum",
+    "license_files": [
+      "licenses/dependencies/num_enum-0.7.6/Cargo.toml.orig",
+      "licenses/dependencies/num_enum-0.7.6/LICENSE-APACHE",
+      "licenses/dependencies/num_enum-0.7.6/LICENSE-BSD",
+      "licenses/dependencies/num_enum-0.7.6/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "num_enum_derive",
+    "version": "0.7.6",
+    "license": "BSD-3-Clause OR MIT OR Apache-2.0",
+    "repository": "https://github.com/illicitonion/num_enum",
+    "license_files": [
+      "licenses/dependencies/num_enum_derive-0.7.6/Cargo.toml.orig",
+      "licenses/dependencies/num_enum_derive-0.7.6/LICENSE-APACHE",
+      "licenses/dependencies/num_enum_derive-0.7.6/LICENSE-BSD",
+      "licenses/dependencies/num_enum_derive-0.7.6/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "objc",
+    "version": "0.2.7",
+    "license": "MIT",
+    "repository": "http://github.com/SSheldon/rust-objc",
+    "license_files": [
+      "licenses/dependencies/objc-0.2.7/Cargo.toml.orig",
+      "licenses/dependencies/objc-0.2.7/LICENSE.txt"
+    ]
+  },
+  {
+    "name": "objc-sys",
+    "version": "0.3.5",
+    "license": "MIT",
+    "repository": "https://github.com/madsmtm/objc2",
+    "license_files": [
+      "licenses/dependencies/objc-sys-0.3.5/Cargo.toml.orig",
+      "licenses/dependencies/objc-sys-0.3.5/upstream/LICENSE.txt"
+    ],
+    "upstream_supplement": {
+      "name": "objc-sys",
+      "version": "0.3.5",
+      "commit": "4fc083f1c6d6784577e38b0ee8dbd344481e2fd2",
+      "files": [
+        {
+          "path": "licenses/dependencies/objc-sys-0.3.5/upstream/LICENSE.txt",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/4fc083f1c6d6784577e38b0ee8dbd344481e2fd2/LICENSE.txt",
+          "sha256": "e353f37b12aefbb9f9b29490e837cfee05d9bda70804b3562839a3285c1df1e5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "objc2",
+    "version": "0.5.2",
+    "license": "MIT",
+    "repository": "https://github.com/madsmtm/objc2",
+    "license_files": [
+      "licenses/dependencies/objc2-0.5.2/Cargo.toml.orig",
+      "licenses/dependencies/objc2-0.5.2/upstream/LICENSE.txt"
+    ],
+    "upstream_supplement": {
+      "name": "objc2",
+      "version": "0.5.2",
+      "commit": "4fc083f1c6d6784577e38b0ee8dbd344481e2fd2",
+      "files": [
+        {
+          "path": "licenses/dependencies/objc2-0.5.2/upstream/LICENSE.txt",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/4fc083f1c6d6784577e38b0ee8dbd344481e2fd2/LICENSE.txt",
+          "sha256": "e353f37b12aefbb9f9b29490e837cfee05d9bda70804b3562839a3285c1df1e5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "objc2-app-kit",
+    "version": "0.2.2",
+    "license": "MIT",
+    "repository": "https://github.com/madsmtm/objc2",
+    "license_files": [
+      "licenses/dependencies/objc2-app-kit-0.2.2/Cargo.toml.orig",
+      "licenses/dependencies/objc2-app-kit-0.2.2/upstream/LICENSE.txt"
+    ],
+    "upstream_supplement": {
+      "name": "objc2-app-kit",
+      "version": "0.2.2",
+      "commit": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "files": [
+        {
+          "path": "licenses/dependencies/objc2-app-kit-0.2.2/upstream/LICENSE.txt",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/e282618be4c3a3b9542957e0c8540e9588472ce8/LICENSE.txt",
+          "sha256": "e353f37b12aefbb9f9b29490e837cfee05d9bda70804b3562839a3285c1df1e5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "objc2-cloud-kit",
+    "version": "0.2.2",
+    "license": "MIT",
+    "repository": "https://github.com/madsmtm/objc2",
+    "license_files": [
+      "licenses/dependencies/objc2-cloud-kit-0.2.2/Cargo.toml.orig",
+      "licenses/dependencies/objc2-cloud-kit-0.2.2/upstream/LICENSE.txt"
+    ],
+    "upstream_supplement": {
+      "name": "objc2-cloud-kit",
+      "version": "0.2.2",
+      "commit": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "files": [
+        {
+          "path": "licenses/dependencies/objc2-cloud-kit-0.2.2/upstream/LICENSE.txt",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/e282618be4c3a3b9542957e0c8540e9588472ce8/LICENSE.txt",
+          "sha256": "e353f37b12aefbb9f9b29490e837cfee05d9bda70804b3562839a3285c1df1e5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "objc2-contacts",
+    "version": "0.2.2",
+    "license": "MIT",
+    "repository": "https://github.com/madsmtm/objc2",
+    "license_files": [
+      "licenses/dependencies/objc2-contacts-0.2.2/Cargo.toml.orig",
+      "licenses/dependencies/objc2-contacts-0.2.2/upstream/LICENSE.txt"
+    ],
+    "upstream_supplement": {
+      "name": "objc2-contacts",
+      "version": "0.2.2",
+      "commit": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "files": [
+        {
+          "path": "licenses/dependencies/objc2-contacts-0.2.2/upstream/LICENSE.txt",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/e282618be4c3a3b9542957e0c8540e9588472ce8/LICENSE.txt",
+          "sha256": "e353f37b12aefbb9f9b29490e837cfee05d9bda70804b3562839a3285c1df1e5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "objc2-core-data",
+    "version": "0.2.2",
+    "license": "MIT",
+    "repository": "https://github.com/madsmtm/objc2",
+    "license_files": [
+      "licenses/dependencies/objc2-core-data-0.2.2/Cargo.toml.orig",
+      "licenses/dependencies/objc2-core-data-0.2.2/upstream/LICENSE.txt"
+    ],
+    "upstream_supplement": {
+      "name": "objc2-core-data",
+      "version": "0.2.2",
+      "commit": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "files": [
+        {
+          "path": "licenses/dependencies/objc2-core-data-0.2.2/upstream/LICENSE.txt",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/e282618be4c3a3b9542957e0c8540e9588472ce8/LICENSE.txt",
+          "sha256": "e353f37b12aefbb9f9b29490e837cfee05d9bda70804b3562839a3285c1df1e5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "objc2-core-image",
+    "version": "0.2.2",
+    "license": "MIT",
+    "repository": "https://github.com/madsmtm/objc2",
+    "license_files": [
+      "licenses/dependencies/objc2-core-image-0.2.2/Cargo.toml.orig",
+      "licenses/dependencies/objc2-core-image-0.2.2/upstream/LICENSE.txt"
+    ],
+    "upstream_supplement": {
+      "name": "objc2-core-image",
+      "version": "0.2.2",
+      "commit": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "files": [
+        {
+          "path": "licenses/dependencies/objc2-core-image-0.2.2/upstream/LICENSE.txt",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/e282618be4c3a3b9542957e0c8540e9588472ce8/LICENSE.txt",
+          "sha256": "e353f37b12aefbb9f9b29490e837cfee05d9bda70804b3562839a3285c1df1e5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "objc2-core-location",
+    "version": "0.2.2",
+    "license": "MIT",
+    "repository": "https://github.com/madsmtm/objc2",
+    "license_files": [
+      "licenses/dependencies/objc2-core-location-0.2.2/Cargo.toml.orig",
+      "licenses/dependencies/objc2-core-location-0.2.2/upstream/LICENSE.txt"
+    ],
+    "upstream_supplement": {
+      "name": "objc2-core-location",
+      "version": "0.2.2",
+      "commit": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "files": [
+        {
+          "path": "licenses/dependencies/objc2-core-location-0.2.2/upstream/LICENSE.txt",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/e282618be4c3a3b9542957e0c8540e9588472ce8/LICENSE.txt",
+          "sha256": "e353f37b12aefbb9f9b29490e837cfee05d9bda70804b3562839a3285c1df1e5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "objc2-encode",
+    "version": "4.1.0",
+    "license": "MIT",
+    "repository": "https://github.com/madsmtm/objc2",
+    "license_files": [
+      "licenses/dependencies/objc2-encode-4.1.0/Cargo.toml.orig",
+      "licenses/dependencies/objc2-encode-4.1.0/upstream/LICENSE.md"
+    ],
+    "upstream_supplement": {
+      "name": "objc2-encode",
+      "version": "4.1.0",
+      "commit": "8d214f5477365ffcbcbb7de058c86ed9a518efb7",
+      "files": [
+        {
+          "path": "licenses/dependencies/objc2-encode-4.1.0/upstream/LICENSE.md",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/8d214f5477365ffcbcbb7de058c86ed9a518efb7/LICENSE.md",
+          "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54"
+        }
+      ]
+    }
+  },
+  {
+    "name": "objc2-foundation",
+    "version": "0.2.2",
+    "license": "MIT",
+    "repository": "https://github.com/madsmtm/objc2",
+    "license_files": [
+      "licenses/dependencies/objc2-foundation-0.2.2/Cargo.toml.orig",
+      "licenses/dependencies/objc2-foundation-0.2.2/src/copying.rs",
+      "licenses/dependencies/objc2-foundation-0.2.2/src/tests/copying.rs"
+    ]
+  },
+  {
+    "name": "objc2-link-presentation",
+    "version": "0.2.2",
+    "license": "MIT",
+    "repository": "https://github.com/madsmtm/objc2",
+    "license_files": [
+      "licenses/dependencies/objc2-link-presentation-0.2.2/Cargo.toml.orig",
+      "licenses/dependencies/objc2-link-presentation-0.2.2/upstream/LICENSE.txt"
+    ],
+    "upstream_supplement": {
+      "name": "objc2-link-presentation",
+      "version": "0.2.2",
+      "commit": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "files": [
+        {
+          "path": "licenses/dependencies/objc2-link-presentation-0.2.2/upstream/LICENSE.txt",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/e282618be4c3a3b9542957e0c8540e9588472ce8/LICENSE.txt",
+          "sha256": "e353f37b12aefbb9f9b29490e837cfee05d9bda70804b3562839a3285c1df1e5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "objc2-metal",
+    "version": "0.2.2",
+    "license": "MIT",
+    "repository": "https://github.com/madsmtm/objc2",
+    "license_files": [
+      "licenses/dependencies/objc2-metal-0.2.2/Cargo.toml.orig",
+      "licenses/dependencies/objc2-metal-0.2.2/upstream/LICENSE.txt"
+    ],
+    "upstream_supplement": {
+      "name": "objc2-metal",
+      "version": "0.2.2",
+      "commit": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "files": [
+        {
+          "path": "licenses/dependencies/objc2-metal-0.2.2/upstream/LICENSE.txt",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/e282618be4c3a3b9542957e0c8540e9588472ce8/LICENSE.txt",
+          "sha256": "e353f37b12aefbb9f9b29490e837cfee05d9bda70804b3562839a3285c1df1e5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "objc2-quartz-core",
+    "version": "0.2.2",
+    "license": "MIT",
+    "repository": "https://github.com/madsmtm/objc2",
+    "license_files": [
+      "licenses/dependencies/objc2-quartz-core-0.2.2/Cargo.toml.orig",
+      "licenses/dependencies/objc2-quartz-core-0.2.2/upstream/LICENSE.txt"
+    ],
+    "upstream_supplement": {
+      "name": "objc2-quartz-core",
+      "version": "0.2.2",
+      "commit": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "files": [
+        {
+          "path": "licenses/dependencies/objc2-quartz-core-0.2.2/upstream/LICENSE.txt",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/e282618be4c3a3b9542957e0c8540e9588472ce8/LICENSE.txt",
+          "sha256": "e353f37b12aefbb9f9b29490e837cfee05d9bda70804b3562839a3285c1df1e5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "objc2-symbols",
+    "version": "0.2.2",
+    "license": "MIT",
+    "repository": "https://github.com/madsmtm/objc2",
+    "license_files": [
+      "licenses/dependencies/objc2-symbols-0.2.2/Cargo.toml.orig",
+      "licenses/dependencies/objc2-symbols-0.2.2/upstream/LICENSE.txt"
+    ],
+    "upstream_supplement": {
+      "name": "objc2-symbols",
+      "version": "0.2.2",
+      "commit": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "files": [
+        {
+          "path": "licenses/dependencies/objc2-symbols-0.2.2/upstream/LICENSE.txt",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/e282618be4c3a3b9542957e0c8540e9588472ce8/LICENSE.txt",
+          "sha256": "e353f37b12aefbb9f9b29490e837cfee05d9bda70804b3562839a3285c1df1e5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "objc2-ui-kit",
+    "version": "0.2.2",
+    "license": "MIT",
+    "repository": "https://github.com/madsmtm/objc2",
+    "license_files": [
+      "licenses/dependencies/objc2-ui-kit-0.2.2/Cargo.toml.orig",
+      "licenses/dependencies/objc2-ui-kit-0.2.2/upstream/LICENSE.txt"
+    ],
+    "upstream_supplement": {
+      "name": "objc2-ui-kit",
+      "version": "0.2.2",
+      "commit": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "files": [
+        {
+          "path": "licenses/dependencies/objc2-ui-kit-0.2.2/upstream/LICENSE.txt",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/e282618be4c3a3b9542957e0c8540e9588472ce8/LICENSE.txt",
+          "sha256": "e353f37b12aefbb9f9b29490e837cfee05d9bda70804b3562839a3285c1df1e5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "objc2-uniform-type-identifiers",
+    "version": "0.2.2",
+    "license": "MIT",
+    "repository": "https://github.com/madsmtm/objc2",
+    "license_files": [
+      "licenses/dependencies/objc2-uniform-type-identifiers-0.2.2/Cargo.toml.orig",
+      "licenses/dependencies/objc2-uniform-type-identifiers-0.2.2/upstream/LICENSE.txt"
+    ],
+    "upstream_supplement": {
+      "name": "objc2-uniform-type-identifiers",
+      "version": "0.2.2",
+      "commit": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "files": [
+        {
+          "path": "licenses/dependencies/objc2-uniform-type-identifiers-0.2.2/upstream/LICENSE.txt",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/e282618be4c3a3b9542957e0c8540e9588472ce8/LICENSE.txt",
+          "sha256": "e353f37b12aefbb9f9b29490e837cfee05d9bda70804b3562839a3285c1df1e5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "objc2-user-notifications",
+    "version": "0.2.2",
+    "license": "MIT",
+    "repository": "https://github.com/madsmtm/objc2",
+    "license_files": [
+      "licenses/dependencies/objc2-user-notifications-0.2.2/Cargo.toml.orig",
+      "licenses/dependencies/objc2-user-notifications-0.2.2/upstream/LICENSE.txt"
+    ],
+    "upstream_supplement": {
+      "name": "objc2-user-notifications",
+      "version": "0.2.2",
+      "commit": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "files": [
+        {
+          "path": "licenses/dependencies/objc2-user-notifications-0.2.2/upstream/LICENSE.txt",
+          "url": "https://raw.githubusercontent.com/madsmtm/objc2/e282618be4c3a3b9542957e0c8540e9588472ce8/LICENSE.txt",
+          "sha256": "e353f37b12aefbb9f9b29490e837cfee05d9bda70804b3562839a3285c1df1e5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "once_cell",
+    "version": "1.21.4",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/matklad/once_cell",
+    "license_files": [
+      "licenses/dependencies/once_cell-1.21.4/Cargo.toml.orig",
+      "licenses/dependencies/once_cell-1.21.4/LICENSE-APACHE",
+      "licenses/dependencies/once_cell-1.21.4/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "orbclient",
+    "version": "0.3.54",
+    "license": "MIT",
+    "repository": "https://gitlab.redox-os.org/redox-os/orbclient",
+    "license_files": [
+      "licenses/dependencies/orbclient-0.3.54/Cargo.toml.orig",
+      "licenses/dependencies/orbclient-0.3.54/LICENSE"
+    ]
+  },
+  {
+    "name": "ordered-float",
+    "version": "5.3.0",
+    "license": "MIT",
+    "repository": "https://github.com/reem/rust-ordered-float",
+    "license_files": [
+      "licenses/dependencies/ordered-float-5.3.0/Cargo.toml.orig",
+      "licenses/dependencies/ordered-float-5.3.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "owned_ttf_parser",
+    "version": "0.25.1",
+    "license": "Apache-2.0",
+    "repository": "https://github.com/alexheretic/owned-ttf-parser",
+    "license_files": [
+      "licenses/dependencies/owned_ttf_parser-0.25.1/Cargo.toml.orig",
+      "licenses/dependencies/owned_ttf_parser-0.25.1/LICENSE"
+    ]
+  },
+  {
+    "name": "parking_lot",
+    "version": "0.12.5",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/Amanieu/parking_lot",
+    "license_files": [
+      "licenses/dependencies/parking_lot-0.12.5/Cargo.toml.orig",
+      "licenses/dependencies/parking_lot-0.12.5/LICENSE-APACHE",
+      "licenses/dependencies/parking_lot-0.12.5/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "parking_lot_core",
+    "version": "0.9.12",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/Amanieu/parking_lot",
+    "license_files": [
+      "licenses/dependencies/parking_lot_core-0.9.12/Cargo.toml.orig",
+      "licenses/dependencies/parking_lot_core-0.9.12/LICENSE-APACHE",
+      "licenses/dependencies/parking_lot_core-0.9.12/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "peniko",
+    "version": "0.6.1",
+    "license": "Apache-2.0 OR MIT",
+    "repository": "https://github.com/linebender/peniko",
+    "license_files": [
+      "licenses/dependencies/peniko-0.6.1/Cargo.toml.orig",
+      "licenses/dependencies/peniko-0.6.1/LICENSE-APACHE",
+      "licenses/dependencies/peniko-0.6.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "percent-encoding",
+    "version": "2.3.2",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/servo/rust-url/",
+    "license_files": [
+      "licenses/dependencies/percent-encoding-2.3.2/Cargo.toml.orig",
+      "licenses/dependencies/percent-encoding-2.3.2/LICENSE-APACHE",
+      "licenses/dependencies/percent-encoding-2.3.2/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "pin-project",
+    "version": "1.1.13",
+    "license": "Apache-2.0 OR MIT",
+    "repository": "https://github.com/taiki-e/pin-project",
+    "license_files": [
+      "licenses/dependencies/pin-project-1.1.13/Cargo.toml.orig",
+      "licenses/dependencies/pin-project-1.1.13/LICENSE-APACHE",
+      "licenses/dependencies/pin-project-1.1.13/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "pin-project-internal",
+    "version": "1.1.13",
+    "license": "Apache-2.0 OR MIT",
+    "repository": "https://github.com/taiki-e/pin-project",
+    "license_files": [
+      "licenses/dependencies/pin-project-internal-1.1.13/Cargo.toml.orig",
+      "licenses/dependencies/pin-project-internal-1.1.13/LICENSE-APACHE",
+      "licenses/dependencies/pin-project-internal-1.1.13/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "pin-project-lite",
+    "version": "0.2.17",
+    "license": "Apache-2.0 OR MIT",
+    "repository": "https://github.com/taiki-e/pin-project-lite",
+    "license_files": [
+      "licenses/dependencies/pin-project-lite-0.2.17/Cargo.toml.orig",
+      "licenses/dependencies/pin-project-lite-0.2.17/LICENSE-APACHE",
+      "licenses/dependencies/pin-project-lite-0.2.17/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "pkg-config",
+    "version": "0.3.33",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rust-lang/pkg-config-rs",
+    "license_files": [
+      "licenses/dependencies/pkg-config-0.3.33/Cargo.toml.orig",
+      "licenses/dependencies/pkg-config-0.3.33/LICENSE-APACHE",
+      "licenses/dependencies/pkg-config-0.3.33/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "plain",
+    "version": "0.2.3",
+    "license": "MIT/Apache-2.0",
+    "repository": "https://github.com/randomites/plain",
+    "license_files": [
+      "licenses/dependencies/plain-0.2.3/Cargo.toml.orig",
+      "licenses/dependencies/plain-0.2.3/LICENSE-APACHE",
+      "licenses/dependencies/plain-0.2.3/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "png",
+    "version": "0.18.1",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/image-rs/image-png",
+    "license_files": [
+      "licenses/dependencies/png-0.18.1/Cargo.toml.orig",
+      "licenses/dependencies/png-0.18.1/LICENSE-APACHE",
+      "licenses/dependencies/png-0.18.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "polling",
+    "version": "3.11.0",
+    "license": "Apache-2.0 OR MIT",
+    "repository": "https://github.com/smol-rs/polling",
+    "license_files": [
+      "licenses/dependencies/polling-3.11.0/Cargo.toml.orig",
+      "licenses/dependencies/polling-3.11.0/LICENSE-APACHE",
+      "licenses/dependencies/polling-3.11.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "pollster",
+    "version": "0.4.0",
+    "license": "Apache-2.0/MIT",
+    "repository": "https://github.com/zesterer/pollster",
+    "license_files": [
+      "licenses/dependencies/pollster-0.4.0/Cargo.toml.orig",
+      "licenses/dependencies/pollster-0.4.0/LICENSE-APACHE",
+      "licenses/dependencies/pollster-0.4.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "polycool",
+    "version": "0.4.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/linebender/kurbo",
+    "license_files": [
+      "licenses/dependencies/polycool-0.4.0/Cargo.toml.orig",
+      "licenses/dependencies/polycool-0.4.0/LICENSE-APACHE",
+      "licenses/dependencies/polycool-0.4.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "portable-atomic",
+    "version": "1.13.1",
+    "license": "Apache-2.0 OR MIT",
+    "repository": "https://github.com/taiki-e/portable-atomic",
+    "license_files": [
+      "licenses/dependencies/portable-atomic-1.13.1/Cargo.toml.orig",
+      "licenses/dependencies/portable-atomic-1.13.1/LICENSE-APACHE",
+      "licenses/dependencies/portable-atomic-1.13.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "portable-atomic-util",
+    "version": "0.2.7",
+    "license": "Apache-2.0 OR MIT",
+    "repository": "https://github.com/taiki-e/portable-atomic-util",
+    "license_files": [
+      "licenses/dependencies/portable-atomic-util-0.2.7/Cargo.toml.orig",
+      "licenses/dependencies/portable-atomic-util-0.2.7/LICENSE-APACHE",
+      "licenses/dependencies/portable-atomic-util-0.2.7/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "presser",
+    "version": "0.3.1",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/EmbarkStudios/presser",
+    "license_files": [
+      "licenses/dependencies/presser-0.3.1/Cargo.toml.orig",
+      "licenses/dependencies/presser-0.3.1/LICENSE-APACHE",
+      "licenses/dependencies/presser-0.3.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "proc-macro-crate",
+    "version": "3.5.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/bkchr/proc-macro-crate",
+    "license_files": [
+      "licenses/dependencies/proc-macro-crate-3.5.0/Cargo.toml.orig",
+      "licenses/dependencies/proc-macro-crate-3.5.0/LICENSE-APACHE",
+      "licenses/dependencies/proc-macro-crate-3.5.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "proc-macro2",
+    "version": "1.0.106",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/dtolnay/proc-macro2",
+    "license_files": [
+      "licenses/dependencies/proc-macro2-1.0.106/Cargo.toml.orig",
+      "licenses/dependencies/proc-macro2-1.0.106/LICENSE-APACHE",
+      "licenses/dependencies/proc-macro2-1.0.106/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "profiling",
+    "version": "1.0.18",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/aclysma/profiling",
+    "license_files": [
+      "licenses/dependencies/profiling-1.0.18/Cargo.toml.orig",
+      "licenses/dependencies/profiling-1.0.18/upstream/LICENSE-APACHE",
+      "licenses/dependencies/profiling-1.0.18/upstream/LICENSE-MIT"
+    ],
+    "upstream_supplement": {
+      "name": "profiling",
+      "version": "1.0.18",
+      "commit": "8271551172eb6fa4cba47369aedd93790c623df9",
+      "files": [
+        {
+          "path": "licenses/dependencies/profiling-1.0.18/upstream/LICENSE-APACHE",
+          "url": "https://raw.githubusercontent.com/aclysma/profiling/8271551172eb6fa4cba47369aedd93790c623df9/LICENSE-APACHE",
+          "sha256": "10d30a673cd5e9349bdc02aeb48f14b3386d27d0da32df8f0a555d4aa16aa551"
+        },
+        {
+          "path": "licenses/dependencies/profiling-1.0.18/upstream/LICENSE-MIT",
+          "url": "https://raw.githubusercontent.com/aclysma/profiling/8271551172eb6fa4cba47369aedd93790c623df9/LICENSE-MIT",
+          "sha256": "c8167fdeeed46d3f244d3f85c5bf998ce889343691c32be2c61a8bc4b5c08333"
+        }
+      ]
+    }
+  },
+  {
+    "name": "pyo3",
+    "version": "0.21.2",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/pyo3/pyo3",
+    "license_files": [
+      "licenses/dependencies/pyo3-0.21.2/Cargo.toml.orig",
+      "licenses/dependencies/pyo3-0.21.2/LICENSE-APACHE",
+      "licenses/dependencies/pyo3-0.21.2/LICENSE-MIT",
+      "licenses/dependencies/pyo3-0.21.2/pyo3-runtime/LICENSE-APACHE",
+      "licenses/dependencies/pyo3-0.21.2/pyo3-runtime/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "pyo3-build-config",
+    "version": "0.21.2",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/pyo3/pyo3",
+    "license_files": [
+      "licenses/dependencies/pyo3-build-config-0.21.2/Cargo.toml.orig",
+      "licenses/dependencies/pyo3-build-config-0.21.2/LICENSE-APACHE",
+      "licenses/dependencies/pyo3-build-config-0.21.2/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "pyo3-ffi",
+    "version": "0.21.2",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/pyo3/pyo3",
+    "license_files": [
+      "licenses/dependencies/pyo3-ffi-0.21.2/Cargo.toml.orig",
+      "licenses/dependencies/pyo3-ffi-0.21.2/LICENSE-APACHE",
+      "licenses/dependencies/pyo3-ffi-0.21.2/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "pyo3-macros",
+    "version": "0.21.2",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/pyo3/pyo3",
+    "license_files": [
+      "licenses/dependencies/pyo3-macros-0.21.2/Cargo.toml.orig",
+      "licenses/dependencies/pyo3-macros-0.21.2/LICENSE-APACHE",
+      "licenses/dependencies/pyo3-macros-0.21.2/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "pyo3-macros-backend",
+    "version": "0.21.2",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/pyo3/pyo3",
+    "license_files": [
+      "licenses/dependencies/pyo3-macros-backend-0.21.2/Cargo.toml.orig",
+      "licenses/dependencies/pyo3-macros-backend-0.21.2/LICENSE-APACHE",
+      "licenses/dependencies/pyo3-macros-backend-0.21.2/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "quick-xml",
+    "version": "0.39.4",
+    "license": "MIT",
+    "repository": "https://github.com/tafia/quick-xml",
+    "license_files": [
+      "licenses/dependencies/quick-xml-0.39.4/Cargo.toml.orig",
+      "licenses/dependencies/quick-xml-0.39.4/LICENSE-MIT.md"
+    ]
+  },
+  {
+    "name": "quote",
+    "version": "1.0.45",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/dtolnay/quote",
+    "license_files": [
+      "licenses/dependencies/quote-1.0.45/Cargo.toml.orig",
+      "licenses/dependencies/quote-1.0.45/LICENSE-APACHE",
+      "licenses/dependencies/quote-1.0.45/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "r-efi",
+    "version": "5.3.0",
+    "license": "MIT OR Apache-2.0 OR LGPL-2.1-or-later",
+    "repository": "https://github.com/r-efi/r-efi",
+    "license_files": [
+      "licenses/dependencies/r-efi-5.3.0/AUTHORS",
+      "licenses/dependencies/r-efi-5.3.0/Cargo.toml.orig"
+    ],
+    "upstream_supplement": {
+      "name": "r-efi",
+      "version": "5.3.0",
+      "commit": "97b55bed1c2c91dcbf787674849f05337ff80b33",
+      "files": []
+    },
+    "notice_status": "Full MIT permission and copyright notices retained in AUTHORS"
+  },
+  {
+    "name": "range-alloc",
+    "version": "0.1.5",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/gfx-rs/range-alloc",
+    "license_files": [
+      "licenses/dependencies/range-alloc-0.1.5/Cargo.toml.orig",
+      "licenses/dependencies/range-alloc-0.1.5/LICENSE.APACHE",
+      "licenses/dependencies/range-alloc-0.1.5/LICENSE.MIT"
+    ]
+  },
+  {
+    "name": "raw-window-handle",
+    "version": "0.6.2",
+    "license": "MIT OR Apache-2.0 OR Zlib",
+    "repository": "https://github.com/rust-windowing/raw-window-handle",
+    "license_files": [
+      "licenses/dependencies/raw-window-handle-0.6.2/Cargo.toml.orig",
+      "licenses/dependencies/raw-window-handle-0.6.2/LICENSE-APACHE.md",
+      "licenses/dependencies/raw-window-handle-0.6.2/LICENSE-MIT.md",
+      "licenses/dependencies/raw-window-handle-0.6.2/LICENSE-ZLIB.md"
+    ]
+  },
+  {
+    "name": "read-fonts",
+    "version": "0.37.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/googlefonts/fontations",
+    "license_files": [
+      "licenses/dependencies/read-fonts-0.37.0/Cargo.toml.orig",
+      "licenses/dependencies/read-fonts-0.37.0/LICENSE-APACHE",
+      "licenses/dependencies/read-fonts-0.37.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "redox_syscall",
+    "version": "0.4.1",
+    "license": "MIT",
+    "repository": "https://gitlab.redox-os.org/redox-os/syscall",
+    "license_files": [
+      "licenses/dependencies/redox_syscall-0.4.1/Cargo.toml.orig",
+      "licenses/dependencies/redox_syscall-0.4.1/LICENSE"
+    ]
+  },
+  {
+    "name": "redox_syscall",
+    "version": "0.5.18",
+    "license": "MIT",
+    "repository": "https://gitlab.redox-os.org/redox-os/syscall",
+    "license_files": [
+      "licenses/dependencies/redox_syscall-0.5.18/Cargo.toml.orig",
+      "licenses/dependencies/redox_syscall-0.5.18/LICENSE"
+    ]
+  },
+  {
+    "name": "redox_syscall",
+    "version": "0.7.5",
+    "license": "MIT",
+    "repository": "https://gitlab.redox-os.org/redox-os/syscall",
+    "license_files": [
+      "licenses/dependencies/redox_syscall-0.7.5/Cargo.toml.orig",
+      "licenses/dependencies/redox_syscall-0.7.5/LICENSE"
+    ]
+  },
+  {
+    "name": "regex-automata",
+    "version": "0.4.14",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rust-lang/regex",
+    "license_files": [
+      "licenses/dependencies/regex-automata-0.4.14/Cargo.toml.orig",
+      "licenses/dependencies/regex-automata-0.4.14/LICENSE-APACHE",
+      "licenses/dependencies/regex-automata-0.4.14/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "regex-syntax",
+    "version": "0.8.10",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rust-lang/regex",
+    "license_files": [
+      "licenses/dependencies/regex-syntax-0.8.10/Cargo.toml.orig",
+      "licenses/dependencies/regex-syntax-0.8.10/LICENSE-APACHE",
+      "licenses/dependencies/regex-syntax-0.8.10/LICENSE-MIT",
+      "licenses/dependencies/regex-syntax-0.8.10/src/unicode_tables/LICENSE-UNICODE"
+    ]
+  },
+  {
+    "name": "renderdoc-sys",
+    "version": "1.1.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/ebkalderon/renderdoc-rs",
+    "license_files": [
+      "licenses/dependencies/renderdoc-sys-1.1.0/Cargo.toml.orig",
+      "licenses/dependencies/renderdoc-sys-1.1.0/LICENSE-APACHE",
+      "licenses/dependencies/renderdoc-sys-1.1.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "rustc-hash",
+    "version": "1.1.0",
+    "license": "Apache-2.0/MIT",
+    "repository": "https://github.com/rust-lang-nursery/rustc-hash",
+    "license_files": [
+      "licenses/dependencies/rustc-hash-1.1.0/Cargo.toml.orig",
+      "licenses/dependencies/rustc-hash-1.1.0/LICENSE-APACHE",
+      "licenses/dependencies/rustc-hash-1.1.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "rustc_version",
+    "version": "0.4.1",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/djc/rustc-version-rs",
+    "license_files": [
+      "licenses/dependencies/rustc_version-0.4.1/Cargo.toml.orig",
+      "licenses/dependencies/rustc_version-0.4.1/LICENSE-APACHE",
+      "licenses/dependencies/rustc_version-0.4.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "rustix",
+    "version": "0.38.44",
+    "license": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+    "repository": "https://github.com/bytecodealliance/rustix",
+    "license_files": [
+      "licenses/dependencies/rustix-0.38.44/COPYRIGHT",
+      "licenses/dependencies/rustix-0.38.44/Cargo.toml.orig",
+      "licenses/dependencies/rustix-0.38.44/LICENSE-APACHE",
+      "licenses/dependencies/rustix-0.38.44/LICENSE-Apache-2.0_WITH_LLVM-exception",
+      "licenses/dependencies/rustix-0.38.44/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "rustix",
+    "version": "1.1.4",
+    "license": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+    "repository": "https://github.com/bytecodealliance/rustix",
+    "license_files": [
+      "licenses/dependencies/rustix-1.1.4/COPYRIGHT",
+      "licenses/dependencies/rustix-1.1.4/Cargo.toml.orig",
+      "licenses/dependencies/rustix-1.1.4/LICENSE-APACHE",
+      "licenses/dependencies/rustix-1.1.4/LICENSE-Apache-2.0_WITH_LLVM-exception",
+      "licenses/dependencies/rustix-1.1.4/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "rustversion",
+    "version": "1.0.22",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/dtolnay/rustversion",
+    "license_files": [
+      "licenses/dependencies/rustversion-1.0.22/Cargo.toml.orig",
+      "licenses/dependencies/rustversion-1.0.22/LICENSE-APACHE",
+      "licenses/dependencies/rustversion-1.0.22/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "same-file",
+    "version": "1.0.6",
+    "license": "Unlicense/MIT",
+    "repository": "https://github.com/BurntSushi/same-file",
+    "license_files": [
+      "licenses/dependencies/same-file-1.0.6/COPYING",
+      "licenses/dependencies/same-file-1.0.6/Cargo.toml.orig",
+      "licenses/dependencies/same-file-1.0.6/LICENSE-MIT",
+      "licenses/dependencies/same-file-1.0.6/UNLICENSE"
+    ]
+  },
+  {
+    "name": "scoped-tls",
+    "version": "1.0.1",
+    "license": "MIT/Apache-2.0",
+    "repository": "https://github.com/alexcrichton/scoped-tls",
+    "license_files": [
+      "licenses/dependencies/scoped-tls-1.0.1/Cargo.toml.orig",
+      "licenses/dependencies/scoped-tls-1.0.1/LICENSE-APACHE",
+      "licenses/dependencies/scoped-tls-1.0.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "scopeguard",
+    "version": "1.2.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/bluss/scopeguard",
+    "license_files": [
+      "licenses/dependencies/scopeguard-1.2.0/Cargo.toml.orig",
+      "licenses/dependencies/scopeguard-1.2.0/LICENSE-APACHE",
+      "licenses/dependencies/scopeguard-1.2.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "sctk-adwaita",
+    "version": "0.10.1",
+    "license": "MIT",
+    "repository": "https://github.com/PolyMeilex/sctk-adwaita",
+    "license_files": [
+      "licenses/dependencies/sctk-adwaita-0.10.1/Cargo.toml.orig",
+      "licenses/dependencies/sctk-adwaita-0.10.1/LICENSE"
+    ]
+  },
+  {
+    "name": "semver",
+    "version": "1.0.28",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/dtolnay/semver",
+    "license_files": [
+      "licenses/dependencies/semver-1.0.28/Cargo.toml.orig",
+      "licenses/dependencies/semver-1.0.28/LICENSE-APACHE",
+      "licenses/dependencies/semver-1.0.28/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "serde",
+    "version": "1.0.228",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/serde-rs/serde",
+    "license_files": [
+      "licenses/dependencies/serde-1.0.228/Cargo.toml.orig",
+      "licenses/dependencies/serde-1.0.228/LICENSE-APACHE",
+      "licenses/dependencies/serde-1.0.228/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "serde_core",
+    "version": "1.0.228",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/serde-rs/serde",
+    "license_files": [
+      "licenses/dependencies/serde_core-1.0.228/Cargo.toml.orig",
+      "licenses/dependencies/serde_core-1.0.228/LICENSE-APACHE",
+      "licenses/dependencies/serde_core-1.0.228/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "serde_derive",
+    "version": "1.0.228",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/serde-rs/serde",
+    "license_files": [
+      "licenses/dependencies/serde_derive-1.0.228/Cargo.toml.orig",
+      "licenses/dependencies/serde_derive-1.0.228/LICENSE-APACHE",
+      "licenses/dependencies/serde_derive-1.0.228/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "sharded-slab",
+    "version": "0.1.7",
+    "license": "MIT",
+    "repository": "https://github.com/hawkw/sharded-slab",
+    "license_files": [
+      "licenses/dependencies/sharded-slab-0.1.7/Cargo.toml.orig",
+      "licenses/dependencies/sharded-slab-0.1.7/LICENSE"
+    ]
+  },
+  {
+    "name": "shlex",
+    "version": "1.3.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/comex/rust-shlex",
+    "license_files": [
+      "licenses/dependencies/shlex-1.3.0/Cargo.toml.orig",
+      "licenses/dependencies/shlex-1.3.0/LICENSE-APACHE",
+      "licenses/dependencies/shlex-1.3.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "simd-adler32",
+    "version": "0.3.9",
+    "license": "MIT",
+    "repository": "https://github.com/mcountryman/simd-adler32",
+    "license_files": [
+      "licenses/dependencies/simd-adler32-0.3.9/Cargo.toml.orig",
+      "licenses/dependencies/simd-adler32-0.3.9/LICENSE.md"
+    ]
+  },
+  {
+    "name": "simd_cesu8",
+    "version": "1.1.1",
+    "license": "Apache-2.0 OR MIT",
+    "repository": "https://github.com/seancroach/simd_cesu8",
+    "license_files": [
+      "licenses/dependencies/simd_cesu8-1.1.1/Cargo.toml.orig",
+      "licenses/dependencies/simd_cesu8-1.1.1/LICENSE-APACHE",
+      "licenses/dependencies/simd_cesu8-1.1.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "simdutf8",
+    "version": "0.1.5",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rusticstuff/simdutf8",
+    "license_files": [
+      "licenses/dependencies/simdutf8-0.1.5/Cargo.toml.orig",
+      "licenses/dependencies/simdutf8-0.1.5/LICENSE-Apache",
+      "licenses/dependencies/simdutf8-0.1.5/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "skrifa",
+    "version": "0.40.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/googlefonts/fontations",
+    "license_files": [
+      "licenses/dependencies/skrifa-0.40.0/Cargo.toml.orig",
+      "licenses/dependencies/skrifa-0.40.0/LICENSE-APACHE",
+      "licenses/dependencies/skrifa-0.40.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "slab",
+    "version": "0.4.12",
+    "license": "MIT",
+    "repository": "https://github.com/tokio-rs/slab",
+    "license_files": [
+      "licenses/dependencies/slab-0.4.12/Cargo.toml.orig",
+      "licenses/dependencies/slab-0.4.12/LICENSE"
+    ]
+  },
+  {
+    "name": "slotmap",
+    "version": "1.1.1",
+    "license": "Zlib",
+    "repository": "https://github.com/orlp/slotmap",
+    "license_files": [
+      "licenses/dependencies/slotmap-1.1.1/Cargo.toml.orig",
+      "licenses/dependencies/slotmap-1.1.1/LICENSE"
+    ]
+  },
+  {
+    "name": "smallvec",
+    "version": "1.15.1",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/servo/rust-smallvec",
+    "license_files": [
+      "licenses/dependencies/smallvec-1.15.1/Cargo.toml.orig",
+      "licenses/dependencies/smallvec-1.15.1/LICENSE-APACHE",
+      "licenses/dependencies/smallvec-1.15.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "smithay-client-toolkit",
+    "version": "0.19.2",
+    "license": "MIT",
+    "repository": "https://github.com/smithay/client-toolkit",
+    "license_files": [
+      "licenses/dependencies/smithay-client-toolkit-0.19.2/Cargo.toml.orig",
+      "licenses/dependencies/smithay-client-toolkit-0.19.2/LICENSE.txt"
+    ]
+  },
+  {
+    "name": "smol_str",
+    "version": "0.2.2",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/rust-analyzer/smol_str",
+    "license_files": [
+      "licenses/dependencies/smol_str-0.2.2/Cargo.toml.orig",
+      "licenses/dependencies/smol_str-0.2.2/LICENSE-APACHE",
+      "licenses/dependencies/smol_str-0.2.2/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "spirv",
+    "version": "0.3.0+sdk-1.3.268.0",
+    "license": "Apache-2.0",
+    "repository": "https://github.com/gfx-rs/rspirv",
+    "license_files": [
+      "licenses/dependencies/spirv-0.3.0+sdk-1.3.268.0/Cargo.toml.orig",
+      "licenses/dependencies/spirv-0.3.0+sdk-1.3.268.0/upstream/LICENSE"
+    ],
+    "upstream_supplement": {
+      "name": "spirv",
+      "version": "0.3.0+sdk-1.3.268.0",
+      "commit": "e91a5debc10c395b36db7721dfff6326d697a1e2",
+      "files": [
+        {
+          "path": "licenses/dependencies/spirv-0.3.0+sdk-1.3.268.0/upstream/LICENSE",
+          "url": "https://raw.githubusercontent.com/gfx-rs/rspirv/e91a5debc10c395b36db7721dfff6326d697a1e2/LICENSE",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        }
+      ]
+    }
+  },
+  {
+    "name": "static_assertions",
+    "version": "1.1.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/nvzqz/static-assertions-rs",
+    "license_files": [
+      "licenses/dependencies/static_assertions-1.1.0/Cargo.toml.orig",
+      "licenses/dependencies/static_assertions-1.1.0/LICENSE-APACHE",
+      "licenses/dependencies/static_assertions-1.1.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "strict-num",
+    "version": "0.1.1",
+    "license": "MIT",
+    "repository": "https://github.com/RazrFalcon/strict-num",
+    "license_files": [
+      "licenses/dependencies/strict-num-0.1.1/Cargo.toml.orig",
+      "licenses/dependencies/strict-num-0.1.1/LICENSE"
+    ]
+  },
+  {
+    "name": "svg_fmt",
+    "version": "0.4.5",
+    "license": "MIT/Apache-2.0",
+    "repository": "https://github.com/nical/rust_debug",
+    "license_files": [
+      "licenses/dependencies/svg_fmt-0.4.5/Cargo.toml.orig",
+      "licenses/dependencies/svg_fmt-0.4.5/upstream/LICENSE"
+    ],
+    "upstream_supplement": {
+      "name": "svg_fmt",
+      "version": "0.4.5",
+      "commit": "93f414cd572b5c2781df93dbdc068ed13443d05a",
+      "files": [
+        {
+          "path": "licenses/dependencies/svg_fmt-0.4.5/upstream/LICENSE",
+          "url": "https://raw.githubusercontent.com/nical/rust_debug/93f414cd572b5c2781df93dbdc068ed13443d05a/LICENSE",
+          "sha256": "7e98bed7f100747aaae7d82ab94fbe6b76fd6b84b09a3aaa413bff8196d0fbb1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "syn",
+    "version": "2.0.117",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/dtolnay/syn",
+    "license_files": [
+      "licenses/dependencies/syn-2.0.117/Cargo.toml.orig",
+      "licenses/dependencies/syn-2.0.117/LICENSE-APACHE",
+      "licenses/dependencies/syn-2.0.117/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "target-lexicon",
+    "version": "0.12.16",
+    "license": "Apache-2.0 WITH LLVM-exception",
+    "repository": "https://github.com/bytecodealliance/target-lexicon",
+    "license_files": [
+      "licenses/dependencies/target-lexicon-0.12.16/Cargo.toml.orig",
+      "licenses/dependencies/target-lexicon-0.12.16/LICENSE"
+    ]
+  },
+  {
+    "name": "thiserror",
+    "version": "1.0.69",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/dtolnay/thiserror",
+    "license_files": [
+      "licenses/dependencies/thiserror-1.0.69/Cargo.toml.orig",
+      "licenses/dependencies/thiserror-1.0.69/LICENSE-APACHE",
+      "licenses/dependencies/thiserror-1.0.69/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "thiserror",
+    "version": "2.0.18",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/dtolnay/thiserror",
+    "license_files": [
+      "licenses/dependencies/thiserror-2.0.18/Cargo.toml.orig",
+      "licenses/dependencies/thiserror-2.0.18/LICENSE-APACHE",
+      "licenses/dependencies/thiserror-2.0.18/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "thiserror-impl",
+    "version": "1.0.69",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/dtolnay/thiserror",
+    "license_files": [
+      "licenses/dependencies/thiserror-impl-1.0.69/Cargo.toml.orig",
+      "licenses/dependencies/thiserror-impl-1.0.69/LICENSE-APACHE",
+      "licenses/dependencies/thiserror-impl-1.0.69/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "thiserror-impl",
+    "version": "2.0.18",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/dtolnay/thiserror",
+    "license_files": [
+      "licenses/dependencies/thiserror-impl-2.0.18/Cargo.toml.orig",
+      "licenses/dependencies/thiserror-impl-2.0.18/LICENSE-APACHE",
+      "licenses/dependencies/thiserror-impl-2.0.18/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "thread_local",
+    "version": "1.1.9",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/Amanieu/thread_local-rs",
+    "license_files": [
+      "licenses/dependencies/thread_local-1.1.9/Cargo.toml.orig",
+      "licenses/dependencies/thread_local-1.1.9/LICENSE-APACHE",
+      "licenses/dependencies/thread_local-1.1.9/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "tiny-skia",
+    "version": "0.11.4",
+    "license": "BSD-3-Clause",
+    "repository": "https://github.com/RazrFalcon/tiny-skia",
+    "license_files": [
+      "licenses/dependencies/tiny-skia-0.11.4/Cargo.toml.orig",
+      "licenses/dependencies/tiny-skia-0.11.4/LICENSE"
+    ]
+  },
+  {
+    "name": "tiny-skia-path",
+    "version": "0.11.4",
+    "license": "BSD-3-Clause",
+    "repository": "https://github.com/RazrFalcon/tiny-skia/tree/master/path",
+    "license_files": [
+      "licenses/dependencies/tiny-skia-path-0.11.4/Cargo.toml.orig",
+      "licenses/dependencies/tiny-skia-path-0.11.4/LICENSE"
+    ]
+  },
+  {
+    "name": "toml_datetime",
+    "version": "1.1.1+spec-1.1.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/toml-rs/toml",
+    "license_files": [
+      "licenses/dependencies/toml_datetime-1.1.1+spec-1.1.0/Cargo.toml.orig",
+      "licenses/dependencies/toml_datetime-1.1.1+spec-1.1.0/LICENSE-APACHE",
+      "licenses/dependencies/toml_datetime-1.1.1+spec-1.1.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "toml_edit",
+    "version": "0.25.11+spec-1.1.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/toml-rs/toml",
+    "license_files": [
+      "licenses/dependencies/toml_edit-0.25.11+spec-1.1.0/Cargo.toml.orig",
+      "licenses/dependencies/toml_edit-0.25.11+spec-1.1.0/LICENSE-APACHE",
+      "licenses/dependencies/toml_edit-0.25.11+spec-1.1.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "toml_parser",
+    "version": "1.1.2+spec-1.1.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/toml-rs/toml",
+    "license_files": [
+      "licenses/dependencies/toml_parser-1.1.2+spec-1.1.0/Cargo.toml.orig",
+      "licenses/dependencies/toml_parser-1.1.2+spec-1.1.0/LICENSE-APACHE",
+      "licenses/dependencies/toml_parser-1.1.2+spec-1.1.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "tracing",
+    "version": "0.1.44",
+    "license": "MIT",
+    "repository": "https://github.com/tokio-rs/tracing",
+    "license_files": [
+      "licenses/dependencies/tracing-0.1.44/Cargo.toml.orig",
+      "licenses/dependencies/tracing-0.1.44/LICENSE"
+    ]
+  },
+  {
+    "name": "tracing-attributes",
+    "version": "0.1.31",
+    "license": "MIT",
+    "repository": "https://github.com/tokio-rs/tracing",
+    "license_files": [
+      "licenses/dependencies/tracing-attributes-0.1.31/Cargo.toml.orig",
+      "licenses/dependencies/tracing-attributes-0.1.31/LICENSE"
+    ]
+  },
+  {
+    "name": "tracing-core",
+    "version": "0.1.36",
+    "license": "MIT",
+    "repository": "https://github.com/tokio-rs/tracing",
+    "license_files": [
+      "licenses/dependencies/tracing-core-0.1.36/Cargo.toml.orig",
+      "licenses/dependencies/tracing-core-0.1.36/LICENSE",
+      "licenses/dependencies/tracing-core-0.1.36/src/spin/LICENSE"
+    ]
+  },
+  {
+    "name": "tracing-log",
+    "version": "0.2.0",
+    "license": "MIT",
+    "repository": "https://github.com/tokio-rs/tracing",
+    "license_files": [
+      "licenses/dependencies/tracing-log-0.2.0/Cargo.toml.orig",
+      "licenses/dependencies/tracing-log-0.2.0/LICENSE"
+    ]
+  },
+  {
+    "name": "tracing-subscriber",
+    "version": "0.3.23",
+    "license": "MIT",
+    "repository": "https://github.com/tokio-rs/tracing",
+    "license_files": [
+      "licenses/dependencies/tracing-subscriber-0.3.23/Cargo.toml.orig",
+      "licenses/dependencies/tracing-subscriber-0.3.23/LICENSE"
+    ]
+  },
+  {
+    "name": "ttf-parser",
+    "version": "0.21.1",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/RazrFalcon/ttf-parser",
+    "license_files": [
+      "licenses/dependencies/ttf-parser-0.21.1/Cargo.toml.orig",
+      "licenses/dependencies/ttf-parser-0.21.1/LICENSE-APACHE",
+      "licenses/dependencies/ttf-parser-0.21.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "ttf-parser",
+    "version": "0.25.1",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/harfbuzz/ttf-parser",
+    "license_files": [
+      "licenses/dependencies/ttf-parser-0.25.1/Cargo.toml.orig",
+      "licenses/dependencies/ttf-parser-0.25.1/LICENSE-APACHE",
+      "licenses/dependencies/ttf-parser-0.25.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "unicode-ident",
+    "version": "1.0.24",
+    "license": "(MIT OR Apache-2.0) AND Unicode-3.0",
+    "repository": "https://github.com/dtolnay/unicode-ident",
+    "license_files": [
+      "licenses/dependencies/unicode-ident-1.0.24/Cargo.toml.orig",
+      "licenses/dependencies/unicode-ident-1.0.24/LICENSE-APACHE",
+      "licenses/dependencies/unicode-ident-1.0.24/LICENSE-MIT",
+      "licenses/dependencies/unicode-ident-1.0.24/LICENSE-UNICODE"
+    ]
+  },
+  {
+    "name": "unicode-segmentation",
+    "version": "1.13.2",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/unicode-rs/unicode-segmentation",
+    "license_files": [
+      "licenses/dependencies/unicode-segmentation-1.13.2/COPYRIGHT",
+      "licenses/dependencies/unicode-segmentation-1.13.2/Cargo.toml.orig",
+      "licenses/dependencies/unicode-segmentation-1.13.2/LICENSE-APACHE",
+      "licenses/dependencies/unicode-segmentation-1.13.2/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "unicode-width",
+    "version": "0.2.2",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/unicode-rs/unicode-width",
+    "license_files": [
+      "licenses/dependencies/unicode-width-0.2.2/COPYRIGHT",
+      "licenses/dependencies/unicode-width-0.2.2/Cargo.toml.orig",
+      "licenses/dependencies/unicode-width-0.2.2/LICENSE-APACHE",
+      "licenses/dependencies/unicode-width-0.2.2/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "unindent",
+    "version": "0.2.4",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/dtolnay/indoc",
+    "license_files": [
+      "licenses/dependencies/unindent-0.2.4/Cargo.toml.orig",
+      "licenses/dependencies/unindent-0.2.4/LICENSE-APACHE",
+      "licenses/dependencies/unindent-0.2.4/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "valuable",
+    "version": "0.1.1",
+    "license": "MIT",
+    "repository": "https://github.com/tokio-rs/valuable",
+    "license_files": [
+      "licenses/dependencies/valuable-0.1.1/Cargo.toml.orig",
+      "licenses/dependencies/valuable-0.1.1/upstream/LICENSE"
+    ],
+    "upstream_supplement": {
+      "name": "valuable",
+      "version": "0.1.1",
+      "commit": "9efc29b6e58cef28f6566a47aa7e142a55fead77",
+      "files": [
+        {
+          "path": "licenses/dependencies/valuable-0.1.1/upstream/LICENSE",
+          "url": "https://raw.githubusercontent.com/tokio-rs/valuable/9efc29b6e58cef28f6566a47aa7e142a55fead77/LICENSE",
+          "sha256": "ed60d479b8fd1f64e9cbc3de449a16a53ac1b3d1b6aeb9bf9d190a8e93061b44"
+        }
+      ]
+    }
+  },
+  {
+    "name": "vello",
+    "version": "0.8.0",
+    "license": "Apache-2.0 OR MIT",
+    "repository": "https://github.com/linebender/vello",
+    "license_files": [
+      "licenses/dependencies/vello-0.8.0/Cargo.toml.orig",
+      "licenses/dependencies/vello-0.8.0/LICENSE-APACHE",
+      "licenses/dependencies/vello-0.8.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "vello_encoding",
+    "version": "0.8.0",
+    "license": "Apache-2.0 OR MIT",
+    "repository": "https://github.com/linebender/vello",
+    "license_files": [
+      "licenses/dependencies/vello_encoding-0.8.0/Cargo.toml.orig",
+      "licenses/dependencies/vello_encoding-0.8.0/LICENSE-APACHE",
+      "licenses/dependencies/vello_encoding-0.8.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "vello_shaders",
+    "version": "0.8.0",
+    "license": "Apache-2.0 OR MIT",
+    "repository": "https://github.com/linebender/vello",
+    "license_files": [
+      "licenses/dependencies/vello_shaders-0.8.0/Cargo.toml.orig",
+      "licenses/dependencies/vello_shaders-0.8.0/LICENSE-APACHE",
+      "licenses/dependencies/vello_shaders-0.8.0/LICENSE-MIT",
+      "licenses/dependencies/vello_shaders-0.8.0/shader/UNLICENSE"
+    ]
+  },
+  {
+    "name": "version_check",
+    "version": "0.9.5",
+    "license": "MIT/Apache-2.0",
+    "repository": "https://github.com/SergioBenitez/version_check",
+    "license_files": [
+      "licenses/dependencies/version_check-0.9.5/Cargo.toml.orig",
+      "licenses/dependencies/version_check-0.9.5/LICENSE-APACHE",
+      "licenses/dependencies/version_check-0.9.5/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "walkdir",
+    "version": "2.5.0",
+    "license": "Unlicense/MIT",
+    "repository": "https://github.com/BurntSushi/walkdir",
+    "license_files": [
+      "licenses/dependencies/walkdir-2.5.0/COPYING",
+      "licenses/dependencies/walkdir-2.5.0/Cargo.toml.orig",
+      "licenses/dependencies/walkdir-2.5.0/LICENSE-MIT",
+      "licenses/dependencies/walkdir-2.5.0/UNLICENSE"
+    ]
+  },
+  {
+    "name": "wasip2",
+    "version": "1.0.3+wasi-0.2.9",
+    "license": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+    "repository": "https://github.com/bytecodealliance/wasi-rs",
+    "license_files": [
+      "licenses/dependencies/wasip2-1.0.3+wasi-0.2.9/Cargo.toml.orig",
+      "licenses/dependencies/wasip2-1.0.3+wasi-0.2.9/LICENSE-APACHE",
+      "licenses/dependencies/wasip2-1.0.3+wasi-0.2.9/LICENSE-Apache-2.0_WITH_LLVM-exception",
+      "licenses/dependencies/wasip2-1.0.3+wasi-0.2.9/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "wasm-bindgen",
+    "version": "0.2.121",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/wasm-bindgen/wasm-bindgen",
+    "license_files": [
+      "licenses/dependencies/wasm-bindgen-0.2.121/Cargo.toml.orig",
+      "licenses/dependencies/wasm-bindgen-0.2.121/LICENSE-APACHE",
+      "licenses/dependencies/wasm-bindgen-0.2.121/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "wasm-bindgen-futures",
+    "version": "0.4.71",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/futures",
+    "license_files": [
+      "licenses/dependencies/wasm-bindgen-futures-0.4.71/Cargo.toml.orig",
+      "licenses/dependencies/wasm-bindgen-futures-0.4.71/LICENSE-APACHE",
+      "licenses/dependencies/wasm-bindgen-futures-0.4.71/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "wasm-bindgen-macro",
+    "version": "0.2.121",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/macro",
+    "license_files": [
+      "licenses/dependencies/wasm-bindgen-macro-0.2.121/Cargo.toml.orig",
+      "licenses/dependencies/wasm-bindgen-macro-0.2.121/LICENSE-APACHE",
+      "licenses/dependencies/wasm-bindgen-macro-0.2.121/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "wasm-bindgen-macro-support",
+    "version": "0.2.121",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/macro-support",
+    "license_files": [
+      "licenses/dependencies/wasm-bindgen-macro-support-0.2.121/Cargo.toml.orig",
+      "licenses/dependencies/wasm-bindgen-macro-support-0.2.121/LICENSE-APACHE",
+      "licenses/dependencies/wasm-bindgen-macro-support-0.2.121/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "wasm-bindgen-shared",
+    "version": "0.2.121",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/shared",
+    "license_files": [
+      "licenses/dependencies/wasm-bindgen-shared-0.2.121/Cargo.toml.orig",
+      "licenses/dependencies/wasm-bindgen-shared-0.2.121/LICENSE-APACHE",
+      "licenses/dependencies/wasm-bindgen-shared-0.2.121/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "wayland-backend",
+    "version": "0.3.15",
+    "license": "MIT",
+    "repository": "https://github.com/smithay/wayland-rs",
+    "license_files": [
+      "licenses/dependencies/wayland-backend-0.3.15/Cargo.toml.orig",
+      "licenses/dependencies/wayland-backend-0.3.15/LICENSE.txt"
+    ]
+  },
+  {
+    "name": "wayland-client",
+    "version": "0.31.14",
+    "license": "MIT",
+    "repository": "https://github.com/smithay/wayland-rs",
+    "license_files": [
+      "licenses/dependencies/wayland-client-0.31.14/Cargo.toml.orig",
+      "licenses/dependencies/wayland-client-0.31.14/LICENSE.txt"
+    ]
+  },
+  {
+    "name": "wayland-csd-frame",
+    "version": "0.3.0",
+    "license": "MIT",
+    "repository": "https://github.com/rust-windowing/wayland-csd-frame",
+    "license_files": [
+      "licenses/dependencies/wayland-csd-frame-0.3.0/Cargo.toml.orig",
+      "licenses/dependencies/wayland-csd-frame-0.3.0/LICENSE"
+    ]
+  },
+  {
+    "name": "wayland-cursor",
+    "version": "0.31.14",
+    "license": "MIT",
+    "repository": "https://github.com/smithay/wayland-rs",
+    "license_files": [
+      "licenses/dependencies/wayland-cursor-0.31.14/Cargo.toml.orig",
+      "licenses/dependencies/wayland-cursor-0.31.14/LICENSE.txt"
+    ]
+  },
+  {
+    "name": "wayland-protocols",
+    "version": "0.32.12",
+    "license": "MIT",
+    "repository": "https://github.com/smithay/wayland-rs",
+    "license_files": [
+      "licenses/dependencies/wayland-protocols-0.32.12/Cargo.toml.orig",
+      "licenses/dependencies/wayland-protocols-0.32.12/LICENSE.txt",
+      "licenses/dependencies/wayland-protocols-0.32.12/protocols/COPYING"
+    ]
+  },
+  {
+    "name": "wayland-protocols-plasma",
+    "version": "0.3.12",
+    "license": "MIT",
+    "repository": "https://github.com/smithay/wayland-rs",
+    "license_files": [
+      "licenses/dependencies/wayland-protocols-plasma-0.3.12/Cargo.toml.orig",
+      "licenses/dependencies/wayland-protocols-plasma-0.3.12/LICENSE.txt",
+      "licenses/dependencies/wayland-protocols-plasma-0.3.12/plasma-wayland-protocols/COPYING.LIB"
+    ]
+  },
+  {
+    "name": "wayland-protocols-wlr",
+    "version": "0.3.12",
+    "license": "MIT",
+    "repository": "https://github.com/smithay/wayland-rs",
+    "license_files": [
+      "licenses/dependencies/wayland-protocols-wlr-0.3.12/Cargo.toml.orig",
+      "licenses/dependencies/wayland-protocols-wlr-0.3.12/LICENSE.txt"
+    ]
+  },
+  {
+    "name": "wayland-scanner",
+    "version": "0.31.10",
+    "license": "MIT",
+    "repository": "https://github.com/smithay/wayland-rs",
+    "license_files": [
+      "licenses/dependencies/wayland-scanner-0.31.10/Cargo.toml.orig",
+      "licenses/dependencies/wayland-scanner-0.31.10/LICENSE.txt"
+    ]
+  },
+  {
+    "name": "wayland-sys",
+    "version": "0.31.11",
+    "license": "MIT",
+    "repository": "https://github.com/smithay/wayland-rs",
+    "license_files": [
+      "licenses/dependencies/wayland-sys-0.31.11/Cargo.toml.orig",
+      "licenses/dependencies/wayland-sys-0.31.11/LICENSE.txt"
+    ]
+  },
+  {
+    "name": "web-sys",
+    "version": "0.3.98",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/web-sys",
+    "license_files": [
+      "licenses/dependencies/web-sys-0.3.98/Cargo.toml.orig",
+      "licenses/dependencies/web-sys-0.3.98/LICENSE-APACHE",
+      "licenses/dependencies/web-sys-0.3.98/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "web-time",
+    "version": "1.1.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/daxpedda/web-time",
+    "license_files": [
+      "licenses/dependencies/web-time-1.1.0/Cargo.toml.orig",
+      "licenses/dependencies/web-time-1.1.0/LICENSE-APACHE",
+      "licenses/dependencies/web-time-1.1.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "wgpu",
+    "version": "28.0.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/gfx-rs/wgpu",
+    "license_files": [
+      "licenses/dependencies/wgpu-28.0.0/Cargo.toml.orig",
+      "licenses/dependencies/wgpu-28.0.0/LICENSE.APACHE",
+      "licenses/dependencies/wgpu-28.0.0/LICENSE.MIT"
+    ]
+  },
+  {
+    "name": "wgpu-core",
+    "version": "28.0.1",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/gfx-rs/wgpu",
+    "license_files": [
+      "licenses/dependencies/wgpu-core-28.0.1/Cargo.toml.orig",
+      "licenses/dependencies/wgpu-core-28.0.1/LICENSE.APACHE",
+      "licenses/dependencies/wgpu-core-28.0.1/LICENSE.MIT"
+    ]
+  },
+  {
+    "name": "wgpu-core-deps-emscripten",
+    "version": "28.0.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/gfx-rs/wgpu",
+    "license_files": [
+      "licenses/dependencies/wgpu-core-deps-emscripten-28.0.0/Cargo.toml.orig",
+      "licenses/dependencies/wgpu-core-deps-emscripten-28.0.0/LICENSE.APACHE",
+      "licenses/dependencies/wgpu-core-deps-emscripten-28.0.0/LICENSE.MIT"
+    ]
+  },
+  {
+    "name": "wgpu-core-deps-windows-linux-android",
+    "version": "28.0.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/gfx-rs/wgpu",
+    "license_files": [
+      "licenses/dependencies/wgpu-core-deps-windows-linux-android-28.0.0/Cargo.toml.orig",
+      "licenses/dependencies/wgpu-core-deps-windows-linux-android-28.0.0/LICENSE.APACHE",
+      "licenses/dependencies/wgpu-core-deps-windows-linux-android-28.0.0/LICENSE.MIT"
+    ]
+  },
+  {
+    "name": "wgpu-hal",
+    "version": "28.0.1",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/gfx-rs/wgpu",
+    "license_files": [
+      "licenses/dependencies/wgpu-hal-28.0.1/Cargo.toml.orig",
+      "licenses/dependencies/wgpu-hal-28.0.1/LICENSE.APACHE",
+      "licenses/dependencies/wgpu-hal-28.0.1/LICENSE.MIT"
+    ]
+  },
+  {
+    "name": "wgpu-types",
+    "version": "28.0.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/gfx-rs/wgpu",
+    "license_files": [
+      "licenses/dependencies/wgpu-types-28.0.0/Cargo.toml.orig",
+      "licenses/dependencies/wgpu-types-28.0.0/LICENSE.APACHE",
+      "licenses/dependencies/wgpu-types-28.0.0/LICENSE.MIT"
+    ]
+  },
+  {
+    "name": "winapi-util",
+    "version": "0.1.11",
+    "license": "Unlicense OR MIT",
+    "repository": "https://github.com/BurntSushi/winapi-util",
+    "license_files": [
+      "licenses/dependencies/winapi-util-0.1.11/COPYING",
+      "licenses/dependencies/winapi-util-0.1.11/Cargo.toml.orig",
+      "licenses/dependencies/winapi-util-0.1.11/LICENSE-MIT",
+      "licenses/dependencies/winapi-util-0.1.11/UNLICENSE"
+    ]
+  },
+  {
+    "name": "windows",
+    "version": "0.62.2",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/microsoft/windows-rs",
+    "license_files": [
+      "licenses/dependencies/windows-0.62.2/Cargo.toml.orig",
+      "licenses/dependencies/windows-0.62.2/license-apache-2.0",
+      "licenses/dependencies/windows-0.62.2/license-mit"
+    ]
+  },
+  {
+    "name": "windows-collections",
+    "version": "0.3.2",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/microsoft/windows-rs",
+    "license_files": [
+      "licenses/dependencies/windows-collections-0.3.2/Cargo.toml.orig",
+      "licenses/dependencies/windows-collections-0.3.2/license-apache-2.0",
+      "licenses/dependencies/windows-collections-0.3.2/license-mit"
+    ]
+  },
+  {
+    "name": "windows-core",
+    "version": "0.62.2",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/microsoft/windows-rs",
+    "license_files": [
+      "licenses/dependencies/windows-core-0.62.2/Cargo.toml.orig",
+      "licenses/dependencies/windows-core-0.62.2/license-apache-2.0",
+      "licenses/dependencies/windows-core-0.62.2/license-mit"
+    ]
+  },
+  {
+    "name": "windows-future",
+    "version": "0.3.2",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/microsoft/windows-rs",
+    "license_files": [
+      "licenses/dependencies/windows-future-0.3.2/Cargo.toml.orig",
+      "licenses/dependencies/windows-future-0.3.2/license-apache-2.0",
+      "licenses/dependencies/windows-future-0.3.2/license-mit"
+    ]
+  },
+  {
+    "name": "windows-implement",
+    "version": "0.60.2",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/microsoft/windows-rs",
+    "license_files": [
+      "licenses/dependencies/windows-implement-0.60.2/Cargo.toml.orig",
+      "licenses/dependencies/windows-implement-0.60.2/license-apache-2.0",
+      "licenses/dependencies/windows-implement-0.60.2/license-mit"
+    ]
+  },
+  {
+    "name": "windows-interface",
+    "version": "0.59.3",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/microsoft/windows-rs",
+    "license_files": [
+      "licenses/dependencies/windows-interface-0.59.3/Cargo.toml.orig",
+      "licenses/dependencies/windows-interface-0.59.3/license-apache-2.0",
+      "licenses/dependencies/windows-interface-0.59.3/license-mit"
+    ]
+  },
+  {
+    "name": "windows-link",
+    "version": "0.2.1",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/microsoft/windows-rs",
+    "license_files": [
+      "licenses/dependencies/windows-link-0.2.1/Cargo.toml.orig",
+      "licenses/dependencies/windows-link-0.2.1/license-apache-2.0",
+      "licenses/dependencies/windows-link-0.2.1/license-mit"
+    ]
+  },
+  {
+    "name": "windows-numerics",
+    "version": "0.3.1",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/microsoft/windows-rs",
+    "license_files": [
+      "licenses/dependencies/windows-numerics-0.3.1/Cargo.toml.orig",
+      "licenses/dependencies/windows-numerics-0.3.1/license-apache-2.0",
+      "licenses/dependencies/windows-numerics-0.3.1/license-mit"
+    ]
+  },
+  {
+    "name": "windows-result",
+    "version": "0.4.1",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/microsoft/windows-rs",
+    "license_files": [
+      "licenses/dependencies/windows-result-0.4.1/Cargo.toml.orig",
+      "licenses/dependencies/windows-result-0.4.1/license-apache-2.0",
+      "licenses/dependencies/windows-result-0.4.1/license-mit"
+    ]
+  },
+  {
+    "name": "windows-strings",
+    "version": "0.5.1",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/microsoft/windows-rs",
+    "license_files": [
+      "licenses/dependencies/windows-strings-0.5.1/Cargo.toml.orig",
+      "licenses/dependencies/windows-strings-0.5.1/license-apache-2.0",
+      "licenses/dependencies/windows-strings-0.5.1/license-mit"
+    ]
+  },
+  {
+    "name": "windows-sys",
+    "version": "0.52.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/microsoft/windows-rs",
+    "license_files": [
+      "licenses/dependencies/windows-sys-0.52.0/Cargo.toml.orig",
+      "licenses/dependencies/windows-sys-0.52.0/license-apache-2.0",
+      "licenses/dependencies/windows-sys-0.52.0/license-mit"
+    ]
+  },
+  {
+    "name": "windows-sys",
+    "version": "0.59.0",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/microsoft/windows-rs",
+    "license_files": [
+      "licenses/dependencies/windows-sys-0.59.0/Cargo.toml.orig",
+      "licenses/dependencies/windows-sys-0.59.0/license-apache-2.0",
+      "licenses/dependencies/windows-sys-0.59.0/license-mit"
+    ]
+  },
+  {
+    "name": "windows-sys",
+    "version": "0.61.2",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/microsoft/windows-rs",
+    "license_files": [
+      "licenses/dependencies/windows-sys-0.61.2/Cargo.toml.orig",
+      "licenses/dependencies/windows-sys-0.61.2/license-apache-2.0",
+      "licenses/dependencies/windows-sys-0.61.2/license-mit"
+    ]
+  },
+  {
+    "name": "windows-targets",
+    "version": "0.52.6",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/microsoft/windows-rs",
+    "license_files": [
+      "licenses/dependencies/windows-targets-0.52.6/Cargo.toml.orig",
+      "licenses/dependencies/windows-targets-0.52.6/license-apache-2.0",
+      "licenses/dependencies/windows-targets-0.52.6/license-mit"
+    ]
+  },
+  {
+    "name": "windows-threading",
+    "version": "0.2.1",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/microsoft/windows-rs",
+    "license_files": [
+      "licenses/dependencies/windows-threading-0.2.1/Cargo.toml.orig",
+      "licenses/dependencies/windows-threading-0.2.1/license-apache-2.0",
+      "licenses/dependencies/windows-threading-0.2.1/license-mit"
+    ]
+  },
+  {
+    "name": "windows_aarch64_gnullvm",
+    "version": "0.52.6",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/microsoft/windows-rs",
+    "license_files": [
+      "licenses/dependencies/windows_aarch64_gnullvm-0.52.6/Cargo.toml.orig",
+      "licenses/dependencies/windows_aarch64_gnullvm-0.52.6/license-apache-2.0",
+      "licenses/dependencies/windows_aarch64_gnullvm-0.52.6/license-mit"
+    ]
+  },
+  {
+    "name": "windows_aarch64_msvc",
+    "version": "0.52.6",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/microsoft/windows-rs",
+    "license_files": [
+      "licenses/dependencies/windows_aarch64_msvc-0.52.6/Cargo.toml.orig",
+      "licenses/dependencies/windows_aarch64_msvc-0.52.6/license-apache-2.0",
+      "licenses/dependencies/windows_aarch64_msvc-0.52.6/license-mit"
+    ]
+  },
+  {
+    "name": "windows_i686_gnu",
+    "version": "0.52.6",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/microsoft/windows-rs",
+    "license_files": [
+      "licenses/dependencies/windows_i686_gnu-0.52.6/Cargo.toml.orig",
+      "licenses/dependencies/windows_i686_gnu-0.52.6/license-apache-2.0",
+      "licenses/dependencies/windows_i686_gnu-0.52.6/license-mit"
+    ]
+  },
+  {
+    "name": "windows_i686_gnullvm",
+    "version": "0.52.6",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/microsoft/windows-rs",
+    "license_files": [
+      "licenses/dependencies/windows_i686_gnullvm-0.52.6/Cargo.toml.orig",
+      "licenses/dependencies/windows_i686_gnullvm-0.52.6/license-apache-2.0",
+      "licenses/dependencies/windows_i686_gnullvm-0.52.6/license-mit"
+    ]
+  },
+  {
+    "name": "windows_i686_msvc",
+    "version": "0.52.6",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/microsoft/windows-rs",
+    "license_files": [
+      "licenses/dependencies/windows_i686_msvc-0.52.6/Cargo.toml.orig",
+      "licenses/dependencies/windows_i686_msvc-0.52.6/license-apache-2.0",
+      "licenses/dependencies/windows_i686_msvc-0.52.6/license-mit"
+    ]
+  },
+  {
+    "name": "windows_x86_64_gnu",
+    "version": "0.52.6",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/microsoft/windows-rs",
+    "license_files": [
+      "licenses/dependencies/windows_x86_64_gnu-0.52.6/Cargo.toml.orig",
+      "licenses/dependencies/windows_x86_64_gnu-0.52.6/license-apache-2.0",
+      "licenses/dependencies/windows_x86_64_gnu-0.52.6/license-mit"
+    ]
+  },
+  {
+    "name": "windows_x86_64_gnullvm",
+    "version": "0.52.6",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/microsoft/windows-rs",
+    "license_files": [
+      "licenses/dependencies/windows_x86_64_gnullvm-0.52.6/Cargo.toml.orig",
+      "licenses/dependencies/windows_x86_64_gnullvm-0.52.6/license-apache-2.0",
+      "licenses/dependencies/windows_x86_64_gnullvm-0.52.6/license-mit"
+    ]
+  },
+  {
+    "name": "windows_x86_64_msvc",
+    "version": "0.52.6",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/microsoft/windows-rs",
+    "license_files": [
+      "licenses/dependencies/windows_x86_64_msvc-0.52.6/Cargo.toml.orig",
+      "licenses/dependencies/windows_x86_64_msvc-0.52.6/license-apache-2.0",
+      "licenses/dependencies/windows_x86_64_msvc-0.52.6/license-mit"
+    ]
+  },
+  {
+    "name": "winit",
+    "version": "0.30.13",
+    "license": "Apache-2.0",
+    "repository": "https://github.com/rust-windowing/winit",
+    "license_files": [
+      "licenses/dependencies/winit-0.30.13/Cargo.toml.orig",
+      "licenses/dependencies/winit-0.30.13/LICENSE"
+    ]
+  },
+  {
+    "name": "winnow",
+    "version": "1.0.3",
+    "license": "MIT",
+    "repository": "https://github.com/winnow-rs/winnow",
+    "license_files": [
+      "licenses/dependencies/winnow-1.0.3/Cargo.toml.orig",
+      "licenses/dependencies/winnow-1.0.3/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "wit-bindgen",
+    "version": "0.57.1",
+    "license": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+    "repository": "https://github.com/bytecodealliance/wit-bindgen",
+    "license_files": [
+      "licenses/dependencies/wit-bindgen-0.57.1/Cargo.toml.orig",
+      "licenses/dependencies/wit-bindgen-0.57.1/LICENSE-APACHE",
+      "licenses/dependencies/wit-bindgen-0.57.1/LICENSE-Apache-2.0_WITH_LLVM-exception",
+      "licenses/dependencies/wit-bindgen-0.57.1/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "x11-dl",
+    "version": "2.21.0",
+    "license": "MIT",
+    "repository": "https://github.com/AltF02/x11-rs.git",
+    "license_files": [
+      "licenses/dependencies/x11-dl-2.21.0/Cargo.toml.orig",
+      "licenses/dependencies/x11-dl-2.21.0/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "x11rb",
+    "version": "0.13.2",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/psychon/x11rb",
+    "license_files": [
+      "licenses/dependencies/x11rb-0.13.2/Cargo.toml.orig",
+      "licenses/dependencies/x11rb-0.13.2/LICENSE-APACHE",
+      "licenses/dependencies/x11rb-0.13.2/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "x11rb-protocol",
+    "version": "0.13.2",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/psychon/x11rb",
+    "license_files": [
+      "licenses/dependencies/x11rb-protocol-0.13.2/Cargo.toml.orig",
+      "licenses/dependencies/x11rb-protocol-0.13.2/LICENSE-APACHE",
+      "licenses/dependencies/x11rb-protocol-0.13.2/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "xcursor",
+    "version": "0.3.10",
+    "license": "MIT",
+    "repository": "https://github.com/esposm03/xcursor-rs",
+    "license_files": [
+      "licenses/dependencies/xcursor-0.3.10/Cargo.toml.orig",
+      "licenses/dependencies/xcursor-0.3.10/LICENSE"
+    ]
+  },
+  {
+    "name": "xkbcommon-dl",
+    "version": "0.4.2",
+    "license": "MIT",
+    "repository": "https://github.com/rust-windowing/xkbcommon-dl",
+    "license_files": [
+      "licenses/dependencies/xkbcommon-dl-0.4.2/Cargo.toml.orig",
+      "licenses/dependencies/xkbcommon-dl-0.4.2/LICENSE"
+    ]
+  },
+  {
+    "name": "xkeysym",
+    "version": "0.2.1",
+    "license": "MIT OR Apache-2.0 OR Zlib",
+    "repository": "https://github.com/notgull/xkeysym",
+    "license_files": [
+      "licenses/dependencies/xkeysym-0.2.1/Cargo.toml.orig",
+      "licenses/dependencies/xkeysym-0.2.1/LICENSE-APACHE",
+      "licenses/dependencies/xkeysym-0.2.1/LICENSE-MIT",
+      "licenses/dependencies/xkeysym-0.2.1/LICENSE-ZLIB"
+    ]
+  },
+  {
+    "name": "xml-rs",
+    "version": "0.8.28",
+    "license": "MIT",
+    "repository": "https://github.com/kornelski/xml-rs",
+    "license_files": [
+      "licenses/dependencies/xml-rs-0.8.28/Cargo.toml.orig",
+      "licenses/dependencies/xml-rs-0.8.28/LICENSE"
+    ]
+  },
+  {
+    "name": "zerocopy",
+    "version": "0.8.48",
+    "license": "BSD-2-Clause OR Apache-2.0 OR MIT",
+    "repository": "https://github.com/google/zerocopy",
+    "license_files": [
+      "licenses/dependencies/zerocopy-0.8.48/Cargo.toml.orig",
+      "licenses/dependencies/zerocopy-0.8.48/LICENSE-APACHE",
+      "licenses/dependencies/zerocopy-0.8.48/LICENSE-BSD",
+      "licenses/dependencies/zerocopy-0.8.48/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "zerocopy-derive",
+    "version": "0.8.48",
+    "license": "BSD-2-Clause OR Apache-2.0 OR MIT",
+    "repository": "https://github.com/google/zerocopy",
+    "license_files": [
+      "licenses/dependencies/zerocopy-derive-0.8.48/Cargo.toml.orig",
+      "licenses/dependencies/zerocopy-derive-0.8.48/LICENSE-APACHE",
+      "licenses/dependencies/zerocopy-derive-0.8.48/LICENSE-BSD",
+      "licenses/dependencies/zerocopy-derive-0.8.48/LICENSE-MIT"
+    ]
+  }
+]
