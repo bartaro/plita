@@ -1,4 +1,4 @@
-# PLITA — Benutzer- und Entwicklerhandbuch
+# plita — Benutzer- und Entwicklerhandbuch
 
 [English](en.md) · [日本語](ja.md) · [한국어](ko.md) · [简体中文](zh-CN.md) · [繁體中文](zh-TW.md) · [Français](fr.md) · [Español](es.md) · [Deutsch](de.md)
 
@@ -6,7 +6,7 @@ DAISUKE OBA · Quelltextausgabe vom 2026-10-11 · Cargo-Paketversion 0.0.1
 
 ## 1. Lieferumfang
 
-PLITA ist eine Rust-GUI-Grundlage für kreative Desktop-Anwendungen. Dieses Repository enthält fünf Framework-Crates und drei ausführbare Beispiele. Es stellt native Fenster, Eingabeverarbeitung, GPU-Zeichnen, Widgets, andockbare Bedienfelder und Canvas-Modelle bereit. Anwendungsspezifische Emulator-Oberflächen, ROMs und vorkompilierte Programme gehören nicht zum Lieferumfang.
+plita ist eine Rust-GUI-Grundlage für kreative Desktop-Anwendungen. Dieses Repository enthält fünf Framework-Crates und drei ausführbare Beispiele. Es stellt native Fenster, Eingabeverarbeitung, GPU-Zeichnen, Widgets, andockbare Bedienfelder und Canvas-Modelle bereit. Anwendungsspezifische Emulator-Oberflächen, ROMs und vorkompilierte Programme gehören nicht zum Lieferumfang.
 
 - `plita`: öffentliche API, `prelude`-Reexporte und optionale Python-Hilfsfunktionen.
 - `plita_app`: `App`-Builder und Startkonfiguration.
@@ -55,7 +55,7 @@ use plita::prelude::*;
 
 fn main() -> Result<()> {
     App::new()
-        .title("PLITA UI v1.0 - Creative Shell")
+        .title("plita UI v1.0 - Creative Shell")
         .window_size(1280, 800)
         .clear_color(ClearColor::rgb(0.105, 0.111, 0.125))
         .continuous_redraw(false)
@@ -69,7 +69,7 @@ Mit `continuous_redraw(false)` wird aufgrund von Aktualisierungen und Neuzeichnu
 
 ## 5. Eingaben und Zusatzfenster
 
-Verwenden Sie die logischen Koordinaten von PLITA für Treffertests und Layout. Die Fensterschicht übernimmt die DPI-Umrechnung. Ereignisse umfassen Zeiger, Tastatur, IME und abgelegte Dateien. Das Öffnen, Auswerten und Speichern einer empfangenen Datei bleibt Aufgabe der Anwendung.
+Verwenden Sie die logischen Koordinaten von plita für Treffertests und Layout. Die Fensterschicht übernimmt die DPI-Umrechnung. Ereignisse umfassen Zeiger, Tastatur, IME und abgelegte Dateien. Das Öffnen, Auswerten und Speichern einer empfangenen Datei bleibt Aufgabe der Anwendung.
 
 `PointerDoubleClick` folgt auf das zweite `PointerUp`. Erforderlich sind zwei abgeschlossene Klicks mit derselben Taste innerhalb von 500 ms und mit höchstens 6 logischen Pixeln Abstand. Ziehgesten werden ausgeschlossen. Jedes native Fenster führt seine eigene Erkennung.
 
@@ -83,7 +83,7 @@ Eigene Anwendungen können Zusatzfenster mit `AuxiliaryWindowDescriptor` beschre
 
 ## 7. Schriftarten und Symbole
 
-Roboto und Roboto Mono liegen unter `assets/fonts`. PLITA rastert Text mit `fontdue` und behält eine kleine Bitmap-Ersatzschrift bei. Es sucht außerdem nach installierten Systemschriften. Mit `PLITA_UI_FONT`, `PLITA_UI_FONT_FALLBACK` und `PLITA_MEMORY_FONT` lassen sich Schriftdateien auswählen; setzen Sie diese Variablen vor dem Programmstart. Die Schrift muss die gewünschten Zeichen enthalten. Die mitgelieferten lateinischen Schriften decken Chinesisch, Japanisch und Koreanisch nicht vollständig ab.
+Roboto und Roboto Mono liegen unter `assets/fonts`. plita rastert Text mit `fontdue` und behält eine kleine Bitmap-Ersatzschrift bei. Es sucht außerdem nach installierten Systemschriften. Mit `PLITA_UI_FONT`, `PLITA_UI_FONT_FALLBACK` und `PLITA_MEMORY_FONT` lassen sich Schriftdateien auswählen; setzen Sie diese Variablen vor dem Programmstart. Die Schrift muss die gewünschten Zeichen enthalten. Die mitgelieferten lateinischen Schriften decken Chinesisch, Japanisch und Koreanisch nicht vollständig ab.
 
 `active_font_family`, `active_font_source`, `active_text_backend` und `active_memory_font_family` helfen bei der Diagnose der Schriftauswahl. Wenn Sie ein Programm verschieben, erhalten Sie den Zugriff auf das Ressourcenverzeichnis oder konfigurieren Sie einen passenden Schriftpfad. Ein Systemschriftpfad im Ladecode bedeutet nicht, dass diese Schriftdatei mitgeliefert wird.
 
@@ -131,7 +131,7 @@ Dieses Handbuch beschreibt den veröffentlichten Quelltext und bestätigt keine 
 
 ## 11. Lizenz und Weitergabe
 
-PLITA-Code und diese Handbücher stehen unter der MIT-Lizenz, Copyright (c) 2026 DAISUKE OBA. Behalten Sie bei der Weitergabe von Kopien oder wesentlichen Teilen den MIT-Urheberrechts- und Erlaubnisvermerk bei. Fremde Ressourcen behalten ihre eigenen Lizenzen: Roboto und Roboto Mono verwenden OFL-1.1; Lucide verwendet ISC einschließlich des übernommenen MIT-Hinweises von Feather.
+plita-Code und diese Handbücher stehen unter der MIT-Lizenz, Copyright (c) 2026 DAISUKE OBA. Behalten Sie bei der Weitergabe von Kopien oder wesentlichen Teilen den MIT-Urheberrechts- und Erlaubnisvermerk bei. Fremde Ressourcen behalten ihre eigenen Lizenzen: Roboto und Roboto Mono verwenden OFL-1.1; Lucide verwendet ISC einschließlich des übernommenen MIT-Hinweises von Feather.
 
 Lesen Sie [LICENSE](../../LICENSE), die [Drittanbieterhinweise](../../THIRD_PARTY_NOTICES.md), die [Abhängigkeitshinweise](../../licenses/DEPENDENCIES.md) und die [Herkunft der Ressourcen](../../licenses/ASSET_PROVENANCE.json). Legen Sie weitergegebenen Schriften, Symbolen und Binärdateien die jeweils nötigen Hinweise bei. Klären Sie vor der Weitergabe von macOS-Binärdateien die dokumentierten Lücken bei eigenständigen Erlaubnistexten für `dispatch` und `malloc_buf`. Dieses Repository veröffentlicht Quelltext und Hinweise; eine spätere Binärverteilung erfordert die Prüfung der tatsächlich eingebundenen Abhängigkeiten.
 

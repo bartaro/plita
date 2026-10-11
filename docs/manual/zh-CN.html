@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>PLITA — 使用与开发手册</title>
+<title>plita — 使用与开发手册</title>
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
 <a class="skip" href="#main">跳转到正文</a>
-<header><a class="brand" href="index.html">PLITA</a><span>2026-10-11 · 0.0.1</span></header>
+<header><a class="brand" href="index.html">plita</a><span>2026-10-11 · 0.0.1</span></header>
 <nav class="languages" aria-label="Language"><a href="en.html" lang="en" hreflang="en">English</a> <a href="ja.html" lang="ja" hreflang="ja">日本語</a> <a href="ko.html" lang="ko" hreflang="ko">한국어</a> <a href="zh-CN.html" lang="zh-CN" hreflang="zh-CN" aria-current="page">简体中文</a> <a href="zh-TW.html" lang="zh-TW" hreflang="zh-TW">繁體中文</a> <a href="fr.html" lang="fr" hreflang="fr">Français</a> <a href="es.html" lang="es" hreflang="es">Español</a> <a href="de.html" lang="de" hreflang="de">Deutsch</a></nav>
-<div class="layout"><aside><nav aria-label="目录"><h2>目录</h2><a href="#section-1">1. 包含的内容</a><a href="#section-2">2. 环境要求与构建</a><a href="#section-3">3. 运行示例</a><a href="#section-4">4. 启动应用</a><a href="#section-5">5. 输入与辅助窗口</a><a href="#section-6">6. 停靠、画布与持久化</a><a href="#section-7">7. 字体与图标</a><a href="#section-8">8. 可选的渲染工作线程</a><a href="#section-9">9. 可选的 Python 辅助功能</a><a href="#section-10">10. 故障排查与验证</a><a href="#section-11">11. 许可与再分发</a><a href="#section-12">12. 源码导航</a></nav><p><a href="zh-CN.md">Markdown</a></p></aside><main id="main"><h1>PLITA — 使用与开发手册</h1>
+<div class="layout"><aside><nav aria-label="目录"><h2>目录</h2><a href="#section-1">1. 包含的内容</a><a href="#section-2">2. 环境要求与构建</a><a href="#section-3">3. 运行示例</a><a href="#section-4">4. 启动应用</a><a href="#section-5">5. 输入与辅助窗口</a><a href="#section-6">6. 停靠、画布与持久化</a><a href="#section-7">7. 字体与图标</a><a href="#section-8">8. 可选的渲染工作线程</a><a href="#section-9">9. 可选的 Python 辅助功能</a><a href="#section-10">10. 故障排查与验证</a><a href="#section-11">11. 许可与再分发</a><a href="#section-12">12. 源码导航</a></nav><p><a href="zh-CN.md">Markdown</a></p></aside><main id="main"><h1>plita — 使用与开发手册</h1>
 <p>DAISUKE OBA · 源码版 2026-10-11 · Cargo 包版本 0.0.1</p>
 <h2 id="section-1">1. 包含的内容</h2>
-<p>PLITA 是面向桌面创作应用的 Rust GUI 基础库。本仓库包含 5 个框架 crate 和 3 个可运行示例，提供原生窗口、输入路由、GPU 绘制、控件、停靠和画布模型。不包含各个模拟器专用的 GUI、ROM 或预编译可执行文件。</p>
+<p>plita 是面向桌面创作应用的 Rust GUI 基础库。本仓库包含 5 个框架 crate 和 3 个可运行示例，提供原生窗口、输入路由、GPU 绘制、控件、停靠和画布模型。不包含各个模拟器专用的 GUI、ROM 或预编译可执行文件。</p>
 <ul>
 <li><code>plita</code>：公开 API、<code>prelude</code> 重新导出及可选的 Python 辅助功能。</li>
 <li><code>plita_app</code>：<code>App</code> 构建器与启动配置。</li>
@@ -50,7 +50,7 @@ cargo run --locked -p canvas_demo
 
 fn main() -&gt; Result&lt;()&gt; {
     App::new()
-        .title(&quot;PLITA UI v1.0 - Creative Shell&quot;)
+        .title(&quot;plita UI v1.0 - Creative Shell&quot;)
         .window_size(1280, 800)
         .clear_color(ClearColor::rgb(0.105, 0.111, 0.125))
         .continuous_redraw(false)
@@ -60,14 +60,14 @@ fn main() -&gt; Result&lt;()&gt; {
 <p><code>App::new()</code> 创建 <code>AppBuilder</code>，<code>run()</code> 启动内置界面。要使用自己的应用状态，请向 <code>run_program</code> 传入工厂函数，它接收初始 <code>Size</code> 并返回一个 <code>PlitaProgram</code> 实现。实现 <code>resize</code>、<code>handle_event</code> 和 <code>draw_list</code>；需要周期更新时使用 <code>tick</code>。通过 <code>UiResponse</code> 返回所需的 UI 响应，而不是在 OS 事件回调中直接绘制。</p>
 <p><code>continuous_redraw(false)</code> 根据更新和重绘请求进行绘制。仅在应用需要时开启连续重绘。<code>draw_list</code> 描述绘制命令，GPU 提交由渲染器负责。</p>
 <h2 id="section-5">5. 输入与辅助窗口</h2>
-<p>UI 命中测试和布局使用 PLITA 的逻辑坐标；窗口层负责 DPI 换算。事件包括指针、键盘、IME 和文件拖放。收到文件路径后，打开、解析和保存文件仍由应用实现。</p>
+<p>UI 命中测试和布局使用 plita 的逻辑坐标；窗口层负责 DPI 换算。事件包括指针、键盘、IME 和文件拖放。收到文件路径后，打开、解析和保存文件仍由应用实现。</p>
 <p><code>PointerDoubleClick</code> 在第二次 <code>PointerUp</code> 之后发出。同一按钮完成两次点击，间隔不超过 500 ms，位置距离不超过 6 个逻辑像素，才会被识别。拖动操作不计入双击。每个原生窗口独立进行判断。</p>
 <p>自定义应用可通过 <code>AuxiliaryWindowDescriptor</code> 定义辅助窗口，并实现该窗口的大小调整、事件和绘制列表回调。内置界面的独立内存编辑器操作的是界面持有的演示缓冲区，不会自动连接模拟器或其他进程。</p>
 <h2 id="section-6">6. 停靠、画布与持久化</h2>
 <p><code>DockLayoutState</code> 和停靠几何类型描述面板布局。<code>DockLayoutProfile</code> 表示带版本的布局配置。内置界面支持配置文本，<code>AppBuilder::startup_layout_profile</code> 可在启动内置界面时恢复它。应用必须自行决定何时、在何处保存文本。内存中的布局槽位不能代替持久化文件保存。</p>
 <p><code>CanvasDocument</code> 与 <code>LayerNode</code> 提供文档和图层模型。选择、框选、吸附辅助功能与 <code>CommandHistory</code> 可用于实现编辑操作。<code>CommandRegistry</code> 和 <code>CommandDescriptor</code> 描述命令与快捷键信息。这些 API 不提供完整的应用文件格式或自动项目保存系统；请将模型连接到自己的命令与序列化代码。</p>
 <h2 id="section-7">7. 字体与图标</h2>
-<p><code>assets/fonts</code> 中附带 Roboto 和 Roboto Mono。PLITA 通过 <code>fontdue</code> 栅格化文字，并保留小型位图备用字体，也会查找已安装的系统字体。可用 <code>PLITA_UI_FONT</code>、<code>PLITA_UI_FONT_FALLBACK</code>、<code>PLITA_MEMORY_FONT</code> 指定字体文件，请在启动应用前设置。字体必须包含要显示的字符。附带的拉丁文字体不足以覆盖全部中日韩文字。</p>
+<p><code>assets/fonts</code> 中附带 Roboto 和 Roboto Mono。plita 通过 <code>fontdue</code> 栅格化文字，并保留小型位图备用字体，也会查找已安装的系统字体。可用 <code>PLITA_UI_FONT</code>、<code>PLITA_UI_FONT_FALLBACK</code>、<code>PLITA_MEMORY_FONT</code> 指定字体文件，请在启动应用前设置。字体必须包含要显示的字符。附带的拉丁文字体不足以覆盖全部中日韩文字。</p>
 <p><code>active_font_family</code>、<code>active_font_source</code>、<code>active_text_backend</code> 和 <code>active_memory_font_family</code> 可用于诊断字体选择。移动可执行文件时，请确保资源目录仍然可访问，或配置合适的字体路径。加载器出现系统字体路径，并不表示分发包包含该字体文件。</p>
 <p>仓库附带 52 个 Lucide SVG 图标。<code>lucide_icon_names()</code> 列出支持的名称，<code>draw_lucide_icon</code> 用于绘制。使用 <code>crates/plita_ui/assets/build_icons.py</code> 重新生成 Rust 路径数据时，请保留 SVG 和许可声明。</p>
 <h2 id="section-8">8. 可选的渲染工作线程</h2>
@@ -97,7 +97,7 @@ cargo run --locked -p hello_plita
 </code></pre>
 <p>本手册描述发布的源码，并不保证所有平台都完成了运行测试。也可以使用 <code>cargo doc --workspace --no-deps --locked</code> 生成 API 文档。</p>
 <h2 id="section-11">11. 许可与再分发</h2>
-<p>PLITA 代码和本手册采用 MIT 许可证，版权为 (c) 2026 DAISUKE OBA。再分发副本或重要部分时，请保留 MIT 版权声明与许可文本。第三方资源保留原有许可证：Roboto 与 Roboto Mono 采用 OFL-1.1；Lucide 采用 ISC，并包含继承自 Feather 的 MIT 声明。</p>
+<p>plita 代码和本手册采用 MIT 许可证，版权为 (c) 2026 DAISUKE OBA。再分发副本或重要部分时，请保留 MIT 版权声明与许可文本。第三方资源保留原有许可证：Roboto 与 Roboto Mono 采用 OFL-1.1；Lucide 采用 ISC，并包含继承自 Feather 的 MIT 声明。</p>
 <p>请阅读 <a href="../../LICENSE">LICENSE</a>、<a href="../../THIRD_PARTY_NOTICES.md">第三方声明</a>、<a href="../../licenses/DEPENDENCIES.md">依赖项声明</a>和<a href="../../licenses/ASSET_PROVENANCE.json">资源来源</a>。分发字体、图标和二进制文件时，请附带相关声明。在分发 macOS 二进制文件前，需解决记录中 <code>dispatch</code> 与 <code>malloc_buf</code> 缺少独立许可文本的问题。本仓库发布源码与声明；未来发布二进制文件时，还需检查实际链接的依赖项。</p>
 <h2 id="section-12">12. 源码导航</h2>
 <ul>

@@ -1,4 +1,4 @@
-# PLITA — 利用・開発マニュアル
+# plita — 利用・開発マニュアル
 
 [English](en.md) · [日本語](ja.md) · [한국어](ko.md) · [简体中文](zh-CN.md) · [繁體中文](zh-TW.md) · [Français](fr.md) · [Español](es.md) · [Deutsch](de.md)
 
@@ -6,7 +6,7 @@ DAISUKE OBA · ソース版 2026-10-11 · Cargoパッケージ版 0.0.1
 
 ## 1. 同梱内容
 
-PLITAは、デスクトップの制作アプリを作るためのRust製GUI基盤です。このリポジトリには5個の基盤クレートと3個の実行可能なサンプルを同梱しています。ネイティブウィンドウ、入力処理、GPU描画、ウィジェット、ドッキング、キャンバスのモデルを提供します。個別エミュレーターのGUI、ROM、ビルド済み実行ファイルは含みません。
+plitaは、デスクトップの制作アプリを作るためのRust製GUI基盤です。このリポジトリには5個の基盤クレートと3個の実行可能なサンプルを同梱しています。ネイティブウィンドウ、入力処理、GPU描画、ウィジェット、ドッキング、キャンバスのモデルを提供します。個別エミュレーターのGUI、ROM、ビルド済み実行ファイルは含みません。
 
 - `plita`：公開APIと`prelude`による再公開、任意のPython補助機能。
 - `plita_app`：`App`ビルダーと起動設定。
@@ -55,7 +55,7 @@ use plita::prelude::*;
 
 fn main() -> Result<()> {
     App::new()
-        .title("PLITA UI v1.0 - Creative Shell")
+        .title("plita UI v1.0 - Creative Shell")
         .window_size(1280, 800)
         .clear_color(ClearColor::rgb(0.105, 0.111, 0.125))
         .continuous_redraw(false)
@@ -69,7 +69,7 @@ fn main() -> Result<()> {
 
 ## 5. 入力と補助ウィンドウ
 
-UIの当たり判定とレイアウトにはPLITAの論理座標を使います。DPI変換はウィンドウ層が担当します。ポインター、キーボード、IME、ファイルドロップのイベントがあります。受け取ったファイルパスの読み込み、解析、保存はアプリ側で実装してください。
+UIの当たり判定とレイアウトにはplitaの論理座標を使います。DPI変換はウィンドウ層が担当します。ポインター、キーボード、IME、ファイルドロップのイベントがあります。受け取ったファイルパスの読み込み、解析、保存はアプリ側で実装してください。
 
 `PointerDoubleClick`は2回目の`PointerUp`の後に届きます。同じボタンで完了した2回のクリックが500 ms以内、位置の差が6論理ピクセル以内のときに認識します。ドラッグ操作は除外し、各ネイティブウィンドウで独立して判定します。
 
@@ -83,7 +83,7 @@ UIの当たり判定とレイアウトにはPLITAの論理座標を使います�
 
 ## 7. フォントとアイコン
 
-RobotoとRoboto Monoを`assets/fonts`に同梱しています。PLITAは`fontdue`で文字をラスタライズし、小型ビットマップの代替描画も保持しています。インストール済みのシステムフォントも検索します。`PLITA_UI_FONT`・`PLITA_UI_FONT_FALLBACK`・`PLITA_MEMORY_FONT`でフォントファイルを指定する場合は、アプリ起動前に設定してください。表示したい文字を含むフォントが必要です。同梱のラテン文字用フォントだけでは日本語・中国語・韓国語を網羅しません。
+RobotoとRoboto Monoを`assets/fonts`に同梱しています。plitaは`fontdue`で文字をラスタライズし、小型ビットマップの代替描画も保持しています。インストール済みのシステムフォントも検索します。`PLITA_UI_FONT`・`PLITA_UI_FONT_FALLBACK`・`PLITA_MEMORY_FONT`でフォントファイルを指定する場合は、アプリ起動前に設定してください。表示したい文字を含むフォントが必要です。同梱のラテン文字用フォントだけでは日本語・中国語・韓国語を網羅しません。
 
 `active_font_family`・`active_font_source`・`active_text_backend`・`active_memory_font_family`で使用中のフォントを調べられます。実行ファイルを移動する際はアセットの参照先を維持するか、適切なフォントパスを設定してください。ローダーにシステムフォントのパスが書かれていても、そのフォントファイルを同梱しているわけではありません。
 
@@ -131,7 +131,7 @@ cargo run --locked -p hello_plita
 
 ## 11. ライセンスと再配布
 
-PLITAのコードと本書はMITライセンスで、著作権者は2026 DAISUKE OBAです。コピーや主要部分の再配布ではMITの著作権表示と許諾文を保持してください。第三者のアセットには元のライセンスが適用されます。Roboto・Roboto MonoはOFL-1.1、LucideはISCで、由来となったFeatherのMIT表示も含みます。
+plitaのコードと本書はMITライセンスで、著作権者は2026 DAISUKE OBAです。コピーや主要部分の再配布ではMITの著作権表示と許諾文を保持してください。第三者のアセットには元のライセンスが適用されます。Roboto・Roboto MonoはOFL-1.1、LucideはISCで、由来となったFeatherのMIT表示も含みます。
 
 [LICENSE](../../LICENSE)、[第三者の権利表示](../../THIRD_PARTY_NOTICES.md)、[依存関係の表示](../../licenses/DEPENDENCIES.md)、[アセットの出典](../../licenses/ASSET_PROVENANCE.json)を確認してください。フォント、アイコン、バイナリを配布するときは対応する表示を同梱します。macOSバイナリの配布前には、`dispatch`と`malloc_buf`について記録した独立した許諾文の不足を解決してください。このリポジトリはソースと表示文書の公開であり、将来のバイナリ配布では実際にリンクする依存関係の確認が必要です。
 

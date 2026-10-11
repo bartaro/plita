@@ -1,8 +1,8 @@
 # Shared Lucide Icons
 
-PLITA vendors the third-party SVG sources in `lucide/`, their upstream LICENSE,
+plita vendors the third-party SVG sources in `lucide/`, their upstream LICENSE,
 and the generated `lucide_paths.rs`. Copyright in the icon artwork remains with
-Lucide and the respective Feather authors. PLITA provides the renderer in
+Lucide and the respective Feather authors. plita provides the renderer in
 `src/icons.rs`; applications use this shared renderer without extra icon files
 at runtime.
 
@@ -21,7 +21,7 @@ draw_lucide_icon(&mut list, Rect::new(12.0, 12.0, 24.0, 24.0),
 and returns false for an unknown name or invalid rectangle. The enclosing
 application owns the button hit area, command, disabled state, and tooltip.
 `lucide_icon_names()` enumerates the 52 bundled names. Curves are flattened once,
-cached, and emitted through the normal PLITA DrawList renderer with round joins.
+cached, and emitted through the normal plita DrawList renderer with round joins.
 The seven desktop additions (step-forward, camera, bug, volume-2, settings,
 maximize and ellipsis) were retrieved from the same upstream on 2026-09-09.
 Repeated icon meshes are cached per thread by name, rectangle and color, with

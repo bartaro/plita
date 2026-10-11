@@ -5,7 +5,7 @@ edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
 authors.workspace = true
-description = "PLITA UI canvas document and command demo."
+description = "plita UI canvas document and command demo."
 
 [dependencies]
 plita = { path = "../../crates/plita" }

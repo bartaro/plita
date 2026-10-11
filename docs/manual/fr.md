@@ -1,4 +1,4 @@
-# PLITA — Manuel utilisateur et développeur
+# plita — Manuel utilisateur et développeur
 
 [English](en.md) · [日本語](ja.md) · [한국어](ko.md) · [简体中文](zh-CN.md) · [繁體中文](zh-TW.md) · [Français](fr.md) · [Español](es.md) · [Deutsch](de.md)
 
@@ -6,7 +6,7 @@ DAISUKE OBA · Édition source du 2026-10-11 · Version du paquet Cargo : 0.0.1
 
 ## 1. Contenu de la distribution
 
-PLITA est une base d'interface graphique en Rust pour les applications de création sur ordinateur. Ce dépôt contient cinq crates du framework et trois exemples exécutables. Il fournit des fenêtres natives, le routage des entrées, le dessin GPU, des widgets, l'ancrage des panneaux et des modèles de canevas. Les interfaces propres à des émulateurs, les ROM et les exécutables précompilés ne font pas partie de cette distribution.
+plita est une base d'interface graphique en Rust pour les applications de création sur ordinateur. Ce dépôt contient cinq crates du framework et trois exemples exécutables. Il fournit des fenêtres natives, le routage des entrées, le dessin GPU, des widgets, l'ancrage des panneaux et des modèles de canevas. Les interfaces propres à des émulateurs, les ROM et les exécutables précompilés ne font pas partie de cette distribution.
 
 - `plita` : API publique, réexportations `prelude` et aides Python facultatives.
 - `plita_app` : constructeur `App` et configuration du lancement.
@@ -55,7 +55,7 @@ use plita::prelude::*;
 
 fn main() -> Result<()> {
     App::new()
-        .title("PLITA UI v1.0 - Creative Shell")
+        .title("plita UI v1.0 - Creative Shell")
         .window_size(1280, 800)
         .clear_color(ClearColor::rgb(0.105, 0.111, 0.125))
         .continuous_redraw(false)
@@ -69,7 +69,7 @@ Avec `continuous_redraw(false)`, le dessin suit les mises à jour et les demande
 
 ## 5. Entrées et fenêtres auxiliaires
 
-Utilisez les coordonnées logiques de PLITA pour les tests de pointage et la disposition ; la couche fenêtre convertit les valeurs DPI. Les événements couvrent le pointeur, le clavier, l'IME et le dépôt de fichiers. L'ouverture, l'analyse et l'enregistrement d'un chemin reçu restent à la charge de l'application.
+Utilisez les coordonnées logiques de plita pour les tests de pointage et la disposition ; la couche fenêtre convertit les valeurs DPI. Les événements couvrent le pointeur, le clavier, l'IME et le dépôt de fichiers. L'ouverture, l'analyse et l'enregistrement d'un chemin reçu restent à la charge de l'application.
 
 `PointerDoubleClick` suit le deuxième `PointerUp`. Il faut deux clics terminés avec le même bouton, espacés de 500 ms au maximum et situés à 6 pixels logiques au maximum l'un de l'autre. Les glissements sont exclus. Chaque fenêtre native possède son propre état de détection.
 
@@ -83,7 +83,7 @@ Une application peut définir des fenêtres auxiliaires avec `AuxiliaryWindowDes
 
 ## 7. Polices et icônes
 
-Roboto et Roboto Mono sont incluses dans `assets/fonts`. PLITA utilise `fontdue` pour la rastérisation du texte et conserve une petite police bitmap de secours. Il recherche également des polices système installées. `PLITA_UI_FONT`, `PLITA_UI_FONT_FALLBACK` et `PLITA_MEMORY_FONT` permettent de choisir des fichiers de police ; définissez ces variables avant le lancement. La police doit contenir les caractères à afficher. Les polices latines incluses ne couvrent pas intégralement le chinois, le japonais et le coréen.
+Roboto et Roboto Mono sont incluses dans `assets/fonts`. plita utilise `fontdue` pour la rastérisation du texte et conserve une petite police bitmap de secours. Il recherche également des polices système installées. `PLITA_UI_FONT`, `PLITA_UI_FONT_FALLBACK` et `PLITA_MEMORY_FONT` permettent de choisir des fichiers de police ; définissez ces variables avant le lancement. La police doit contenir les caractères à afficher. Les polices latines incluses ne couvrent pas intégralement le chinois, le japonais et le coréen.
 
 `active_font_family`, `active_font_source`, `active_text_backend` et `active_memory_font_family` aident à diagnostiquer le choix de police. Si vous déplacez un exécutable, maintenez l'accès aux ressources ou configurez un chemin de police approprié. La présence d'un chemin de police système dans le chargeur ne signifie pas que son fichier est distribué.
 
@@ -131,7 +131,7 @@ Ce manuel décrit le code publié sans certifier son exécution sur toutes les p
 
 ## 11. Licence et redistribution
 
-Le code PLITA et ces manuels sont sous licence MIT, copyright (c) 2026 DAISUKE OBA. Conservez l'avis de copyright et le texte d'autorisation MIT lors de la redistribution de copies ou de parties substantielles. Les ressources tierces gardent leurs propres licences : OFL-1.1 pour Roboto et Roboto Mono ; ISC pour Lucide, avec l'avis MIT hérité de Feather.
+Le code plita et ces manuels sont sous licence MIT, copyright (c) 2026 DAISUKE OBA. Conservez l'avis de copyright et le texte d'autorisation MIT lors de la redistribution de copies ou de parties substantielles. Les ressources tierces gardent leurs propres licences : OFL-1.1 pour Roboto et Roboto Mono ; ISC pour Lucide, avec l'avis MIT hérité de Feather.
 
 Consultez [LICENSE](../../LICENSE), les [mentions tierces](../../THIRD_PARTY_NOTICES.md), les [mentions des dépendances](../../licenses/DEPENDENCIES.md) et la [provenance des ressources](../../licenses/ASSET_PROVENANCE.json). Joignez les mentions pertinentes aux polices, icônes et binaires distribués. Avant de distribuer des binaires macOS, résolvez les lacunes de textes d'autorisation distincts signalées pour `dispatch` et `malloc_buf`. Ce dépôt publie du code source et des mentions ; une future distribution binaire devra examiner les dépendances effectivement liées.
 

@@ -1,16 +1,16 @@
-# PLITA UI v1.0
+# plita UI v1.0
 
-PLITA UI is a clean-room Rust GUI foundation for lightweight creative desktop applications.
+plita UI is a clean-room Rust GUI foundation for lightweight creative desktop applications.
 
 Author: **DAISUKE OBA**.
 
 Project code is available under the [MIT License](LICENSE), copyright (c) 2026
 DAISUKE OBA. Bundled Roboto and Roboto Mono fonts remain under OFL-1.1; Lucide
 icons remain under ISC, with the inherited Feather MIT notice. These assets are
-not relicensed by PLITA. See [third-party notices](THIRD_PARTY_NOTICES.md) for
+not relicensed by plita. See [third-party notices](THIRD_PARTY_NOTICES.md) for
 copyright holders, full license texts, source links and redistribution guidance.
 
-This public source workspace contains the five PLITA foundation crates and the
+This public source workspace contains the five plita foundation crates and the
 `hello_plita`, `docking_demo` and `canvas_demo` examples. Downstream applications,
 emulator integrations, ROMs, development screenshots and prebuilt executables
 are not part of this distribution.
@@ -46,7 +46,7 @@ python docs/manual/build.py --check
 
 ## Framework overview
 
-v1.0 turns the Phase 2 shell into a reusable framework surface. PLITA now exposes a custom `PlitaProgram` app trait, retained Dock Tree geometry allocation, fixed/floating/detached dock operations, versioned layout profiles with startup restore support, canvas document/layer models, multi-select/marquee/snap model APIs, command registry metadata, style tokens, file-drop events, and demo applications.
+v1.0 turns the Phase 2 shell into a reusable framework surface. plita now exposes a custom `PlitaProgram` app trait, retained Dock Tree geometry allocation, fixed/floating/detached dock operations, versioned layout profiles with startup restore support, canvas document/layer models, multi-select/marquee/snap model APIs, command registry metadata, style tokens, file-drop events, and demo applications.
 
 - MIT-licensed repository skeleton
 - Cargo workspace
@@ -62,7 +62,7 @@ v1.0 turns the Phase 2 shell into a reusable framework surface. PLITA now expose
 - keyboard/mouse/IME/file-drop logging hooks
 - shared `PointerDoubleClick` routing for main and auxiliary windows
 - unit tests for geometry, layout, draw lists, vertex generation, event routing, canvas hit testing, object creation, object dragging, and undo/redo
-- `PlitaProgram` for custom apps on the PLITA window/render loop
+- `PlitaProgram` for custom apps on the plita window/render loop
 - Dock Tree geometry allocation and profile text persistence
 - Dock tab close, detach, attach, restore, and in-memory slot operations
 - Canvas document snapshot, layer tree, multi-select, marquee selection, and snap helpers
@@ -92,13 +92,13 @@ cargo run -p hello_plita
 
 ## Python Bindings
 
-PLITA has an optional `python` feature for PyO3-based application bindings. It
+plita has an optional `python` feature for PyO3-based application bindings. It
 re-exports PyO3 through `plita::python::prelude::*`, exposes common wrapper
 classes such as `Point`, `Size`, `Rect`, `Color`, and `AppConfig`, and provides
 small helpers for registering those classes, returning Python `bytes`, and
-mapping PLITA app errors into Python exceptions.
+mapping plita app errors into Python exceptions.
 
-To build PLITA's helper module directly:
+To build plita's helper module directly:
 
 ```powershell
 cd crates\plita
@@ -117,7 +117,7 @@ pyo3 = { workspace = true, optional = true }
 
 App crates that define `#[pyclass]` or `#[pymodule]` still keep an optional
 `pyo3` dependency because PyO3's procedural macros expand through the `::pyo3`
-crate path, but common binding glue should come from PLITA:
+crate path, but common binding glue should come from plita:
 
 ```rust
 #[cfg(feature = "python")]
@@ -144,7 +144,7 @@ for lifecycle, frame-coalescing and shared-image rules.
 
 Custom `PlitaProgram` implementations receive
 `UiEvent::PointerDoubleClick { position, button }` after the second
-`PointerUp`. PLITA recognizes two completed clicks when they use the same
+`PointerUp`. plita recognizes two completed clicks when they use the same
 pointer button, finish within 500 ms, and stay within 6 logical pixels.
 Press-drag-release gestures are excluded, and detection is independent for the
 main window and each auxiliary window.
@@ -160,7 +160,7 @@ A native window opens with a dark creative-app shell:
 - lower timeline
 - bottom status bar
 
-The bootstrap text uses the bundled Roboto UI font through PLITA's lightweight `fontdue` rasterizer, with an original tiny rectangle-based bitmap font kept as a deterministic fallback until the final text/IME subsystem is implemented.
+The bootstrap text uses the bundled Roboto UI font through plita's lightweight `fontdue` rasterizer, with an original tiny rectangle-based bitmap font kept as a deterministic fallback until the final text/IME subsystem is implemented.
 
 The debugger memory editor opens as a detached native auxiliary window when the
 default shell requests it. It edits the same retained memory buffer owned by the
@@ -169,11 +169,11 @@ its memory/address text with the bundled Google Fonts Roboto Mono font.
 
 ## v1.0 Scope
 
-PLITA v1.0 provides the framework foundation needed by production-tool style desktop apps: retained widget/event routing, command metadata, dock layout persistence, canvas document editing, text/IME routing, style tokens, and app-owned custom draw/event programs. Native OS file dialogs and advanced GPU text shaping can be layered on top without changing the public app trait.
+plita v1.0 provides the framework foundation needed by production-tool style desktop apps: retained widget/event routing, command metadata, dock layout persistence, canvas document editing, text/IME routing, style tokens, and app-owned custom draw/event programs. Native OS file dialogs and advanced GPU text shaping can be layered on top without changing the public app trait.
 
 ## Clean-room note
 
-The project documents a clean-room implementation approach based on the PLITA
+The project documents a clean-room implementation approach based on the plita
 UI specification and public dependency APIs. This design note is not an
 independent proof of every source file's origin. See [CLEAN_ROOM.md](CLEAN_ROOM.md)
 and [third-party notices](THIRD_PARTY_NOTICES.md) for the stated scope and the
@@ -253,7 +253,7 @@ This source drop adds the first configurable grid-input prototype for dot/pixel/
 
 ## Phase 1 v8 typography note
 
-PLITA UI now bundles Roboto as its default UI font. Apps can still override it with `PLITA_UI_FONT` or a font placed in `assets/fonts/`. The PLITA source remains MIT-licensed; the bundled Roboto font remains under the SIL Open Font License 1.1.
+plita UI now bundles Roboto as its default UI font. Apps can still override it with `PLITA_UI_FONT` or a font placed in `assets/fonts/`. The plita source remains MIT-licensed; the bundled Roboto font remains under the SIL Open Font License 1.1.
 
 ## Phase 2 v2.1 note
 
@@ -283,7 +283,7 @@ This package keeps the bottom diagnostics visibility fix from v19 and adds a com
 
 ## Shared Icons
 
-PLITA now includes 52 vendored Lucide icons through
+plita now includes 52 vendored Lucide icons through
 `plita::prelude::{draw_lucide_icon, lucide_icon_names}`. Icons are embedded in
 applications, centered and aspect-preserving. SVG sources, regeneration scripts,
 and upstream license are in `crates/plita_ui/assets`; see its README for usage.

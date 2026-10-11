@@ -1,4 +1,4 @@
-# PLITA — User and developer manual
+# plita — User and developer manual
 
 [English](en.md) · [日本語](ja.md) · [한국어](ko.md) · [简体中文](zh-CN.md) · [繁體中文](zh-TW.md) · [Français](fr.md) · [Español](es.md) · [Deutsch](de.md)
 
@@ -6,7 +6,7 @@ DAISUKE OBA · Source edition 2026-10-11 · Cargo package version 0.0.1
 
 ## 1. What is included
 
-PLITA is a Rust GUI foundation for creative desktop applications. This repository contains five framework crates and three executable examples. It provides native windows, input routing, GPU drawing, widgets, docking and canvas models. Application-specific emulator GUIs, ROMs and prebuilt executables are outside this distribution.
+plita is a Rust GUI foundation for creative desktop applications. This repository contains five framework crates and three executable examples. It provides native windows, input routing, GPU drawing, widgets, docking and canvas models. Application-specific emulator GUIs, ROMs and prebuilt executables are outside this distribution.
 
 - `plita`: public API and `prelude` re-exports; optional Python helpers.
 - `plita_app`: `App` builder and launch configuration.
@@ -55,7 +55,7 @@ use plita::prelude::*;
 
 fn main() -> Result<()> {
     App::new()
-        .title("PLITA UI v1.0 - Creative Shell")
+        .title("plita UI v1.0 - Creative Shell")
         .window_size(1280, 800)
         .clear_color(ClearColor::rgb(0.105, 0.111, 0.125))
         .continuous_redraw(false)
@@ -69,7 +69,7 @@ With `continuous_redraw(false)`, drawing is driven by updates and redraw request
 
 ## 5. Input and auxiliary windows
 
-Use PLITA's logical coordinates for UI hit testing and layout; the window layer handles DPI conversion. Events cover pointer, keyboard, IME and file drops. A received file path is input to your application: opening, parsing and saving that file remain application responsibilities.
+Use plita's logical coordinates for UI hit testing and layout; the window layer handles DPI conversion. Events cover pointer, keyboard, IME and file drops. A received file path is input to your application: opening, parsing and saving that file remain application responsibilities.
 
 `PointerDoubleClick` follows the second `PointerUp`. Recognition requires the same button, two completed clicks within 500 ms and positions within 6 logical pixels. Drag gestures are excluded. Each native window has independent detection state.
 
@@ -83,7 +83,7 @@ Custom applications can describe auxiliary windows through `AuxiliaryWindowDescr
 
 ## 7. Fonts and icons
 
-Roboto and Roboto Mono are bundled under `assets/fonts`. PLITA uses `fontdue` for text rasterization and retains a small bitmap fallback. Font discovery also checks installed system fonts. `PLITA_UI_FONT`, `PLITA_UI_FONT_FALLBACK` and `PLITA_MEMORY_FONT` can select font files; set them before starting the application. A font must contain the characters you want to display. The bundled Latin fonts alone are not a complete CJK font collection.
+Roboto and Roboto Mono are bundled under `assets/fonts`. plita uses `fontdue` for text rasterization and retains a small bitmap fallback. Font discovery also checks installed system fonts. `PLITA_UI_FONT`, `PLITA_UI_FONT_FALLBACK` and `PLITA_MEMORY_FONT` can select font files; set them before starting the application. A font must contain the characters you want to display. The bundled Latin fonts alone are not a complete CJK font collection.
 
 `active_font_family`, `active_font_source`, `active_text_backend` and `active_memory_font_family` help diagnose font selection. Keep the asset directory available when moving an executable, or configure an appropriate font path. System fonts are not bundled merely because their paths appear in the loader.
 
@@ -131,7 +131,7 @@ The manuals describe the published source. They do not certify runtime testing o
 
 ## 11. License and redistribution
 
-PLITA code and these manuals use the MIT License, copyright (c) 2026 DAISUKE OBA. Preserve the MIT copyright and permission notice when redistributing copies or substantial portions. Third-party assets retain their own licenses: Roboto and Roboto Mono use OFL-1.1; Lucide uses ISC and includes the inherited Feather MIT notice.
+plita code and these manuals use the MIT License, copyright (c) 2026 DAISUKE OBA. Preserve the MIT copyright and permission notice when redistributing copies or substantial portions. Third-party assets retain their own licenses: Roboto and Roboto Mono use OFL-1.1; Lucide uses ISC and includes the inherited Feather MIT notice.
 
 Read [LICENSE](../../LICENSE), [THIRD_PARTY_NOTICES](../../THIRD_PARTY_NOTICES.md), [dependency notices](../../licenses/DEPENDENCIES.md) and [asset provenance](../../licenses/ASSET_PROVENANCE.json). Include the relevant notices with distributed fonts, icons and binaries. Before distributing macOS binaries, resolve the standalone notice gaps recorded for `dispatch` and `malloc_buf`. This repository publishes source and notices; a future binary release needs a review of its actual linked dependencies.
 

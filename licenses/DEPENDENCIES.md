@@ -3,7 +3,7 @@
 Generated from the source workspace Cargo.lock and `cargo metadata --all-features`.
 This inventory includes all resolved target platforms, optional Python support,
 and build dependencies; a particular executable may use only a subset.
-License expressions below are upstream declarations, not relicensing by PLITA.
+License expressions below are upstream declarations, not relicensing by plita.
 Retain the corresponding license and NOTICE files for binary redistribution.
 
 | Dependency | Version | Declared license | Texts |

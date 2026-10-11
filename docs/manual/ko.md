@@ -1,4 +1,4 @@
-# PLITA — 사용자 및 개발자 설명서
+# plita — 사용자 및 개발자 설명서
 
 [English](en.md) · [日本語](ja.md) · [한국어](ko.md) · [简体中文](zh-CN.md) · [繁體中文](zh-TW.md) · [Français](fr.md) · [Español](es.md) · [Deutsch](de.md)
 
@@ -6,7 +6,7 @@ DAISUKE OBA · 소스 배포판 2026-10-11 · Cargo 패키지 버전 0.0.1
 
 ## 1. 포함된 구성 요소
 
-PLITA는 데스크톱 제작 도구를 위한 Rust GUI 기반 라이브러리입니다. 이 저장소에는 프레임워크 크레이트 5개와 실행 가능한 예제 3개가 들어 있습니다. 네이티브 창, 입력 처리, GPU 렌더링, 위젯, 도킹 및 캔버스 모델을 제공합니다. 개별 에뮬레이터의 GUI, ROM, 빌드된 실행 파일은 포함하지 않습니다.
+plita는 데스크톱 제작 도구를 위한 Rust GUI 기반 라이브러리입니다. 이 저장소에는 프레임워크 크레이트 5개와 실행 가능한 예제 3개가 들어 있습니다. 네이티브 창, 입력 처리, GPU 렌더링, 위젯, 도킹 및 캔버스 모델을 제공합니다. 개별 에뮬레이터의 GUI, ROM, 빌드된 실행 파일은 포함하지 않습니다.
 
 - `plita`: 공개 API와 `prelude` 재노출, 선택적 Python 도우미.
 - `plita_app`: `App` 빌더와 시작 설정.
@@ -55,7 +55,7 @@ use plita::prelude::*;
 
 fn main() -> Result<()> {
     App::new()
-        .title("PLITA UI v1.0 - Creative Shell")
+        .title("plita UI v1.0 - Creative Shell")
         .window_size(1280, 800)
         .clear_color(ClearColor::rgb(0.105, 0.111, 0.125))
         .continuous_redraw(false)
@@ -69,7 +69,7 @@ fn main() -> Result<()> {
 
 ## 5. 입력과 보조 창
 
-UI 적중 검사와 배치에는 PLITA의 논리 좌표를 사용하세요. DPI 변환은 창 계층이 처리합니다. 포인터, 키보드, IME 및 파일 드롭 이벤트를 제공합니다. 전달받은 파일 경로를 열고 분석하고 저장하는 작업은 앱에서 구현해야 합니다.
+UI 적중 검사와 배치에는 plita의 논리 좌표를 사용하세요. DPI 변환은 창 계층이 처리합니다. 포인터, 키보드, IME 및 파일 드롭 이벤트를 제공합니다. 전달받은 파일 경로를 열고 분석하고 저장하는 작업은 앱에서 구현해야 합니다.
 
 `PointerDoubleClick`은 두 번째 `PointerUp` 뒤에 전달됩니다. 같은 버튼으로 완료한 두 클릭의 간격이 500 ms 이내이고 위치 차이가 6 논리 픽셀 이내여야 합니다. 드래그는 제외하며 각 네이티브 창은 독립적으로 판정합니다.
 
@@ -131,7 +131,7 @@ cargo run --locked -p hello_plita
 
 ## 11. 라이선스와 재배포
 
-PLITA 코드와 이 설명서는 MIT 라이선스이며 저작권 표시는 (c) 2026 DAISUKE OBA입니다. 복제본이나 주요 부분을 재배포할 때 MIT 저작권 및 허가 고지를 유지하세요. 타사 자산은 자체 라이선스를 유지합니다. Roboto와 Roboto Mono는 OFL-1.1, Lucide는 ISC이며 원래 Feather의 MIT 고지도 포함합니다.
+plita 코드와 이 설명서는 MIT 라이선스이며 저작권 표시는 (c) 2026 DAISUKE OBA입니다. 복제본이나 주요 부분을 재배포할 때 MIT 저작권 및 허가 고지를 유지하세요. 타사 자산은 자체 라이선스를 유지합니다. Roboto와 Roboto Mono는 OFL-1.1, Lucide는 ISC이며 원래 Feather의 MIT 고지도 포함합니다.
 
 [LICENSE](../../LICENSE), [타사 고지](../../THIRD_PARTY_NOTICES.md), [의존성 고지](../../licenses/DEPENDENCIES.md), [자산 출처](../../licenses/ASSET_PROVENANCE.json)를 확인하세요. 글꼴, 아이콘, 바이너리를 배포할 때 관련 고지를 포함하세요. macOS 바이너리를 배포하기 전에 `dispatch`와 `malloc_buf`에 기록된 독립된 허가문 누락을 해결해야 합니다. 이 저장소는 소스와 고지를 공개하며 향후 바이너리 배포에는 실제로 링크되는 의존성 검토가 필요합니다.
 

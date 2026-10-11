@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>PLITA — 使用與開發手冊</title>
+<title>plita — 使用與開發手冊</title>
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
 <a class="skip" href="#main">跳至正文</a>
-<header><a class="brand" href="index.html">PLITA</a><span>2026-10-11 · 0.0.1</span></header>
+<header><a class="brand" href="index.html">plita</a><span>2026-10-11 · 0.0.1</span></header>
 <nav class="languages" aria-label="Language"><a href="en.html" lang="en" hreflang="en">English</a> <a href="ja.html" lang="ja" hreflang="ja">日本語</a> <a href="ko.html" lang="ko" hreflang="ko">한국어</a> <a href="zh-CN.html" lang="zh-CN" hreflang="zh-CN">简体中文</a> <a href="zh-TW.html" lang="zh-TW" hreflang="zh-TW" aria-current="page">繁體中文</a> <a href="fr.html" lang="fr" hreflang="fr">Français</a> <a href="es.html" lang="es" hreflang="es">Español</a> <a href="de.html" lang="de" hreflang="de">Deutsch</a></nav>
-<div class="layout"><aside><nav aria-label="目錄"><h2>目錄</h2><a href="#section-1">1. 隨附內容</a><a href="#section-2">2. 環境需求與建置</a><a href="#section-3">3. 執行範例</a><a href="#section-4">4. 啟動應用程式</a><a href="#section-5">5. 輸入與輔助視窗</a><a href="#section-6">6. 停駐配置、畫布與永久儲存</a><a href="#section-7">7. 字型與圖示</a><a href="#section-8">8. 選用的算繪工作執行緒</a><a href="#section-9">9. 選用的 Python 輔助功能</a><a href="#section-10">10. 疑難排解與驗證</a><a href="#section-11">11. 授權與再散布</a><a href="#section-12">12. 原始碼導覽</a></nav><p><a href="zh-TW.md">Markdown</a></p></aside><main id="main"><h1>PLITA — 使用與開發手冊</h1>
+<div class="layout"><aside><nav aria-label="目錄"><h2>目錄</h2><a href="#section-1">1. 隨附內容</a><a href="#section-2">2. 環境需求與建置</a><a href="#section-3">3. 執行範例</a><a href="#section-4">4. 啟動應用程式</a><a href="#section-5">5. 輸入與輔助視窗</a><a href="#section-6">6. 停駐配置、畫布與永久儲存</a><a href="#section-7">7. 字型與圖示</a><a href="#section-8">8. 選用的算繪工作執行緒</a><a href="#section-9">9. 選用的 Python 輔助功能</a><a href="#section-10">10. 疑難排解與驗證</a><a href="#section-11">11. 授權與再散布</a><a href="#section-12">12. 原始碼導覽</a></nav><p><a href="zh-TW.md">Markdown</a></p></aside><main id="main"><h1>plita — 使用與開發手冊</h1>
 <p>DAISUKE OBA · 原始碼版 2026-10-11 · Cargo 套件版本 0.0.1</p>
 <h2 id="section-1">1. 隨附內容</h2>
-<p>PLITA 是供桌面創作應用程式使用的 Rust GUI 基礎函式庫。本儲存庫包含 5 個框架 crate 與 3 個可執行範例，提供原生視窗、輸入路由、GPU 繪製、元件、停駐配置與畫布模型。不包含個別模擬器專用的 GUI、ROM 或預先編譯的執行檔。</p>
+<p>plita 是供桌面創作應用程式使用的 Rust GUI 基礎函式庫。本儲存庫包含 5 個框架 crate 與 3 個可執行範例，提供原生視窗、輸入路由、GPU 繪製、元件、停駐配置與畫布模型。不包含個別模擬器專用的 GUI、ROM 或預先編譯的執行檔。</p>
 <ul>
 <li><code>plita</code>：公開 API、<code>prelude</code> 重新匯出及選用的 Python 輔助功能。</li>
 <li><code>plita_app</code>：<code>App</code> 建構器與啟動設定。</li>
@@ -50,7 +50,7 @@ cargo run --locked -p canvas_demo
 
 fn main() -&gt; Result&lt;()&gt; {
     App::new()
-        .title(&quot;PLITA UI v1.0 - Creative Shell&quot;)
+        .title(&quot;plita UI v1.0 - Creative Shell&quot;)
         .window_size(1280, 800)
         .clear_color(ClearColor::rgb(0.105, 0.111, 0.125))
         .continuous_redraw(false)
@@ -60,14 +60,14 @@ fn main() -&gt; Result&lt;()&gt; {
 <p><code>App::new()</code> 建立 <code>AppBuilder</code>，<code>run()</code> 啟動內建介面。若要使用自訂應用程式狀態，請將接收初始 <code>Size</code> 並傳回 <code>PlitaProgram</code> 實作的工廠函式傳入 <code>run_program</code>。實作 <code>resize</code>、<code>handle_event</code> 與 <code>draw_list</code>；需要週期更新時使用 <code>tick</code>。透過 <code>UiResponse</code> 傳回所需的 UI 回應，而非在 OS 事件回呼中直接繪製。</p>
 <p><code>continuous_redraw(false)</code> 依更新與重繪要求繪製畫面。只有應用程式需要時才啟用連續重繪。<code>draw_list</code> 描述繪製指令，GPU 提交由算繪器負責。</p>
 <h2 id="section-5">5. 輸入與輔助視窗</h2>
-<p>UI 命中測試與版面配置使用 PLITA 的邏輯座標；視窗層負責 DPI 換算。事件涵蓋指標、鍵盤、IME 與檔案拖放。收到檔案路徑後，開啟、解析及儲存仍由應用程式實作。</p>
+<p>UI 命中測試與版面配置使用 plita 的邏輯座標；視窗層負責 DPI 換算。事件涵蓋指標、鍵盤、IME 與檔案拖放。收到檔案路徑後，開啟、解析及儲存仍由應用程式實作。</p>
 <p><code>PointerDoubleClick</code> 在第二次 <code>PointerUp</code> 之後發出。同一按鈕完成兩次點擊，間隔不超過 500 ms，位置距離不超過 6 個邏輯像素，才會被辨識。拖曳操作不計入雙擊。每個原生視窗會獨立判定。</p>
 <p>自訂應用程式可用 <code>AuxiliaryWindowDescriptor</code> 定義輔助視窗，並實作該視窗的大小調整、事件及繪製清單回呼。內建介面的獨立記憶體編輯器操作的是介面持有的示範緩衝區，不會自動連線至模擬器或其他程序。</p>
 <h2 id="section-6">6. 停駐配置、畫布與永久儲存</h2>
 <p><code>DockLayoutState</code> 與停駐幾何型別描述面板配置。<code>DockLayoutProfile</code> 表示附有版本的配置設定。內建介面支援設定文字，<code>AppBuilder::startup_layout_profile</code> 可在啟動內建介面時還原設定。應用程式必須自行決定何時、在何處儲存文字。記憶體中的配置儲存槽不能取代永久檔案儲存。</p>
 <p><code>CanvasDocument</code> 與 <code>LayerNode</code> 提供文件及圖層模型。選取、框選、貼齊輔助功能與 <code>CommandHistory</code> 可用於建立編輯操作。<code>CommandRegistry</code> 與 <code>CommandDescriptor</code> 描述指令及快速鍵資訊。這些 API 不提供完整的應用程式檔案格式或自動專案儲存系統；請將模型連接至自訂指令及序列化程式碼。</p>
 <h2 id="section-7">7. 字型與圖示</h2>
-<p><code>assets/fonts</code> 隨附 Roboto 與 Roboto Mono。PLITA 透過 <code>fontdue</code> 點陣化文字，並保留小型點陣備援字型，也會尋找已安裝的系統字型。可用 <code>PLITA_UI_FONT</code>、<code>PLITA_UI_FONT_FALLBACK</code>、<code>PLITA_MEMORY_FONT</code> 指定字型檔，請在啟動應用程式前設定。字型必須包含要顯示的字元。隨附的拉丁字型不足以涵蓋所有中日韓文字。</p>
+<p><code>assets/fonts</code> 隨附 Roboto 與 Roboto Mono。plita 透過 <code>fontdue</code> 點陣化文字，並保留小型點陣備援字型，也會尋找已安裝的系統字型。可用 <code>PLITA_UI_FONT</code>、<code>PLITA_UI_FONT_FALLBACK</code>、<code>PLITA_MEMORY_FONT</code> 指定字型檔，請在啟動應用程式前設定。字型必須包含要顯示的字元。隨附的拉丁字型不足以涵蓋所有中日韓文字。</p>
 <p><code>active_font_family</code>、<code>active_font_source</code>、<code>active_text_backend</code> 與 <code>active_memory_font_family</code> 可用來診斷字型選擇。移動執行檔時，請維持資源目錄可存取，或設定適當的字型路徑。載入器列出系統字型路徑，不代表散布內容包含該字型檔。</p>
 <p>儲存庫隨附 52 個 Lucide SVG 圖示。<code>lucide_icon_names()</code> 列出支援的名稱，<code>draw_lucide_icon</code> 用於繪製。以 <code>crates/plita_ui/assets/build_icons.py</code> 重新產生 Rust 路徑資料時，請保留 SVG 與授權聲明。</p>
 <h2 id="section-8">8. 選用的算繪工作執行緒</h2>
@@ -97,7 +97,7 @@ cargo run --locked -p hello_plita
 </code></pre>
 <p>本手冊說明公開的原始碼，不保證所有平台都已完成執行測試。也可用 <code>cargo doc --workspace --no-deps --locked</code> 產生 API 文件。</p>
 <h2 id="section-11">11. 授權與再散布</h2>
-<p>PLITA 程式碼與本手冊採用 MIT 授權，著作權為 (c) 2026 DAISUKE OBA。再散布副本或重要部分時，請保留 MIT 著作權聲明與授權文字。第三方資源保留原有授權：Roboto 與 Roboto Mono 採用 OFL-1.1；Lucide 採用 ISC，並包含源自 Feather 的 MIT 聲明。</p>
+<p>plita 程式碼與本手冊採用 MIT 授權，著作權為 (c) 2026 DAISUKE OBA。再散布副本或重要部分時，請保留 MIT 著作權聲明與授權文字。第三方資源保留原有授權：Roboto 與 Roboto Mono 採用 OFL-1.1；Lucide 採用 ISC，並包含源自 Feather 的 MIT 聲明。</p>
 <p>請閱讀 <a href="../../LICENSE">LICENSE</a>、<a href="../../THIRD_PARTY_NOTICES.md">第三方聲明</a>、<a href="../../licenses/DEPENDENCIES.md">相依套件聲明</a>及<a href="../../licenses/ASSET_PROVENANCE.json">資源來源</a>。散布字型、圖示及二進位檔時，請附上相關聲明。散布 macOS 二進位檔前，須先處理紀錄中 <code>dispatch</code> 與 <code>malloc_buf</code> 缺少獨立授權文字的問題。本儲存庫公開原始碼與聲明；未來散布二進位檔時，仍需檢查實際連結的相依套件。</p>
 <h2 id="section-12">12. 原始碼導覽</h2>
 <ul>

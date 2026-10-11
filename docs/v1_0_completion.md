@@ -1,4 +1,4 @@
-# PLITA UI v1.0 Completion Notes
+# plita UI v1.0 Completion Notes
 
 This note records the v1.0 completion surface implemented from the 2026-05-20 handoff.
 
@@ -18,4 +18,4 @@ This note records the v1.0 completion surface implemented from the 2026-05-20 ha
 - shortcut regression tests: Ctrl+Shift+0, Ctrl+Shift+number, physical-key fallback, copy/paste
 - clean-room docs: `README.md`, `CLEAN_ROOM.md`, `THIRD_PARTY_NOTICES.md`
 
-KOKURA-GUI is intentionally separate from PLITA itself and should be implemented as a PLITA application using `PlitaProgram`.
+KOKURA-GUI is intentionally separate from plita itself and should be implemented as a plita application using `PlitaProgram`.

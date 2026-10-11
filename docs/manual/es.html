@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>PLITA — Manual de uso y desarrollo</title>
+<title>plita — Manual de uso y desarrollo</title>
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
 <a class="skip" href="#main">Ir al contenido</a>
-<header><a class="brand" href="index.html">PLITA</a><span>2026-10-11 · 0.0.1</span></header>
+<header><a class="brand" href="index.html">plita</a><span>2026-10-11 · 0.0.1</span></header>
 <nav class="languages" aria-label="Language"><a href="en.html" lang="en" hreflang="en">English</a> <a href="ja.html" lang="ja" hreflang="ja">日本語</a> <a href="ko.html" lang="ko" hreflang="ko">한국어</a> <a href="zh-CN.html" lang="zh-CN" hreflang="zh-CN">简体中文</a> <a href="zh-TW.html" lang="zh-TW" hreflang="zh-TW">繁體中文</a> <a href="fr.html" lang="fr" hreflang="fr">Français</a> <a href="es.html" lang="es" hreflang="es" aria-current="page">Español</a> <a href="de.html" lang="de" hreflang="de">Deutsch</a></nav>
-<div class="layout"><aside><nav aria-label="Contenido"><h2>Contenido</h2><a href="#section-1">1. Contenido de la distribución</a><a href="#section-2">2. Requisitos y compilación</a><a href="#section-3">3. Ejecutar los ejemplos</a><a href="#section-4">4. Iniciar una aplicación</a><a href="#section-5">5. Entrada y ventanas auxiliares</a><a href="#section-6">6. Acoplamiento, lienzo y persistencia</a><a href="#section-7">7. Fuentes e iconos</a><a href="#section-8">8. Hilo opcional de renderizado</a><a href="#section-9">9. Utilidades opcionales de Python</a><a href="#section-10">10. Diagnóstico y verificación</a><a href="#section-11">11. Licencia y redistribución</a><a href="#section-12">12. Guía de archivos fuente</a></nav><p><a href="es.md">Markdown</a></p></aside><main id="main"><h1>PLITA — Manual de uso y desarrollo</h1>
+<div class="layout"><aside><nav aria-label="Contenido"><h2>Contenido</h2><a href="#section-1">1. Contenido de la distribución</a><a href="#section-2">2. Requisitos y compilación</a><a href="#section-3">3. Ejecutar los ejemplos</a><a href="#section-4">4. Iniciar una aplicación</a><a href="#section-5">5. Entrada y ventanas auxiliares</a><a href="#section-6">6. Acoplamiento, lienzo y persistencia</a><a href="#section-7">7. Fuentes e iconos</a><a href="#section-8">8. Hilo opcional de renderizado</a><a href="#section-9">9. Utilidades opcionales de Python</a><a href="#section-10">10. Diagnóstico y verificación</a><a href="#section-11">11. Licencia y redistribución</a><a href="#section-12">12. Guía de archivos fuente</a></nav><p><a href="es.md">Markdown</a></p></aside><main id="main"><h1>plita — Manual de uso y desarrollo</h1>
 <p>DAISUKE OBA · Edición del código fuente: 2026-10-11 · Versión del paquete Cargo: 0.0.1</p>
 <h2 id="section-1">1. Contenido de la distribución</h2>
-<p>PLITA es una base de interfaz gráfica en Rust para aplicaciones creativas de escritorio. Este repositorio contiene cinco crates del framework y tres ejemplos ejecutables. Ofrece ventanas nativas, gestión de entradas, dibujo mediante GPU, widgets, acoplamiento de paneles y modelos de lienzo. No incluye interfaces específicas de emuladores, ROM ni ejecutables precompilados.</p>
+<p>plita es una base de interfaz gráfica en Rust para aplicaciones creativas de escritorio. Este repositorio contiene cinco crates del framework y tres ejemplos ejecutables. Ofrece ventanas nativas, gestión de entradas, dibujo mediante GPU, widgets, acoplamiento de paneles y modelos de lienzo. No incluye interfaces específicas de emuladores, ROM ni ejecutables precompilados.</p>
 <ul>
 <li><code>plita</code>: API pública, reexportaciones mediante <code>prelude</code> y utilidades opcionales de Python.</li>
 <li><code>plita_app</code>: constructor <code>App</code> y configuración de inicio.</li>
@@ -50,7 +50,7 @@ cargo run --locked -p canvas_demo
 
 fn main() -&gt; Result&lt;()&gt; {
     App::new()
-        .title(&quot;PLITA UI v1.0 - Creative Shell&quot;)
+        .title(&quot;plita UI v1.0 - Creative Shell&quot;)
         .window_size(1280, 800)
         .clear_color(ClearColor::rgb(0.105, 0.111, 0.125))
         .continuous_redraw(false)
@@ -60,14 +60,14 @@ fn main() -&gt; Result&lt;()&gt; {
 <p><code>App::new()</code> crea un <code>AppBuilder</code>. <code>run()</code> inicia la interfaz incorporada. Para usar su propio estado de aplicación, pase a <code>run_program</code> una función de fábrica que reciba el <code>Size</code> inicial y devuelva una implementación de <code>PlitaProgram</code>. Implemente <code>resize</code>, <code>handle_event</code> y <code>draw_list</code>; utilice <code>tick</code> cuando necesite actualizaciones periódicas. Devuelva la respuesta de interfaz necesaria mediante <code>UiResponse</code>, en vez de dibujar directamente dentro de una devolución de llamada del sistema operativo.</p>
 <p>Con <code>continuous_redraw(false)</code>, el dibujo responde a actualizaciones y solicitudes de redibujado. Active el redibujado continuo solo cuando sea necesario. <code>draw_list</code> describe las órdenes de dibujo; el renderizador se encarga de enviarlas a la GPU.</p>
 <h2 id="section-5">5. Entrada y ventanas auxiliares</h2>
-<p>Use las coordenadas lógicas de PLITA para las pruebas de posición y la disposición de la interfaz; la capa de ventanas realiza la conversión de DPI. Los eventos abarcan puntero, teclado, IME y archivos arrastrados. La aplicación debe implementar la apertura, el análisis y el guardado del archivo cuya ruta recibe.</p>
+<p>Use las coordenadas lógicas de plita para las pruebas de posición y la disposición de la interfaz; la capa de ventanas realiza la conversión de DPI. Los eventos abarcan puntero, teclado, IME y archivos arrastrados. La aplicación debe implementar la apertura, el análisis y el guardado del archivo cuya ruta recibe.</p>
 <p><code>PointerDoubleClick</code> llega después del segundo <code>PointerUp</code>. Se requieren dos clics completados con el mismo botón, separados por un máximo de 500 ms y a una distancia máxima de 6 píxeles lógicos. Los gestos de arrastre se excluyen. Cada ventana nativa mantiene su propia detección.</p>
 <p>Una aplicación puede definir ventanas auxiliares con <code>AuxiliaryWindowDescriptor</code> e implementar sus funciones de cambio de tamaño, eventos y listas de dibujo. El editor de memoria independiente de la interfaz incorporada utiliza su propio búfer de demostración; no se conecta automáticamente a un emulador ni a otro proceso.</p>
 <h2 id="section-6">6. Acoplamiento, lienzo y persistencia</h2>
 <p><code>DockLayoutState</code> y los tipos geométricos de acoplamiento describen la disposición de los paneles. <code>DockLayoutProfile</code> representa un perfil de disposición con versión. La interfaz incorporada admite el perfil como texto, y <code>AppBuilder::startup_layout_profile</code> lo restaura al iniciarla. La aplicación decide cuándo y dónde guardar ese texto. Las posiciones de almacenamiento en memoria no sustituyen el guardado permanente en archivos.</p>
 <p><code>CanvasDocument</code> y <code>LayerNode</code> ofrecen los modelos de documento y capas. Las utilidades de selección, selección rectangular y ajuste, junto con <code>CommandHistory</code>, permiten construir operaciones de edición. <code>CommandRegistry</code> y <code>CommandDescriptor</code> describen comandos y atajos. Estas API no proporcionan un formato de archivo completo ni un sistema automático de guardado de proyectos. Conecte los modelos a sus propios comandos y a su serialización.</p>
 <h2 id="section-7">7. Fuentes e iconos</h2>
-<p>Roboto y Roboto Mono se incluyen en <code>assets/fonts</code>. PLITA rasteriza texto con <code>fontdue</code> y conserva una pequeña fuente de mapa de bits como alternativa. También busca fuentes instaladas en el sistema. <code>PLITA_UI_FONT</code>, <code>PLITA_UI_FONT_FALLBACK</code> y <code>PLITA_MEMORY_FONT</code> permiten seleccionar archivos de fuentes; configure estas variables antes de iniciar la aplicación. La fuente debe contener los caracteres que desea mostrar. Las fuentes latinas incluidas no cubren todos los caracteres chinos, japoneses y coreanos.</p>
+<p>Roboto y Roboto Mono se incluyen en <code>assets/fonts</code>. plita rasteriza texto con <code>fontdue</code> y conserva una pequeña fuente de mapa de bits como alternativa. También busca fuentes instaladas en el sistema. <code>PLITA_UI_FONT</code>, <code>PLITA_UI_FONT_FALLBACK</code> y <code>PLITA_MEMORY_FONT</code> permiten seleccionar archivos de fuentes; configure estas variables antes de iniciar la aplicación. La fuente debe contener los caracteres que desea mostrar. Las fuentes latinas incluidas no cubren todos los caracteres chinos, japoneses y coreanos.</p>
 <p><code>active_font_family</code>, <code>active_font_source</code>, <code>active_text_backend</code> y <code>active_memory_font_family</code> ayudan a diagnosticar la selección. Si mueve un ejecutable, mantenga accesible el directorio de recursos o configure una ruta de fuente adecuada. Que el cargador mencione una ruta de fuente del sistema no significa que se distribuya ese archivo.</p>
 <p>El repositorio incluye 52 iconos SVG de Lucide. <code>lucide_icon_names()</code> enumera sus nombres y <code>draw_lucide_icon</code> los dibuja. Conserve los SVG y sus avisos de licencia cuando regenere los trazados de Rust con <code>crates/plita_ui/assets/build_icons.py</code>.</p>
 <h2 id="section-8">8. Hilo opcional de renderizado</h2>
@@ -97,7 +97,7 @@ cargo run --locked -p hello_plita
 </code></pre>
 <p>Este manual describe el código publicado sin certificar pruebas de ejecución en todas las plataformas. También puede generar documentación de la API con <code>cargo doc --workspace --no-deps --locked</code>.</p>
 <h2 id="section-11">11. Licencia y redistribución</h2>
-<p>El código de PLITA y estos manuales se distribuyen bajo la licencia MIT, copyright (c) 2026 DAISUKE OBA. Conserve el aviso de copyright y el texto de autorización MIT al redistribuir copias o partes sustanciales. Los recursos de terceros mantienen sus propias licencias: Roboto y Roboto Mono usan OFL-1.1; Lucide usa ISC e incluye el aviso MIT heredado de Feather.</p>
+<p>El código de plita y estos manuales se distribuyen bajo la licencia MIT, copyright (c) 2026 DAISUKE OBA. Conserve el aviso de copyright y el texto de autorización MIT al redistribuir copias o partes sustanciales. Los recursos de terceros mantienen sus propias licencias: Roboto y Roboto Mono usan OFL-1.1; Lucide usa ISC e incluye el aviso MIT heredado de Feather.</p>
 <p>Consulte <a href="../../LICENSE">LICENSE</a>, los <a href="../../THIRD_PARTY_NOTICES.md">avisos de terceros</a>, los <a href="../../licenses/DEPENDENCIES.md">avisos de dependencias</a> y la <a href="../../licenses/ASSET_PROVENANCE.json">procedencia de recursos</a>. Adjunte los avisos pertinentes al distribuir fuentes, iconos y binarios. Antes de distribuir binarios de macOS, resuelva la falta de textos de autorización independientes registrada para <code>dispatch</code> y <code>malloc_buf</code>. Este repositorio publica código fuente y avisos; una futura distribución binaria requiere revisar las dependencias que realmente se enlacen.</p>
 <h2 id="section-12">12. Guía de archivos fuente</h2>
 <ul>

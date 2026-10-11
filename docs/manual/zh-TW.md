@@ -1,4 +1,4 @@
-# PLITA — 使用與開發手冊
+# plita — 使用與開發手冊
 
 [English](en.md) · [日本語](ja.md) · [한국어](ko.md) · [简体中文](zh-CN.md) · [繁體中文](zh-TW.md) · [Français](fr.md) · [Español](es.md) · [Deutsch](de.md)
 
@@ -6,7 +6,7 @@ DAISUKE OBA · 原始碼版 2026-10-11 · Cargo 套件版本 0.0.1
 
 ## 1. 隨附內容
 
-PLITA 是供桌面創作應用程式使用的 Rust GUI 基礎函式庫。本儲存庫包含 5 個框架 crate 與 3 個可執行範例，提供原生視窗、輸入路由、GPU 繪製、元件、停駐配置與畫布模型。不包含個別模擬器專用的 GUI、ROM 或預先編譯的執行檔。
+plita 是供桌面創作應用程式使用的 Rust GUI 基礎函式庫。本儲存庫包含 5 個框架 crate 與 3 個可執行範例，提供原生視窗、輸入路由、GPU 繪製、元件、停駐配置與畫布模型。不包含個別模擬器專用的 GUI、ROM 或預先編譯的執行檔。
 
 - `plita`：公開 API、`prelude` 重新匯出及選用的 Python 輔助功能。
 - `plita_app`：`App` 建構器與啟動設定。
@@ -55,7 +55,7 @@ use plita::prelude::*;
 
 fn main() -> Result<()> {
     App::new()
-        .title("PLITA UI v1.0 - Creative Shell")
+        .title("plita UI v1.0 - Creative Shell")
         .window_size(1280, 800)
         .clear_color(ClearColor::rgb(0.105, 0.111, 0.125))
         .continuous_redraw(false)
@@ -69,7 +69,7 @@ fn main() -> Result<()> {
 
 ## 5. 輸入與輔助視窗
 
-UI 命中測試與版面配置使用 PLITA 的邏輯座標；視窗層負責 DPI 換算。事件涵蓋指標、鍵盤、IME 與檔案拖放。收到檔案路徑後，開啟、解析及儲存仍由應用程式實作。
+UI 命中測試與版面配置使用 plita 的邏輯座標；視窗層負責 DPI 換算。事件涵蓋指標、鍵盤、IME 與檔案拖放。收到檔案路徑後，開啟、解析及儲存仍由應用程式實作。
 
 `PointerDoubleClick` 在第二次 `PointerUp` 之後發出。同一按鈕完成兩次點擊，間隔不超過 500 ms，位置距離不超過 6 個邏輯像素，才會被辨識。拖曳操作不計入雙擊。每個原生視窗會獨立判定。
 
@@ -83,7 +83,7 @@ UI 命中測試與版面配置使用 PLITA 的邏輯座標；視窗層負責 DPI
 
 ## 7. 字型與圖示
 
-`assets/fonts` 隨附 Roboto 與 Roboto Mono。PLITA 透過 `fontdue` 點陣化文字，並保留小型點陣備援字型，也會尋找已安裝的系統字型。可用 `PLITA_UI_FONT`、`PLITA_UI_FONT_FALLBACK`、`PLITA_MEMORY_FONT` 指定字型檔，請在啟動應用程式前設定。字型必須包含要顯示的字元。隨附的拉丁字型不足以涵蓋所有中日韓文字。
+`assets/fonts` 隨附 Roboto 與 Roboto Mono。plita 透過 `fontdue` 點陣化文字，並保留小型點陣備援字型，也會尋找已安裝的系統字型。可用 `PLITA_UI_FONT`、`PLITA_UI_FONT_FALLBACK`、`PLITA_MEMORY_FONT` 指定字型檔，請在啟動應用程式前設定。字型必須包含要顯示的字元。隨附的拉丁字型不足以涵蓋所有中日韓文字。
 
 `active_font_family`、`active_font_source`、`active_text_backend` 與 `active_memory_font_family` 可用來診斷字型選擇。移動執行檔時，請維持資源目錄可存取，或設定適當的字型路徑。載入器列出系統字型路徑，不代表散布內容包含該字型檔。
 
@@ -131,7 +131,7 @@ cargo run --locked -p hello_plita
 
 ## 11. 授權與再散布
 
-PLITA 程式碼與本手冊採用 MIT 授權，著作權為 (c) 2026 DAISUKE OBA。再散布副本或重要部分時，請保留 MIT 著作權聲明與授權文字。第三方資源保留原有授權：Roboto 與 Roboto Mono 採用 OFL-1.1；Lucide 採用 ISC，並包含源自 Feather 的 MIT 聲明。
+plita 程式碼與本手冊採用 MIT 授權，著作權為 (c) 2026 DAISUKE OBA。再散布副本或重要部分時，請保留 MIT 著作權聲明與授權文字。第三方資源保留原有授權：Roboto 與 Roboto Mono 採用 OFL-1.1；Lucide 採用 ISC，並包含源自 Feather 的 MIT 聲明。
 
 請閱讀 [LICENSE](../../LICENSE)、[第三方聲明](../../THIRD_PARTY_NOTICES.md)、[相依套件聲明](../../licenses/DEPENDENCIES.md)及[資源來源](../../licenses/ASSET_PROVENANCE.json)。散布字型、圖示及二進位檔時，請附上相關聲明。散布 macOS 二進位檔前，須先處理紀錄中 `dispatch` 與 `malloc_buf` 缺少獨立授權文字的問題。本儲存庫公開原始碼與聲明；未來散布二進位檔時，仍需檢查實際連結的相依套件。
 

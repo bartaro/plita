@@ -1,4 +1,4 @@
-# PLITA — Manual de uso y desarrollo
+# plita — Manual de uso y desarrollo
 
 [English](en.md) · [日本語](ja.md) · [한국어](ko.md) · [简体中文](zh-CN.md) · [繁體中文](zh-TW.md) · [Français](fr.md) · [Español](es.md) · [Deutsch](de.md)
 
@@ -6,7 +6,7 @@ DAISUKE OBA · Edición del código fuente: 2026-10-11 · Versión del paquete C
 
 ## 1. Contenido de la distribución
 
-PLITA es una base de interfaz gráfica en Rust para aplicaciones creativas de escritorio. Este repositorio contiene cinco crates del framework y tres ejemplos ejecutables. Ofrece ventanas nativas, gestión de entradas, dibujo mediante GPU, widgets, acoplamiento de paneles y modelos de lienzo. No incluye interfaces específicas de emuladores, ROM ni ejecutables precompilados.
+plita es una base de interfaz gráfica en Rust para aplicaciones creativas de escritorio. Este repositorio contiene cinco crates del framework y tres ejemplos ejecutables. Ofrece ventanas nativas, gestión de entradas, dibujo mediante GPU, widgets, acoplamiento de paneles y modelos de lienzo. No incluye interfaces específicas de emuladores, ROM ni ejecutables precompilados.
 
 - `plita`: API pública, reexportaciones mediante `prelude` y utilidades opcionales de Python.
 - `plita_app`: constructor `App` y configuración de inicio.
@@ -55,7 +55,7 @@ use plita::prelude::*;
 
 fn main() -> Result<()> {
     App::new()
-        .title("PLITA UI v1.0 - Creative Shell")
+        .title("plita UI v1.0 - Creative Shell")
         .window_size(1280, 800)
         .clear_color(ClearColor::rgb(0.105, 0.111, 0.125))
         .continuous_redraw(false)
@@ -69,7 +69,7 @@ Con `continuous_redraw(false)`, el dibujo responde a actualizaciones y solicitud
 
 ## 5. Entrada y ventanas auxiliares
 
-Use las coordenadas lógicas de PLITA para las pruebas de posición y la disposición de la interfaz; la capa de ventanas realiza la conversión de DPI. Los eventos abarcan puntero, teclado, IME y archivos arrastrados. La aplicación debe implementar la apertura, el análisis y el guardado del archivo cuya ruta recibe.
+Use las coordenadas lógicas de plita para las pruebas de posición y la disposición de la interfaz; la capa de ventanas realiza la conversión de DPI. Los eventos abarcan puntero, teclado, IME y archivos arrastrados. La aplicación debe implementar la apertura, el análisis y el guardado del archivo cuya ruta recibe.
 
 `PointerDoubleClick` llega después del segundo `PointerUp`. Se requieren dos clics completados con el mismo botón, separados por un máximo de 500 ms y a una distancia máxima de 6 píxeles lógicos. Los gestos de arrastre se excluyen. Cada ventana nativa mantiene su propia detección.
 
@@ -83,7 +83,7 @@ Una aplicación puede definir ventanas auxiliares con `AuxiliaryWindowDescriptor
 
 ## 7. Fuentes e iconos
 
-Roboto y Roboto Mono se incluyen en `assets/fonts`. PLITA rasteriza texto con `fontdue` y conserva una pequeña fuente de mapa de bits como alternativa. También busca fuentes instaladas en el sistema. `PLITA_UI_FONT`, `PLITA_UI_FONT_FALLBACK` y `PLITA_MEMORY_FONT` permiten seleccionar archivos de fuentes; configure estas variables antes de iniciar la aplicación. La fuente debe contener los caracteres que desea mostrar. Las fuentes latinas incluidas no cubren todos los caracteres chinos, japoneses y coreanos.
+Roboto y Roboto Mono se incluyen en `assets/fonts`. plita rasteriza texto con `fontdue` y conserva una pequeña fuente de mapa de bits como alternativa. También busca fuentes instaladas en el sistema. `PLITA_UI_FONT`, `PLITA_UI_FONT_FALLBACK` y `PLITA_MEMORY_FONT` permiten seleccionar archivos de fuentes; configure estas variables antes de iniciar la aplicación. La fuente debe contener los caracteres que desea mostrar. Las fuentes latinas incluidas no cubren todos los caracteres chinos, japoneses y coreanos.
 
 `active_font_family`, `active_font_source`, `active_text_backend` y `active_memory_font_family` ayudan a diagnosticar la selección. Si mueve un ejecutable, mantenga accesible el directorio de recursos o configure una ruta de fuente adecuada. Que el cargador mencione una ruta de fuente del sistema no significa que se distribuya ese archivo.
 
@@ -131,7 +131,7 @@ Este manual describe el código publicado sin certificar pruebas de ejecución e
 
 ## 11. Licencia y redistribución
 
-El código de PLITA y estos manuales se distribuyen bajo la licencia MIT, copyright (c) 2026 DAISUKE OBA. Conserve el aviso de copyright y el texto de autorización MIT al redistribuir copias o partes sustanciales. Los recursos de terceros mantienen sus propias licencias: Roboto y Roboto Mono usan OFL-1.1; Lucide usa ISC e incluye el aviso MIT heredado de Feather.
+El código de plita y estos manuales se distribuyen bajo la licencia MIT, copyright (c) 2026 DAISUKE OBA. Conserve el aviso de copyright y el texto de autorización MIT al redistribuir copias o partes sustanciales. Los recursos de terceros mantienen sus propias licencias: Roboto y Roboto Mono usan OFL-1.1; Lucide usa ISC e incluye el aviso MIT heredado de Feather.
 
 Consulte [LICENSE](../../LICENSE), los [avisos de terceros](../../THIRD_PARTY_NOTICES.md), los [avisos de dependencias](../../licenses/DEPENDENCIES.md) y la [procedencia de recursos](../../licenses/ASSET_PROVENANCE.json). Adjunte los avisos pertinentes al distribuir fuentes, iconos y binarios. Antes de distribuir binarios de macOS, resuelva la falta de textos de autorización independientes registrada para `dispatch` y `malloc_buf`. Este repositorio publica código fuente y avisos; una futura distribución binaria requiere revisar las dependencias que realmente se enlacen.
 

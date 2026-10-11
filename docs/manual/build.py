@@ -112,7 +112,7 @@ def page(lang, title, body, toc='', skip='Skip to content'):
 </head>
 <body>
 <a class="skip" href="#main">{html.escape(skip)}</a>
-<header><a class="brand" href="index.html">PLITA</a><span>2026-10-11 · 0.0.1</span></header>
+<header><a class="brand" href="index.html">plita</a><span>2026-10-11 · 0.0.1</span></header>
 <nav class="languages" aria-label="Language">{navigation(lang)}</nav>
 <div class="layout">{toc}<main id="main">{body}
 <footer>Copyright (c) 2026 DAISUKE OBA · <a href="../../LICENSE">MIT</a></footer>
@@ -135,8 +135,8 @@ def outputs():
         toc += '</nav><p><a href="' + lang + '.md">Markdown</a></p></aside>'
         yield ROOT / (lang + '.html'), page(lang, title, body, toc, skip)
         cards.append(f'<article><h2 lang="{lang}">{name}</h2><p lang="{lang}">{guidance}</p><p><a href="{lang}.html">HTML</a> · <a href="{lang}.md">Markdown</a></p></article>')
-    body = '<h1>PLITA Manuals / マニュアル</h1><p>8 languages · HTML + Markdown · Offline HTML, no external assets.</p><div class="cards">' + ''.join(cards) + '</div>'
-    yield ROOT / 'index.html', page('en', 'PLITA Manuals', body)
+    body = '<h1>plita Manuals / マニュアル</h1><p>8 languages · HTML + Markdown · Offline HTML, no external assets.</p><div class="cards">' + ''.join(cards) + '</div>'
+    yield ROOT / 'index.html', page('en', 'plita Manuals', body)
 
 
 def main():

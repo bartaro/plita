@@ -1,4 +1,4 @@
-# PLITA — 使用与开发手册
+# plita — 使用与开发手册
 
 [English](en.md) · [日本語](ja.md) · [한국어](ko.md) · [简体中文](zh-CN.md) · [繁體中文](zh-TW.md) · [Français](fr.md) · [Español](es.md) · [Deutsch](de.md)
 
@@ -6,7 +6,7 @@ DAISUKE OBA · 源码版 2026-10-11 · Cargo 包版本 0.0.1
 
 ## 1. 包含的内容
 
-PLITA 是面向桌面创作应用的 Rust GUI 基础库。本仓库包含 5 个框架 crate 和 3 个可运行示例，提供原生窗口、输入路由、GPU 绘制、控件、停靠和画布模型。不包含各个模拟器专用的 GUI、ROM 或预编译可执行文件。
+plita 是面向桌面创作应用的 Rust GUI 基础库。本仓库包含 5 个框架 crate 和 3 个可运行示例，提供原生窗口、输入路由、GPU 绘制、控件、停靠和画布模型。不包含各个模拟器专用的 GUI、ROM 或预编译可执行文件。
 
 - `plita`：公开 API、`prelude` 重新导出及可选的 Python 辅助功能。
 - `plita_app`：`App` 构建器与启动配置。
@@ -55,7 +55,7 @@ use plita::prelude::*;
 
 fn main() -> Result<()> {
     App::new()
-        .title("PLITA UI v1.0 - Creative Shell")
+        .title("plita UI v1.0 - Creative Shell")
         .window_size(1280, 800)
         .clear_color(ClearColor::rgb(0.105, 0.111, 0.125))
         .continuous_redraw(false)
@@ -69,7 +69,7 @@ fn main() -> Result<()> {
 
 ## 5. 输入与辅助窗口
 
-UI 命中测试和布局使用 PLITA 的逻辑坐标；窗口层负责 DPI 换算。事件包括指针、键盘、IME 和文件拖放。收到文件路径后，打开、解析和保存文件仍由应用实现。
+UI 命中测试和布局使用 plita 的逻辑坐标；窗口层负责 DPI 换算。事件包括指针、键盘、IME 和文件拖放。收到文件路径后，打开、解析和保存文件仍由应用实现。
 
 `PointerDoubleClick` 在第二次 `PointerUp` 之后发出。同一按钮完成两次点击，间隔不超过 500 ms，位置距离不超过 6 个逻辑像素，才会被识别。拖动操作不计入双击。每个原生窗口独立进行判断。
 
@@ -83,7 +83,7 @@ UI 命中测试和布局使用 PLITA 的逻辑坐标；窗口层负责 DPI 换�
 
 ## 7. 字体与图标
 
-`assets/fonts` 中附带 Roboto 和 Roboto Mono。PLITA 通过 `fontdue` 栅格化文字，并保留小型位图备用字体，也会查找已安装的系统字体。可用 `PLITA_UI_FONT`、`PLITA_UI_FONT_FALLBACK`、`PLITA_MEMORY_FONT` 指定字体文件，请在启动应用前设置。字体必须包含要显示的字符。附带的拉丁文字体不足以覆盖全部中日韩文字。
+`assets/fonts` 中附带 Roboto 和 Roboto Mono。plita 通过 `fontdue` 栅格化文字，并保留小型位图备用字体，也会查找已安装的系统字体。可用 `PLITA_UI_FONT`、`PLITA_UI_FONT_FALLBACK`、`PLITA_MEMORY_FONT` 指定字体文件，请在启动应用前设置。字体必须包含要显示的字符。附带的拉丁文字体不足以覆盖全部中日韩文字。
 
 `active_font_family`、`active_font_source`、`active_text_backend` 和 `active_memory_font_family` 可用于诊断字体选择。移动可执行文件时，请确保资源目录仍然可访问，或配置合适的字体路径。加载器出现系统字体路径，并不表示分发包包含该字体文件。
 
@@ -131,7 +131,7 @@ cargo run --locked -p hello_plita
 
 ## 11. 许可与再分发
 
-PLITA 代码和本手册采用 MIT 许可证，版权为 (c) 2026 DAISUKE OBA。再分发副本或重要部分时，请保留 MIT 版权声明与许可文本。第三方资源保留原有许可证：Roboto 与 Roboto Mono 采用 OFL-1.1；Lucide 采用 ISC，并包含继承自 Feather 的 MIT 声明。
+plita 代码和本手册采用 MIT 许可证，版权为 (c) 2026 DAISUKE OBA。再分发副本或重要部分时，请保留 MIT 版权声明与许可文本。第三方资源保留原有许可证：Roboto 与 Roboto Mono 采用 OFL-1.1；Lucide 采用 ISC，并包含继承自 Feather 的 MIT 声明。
 
 请阅读 [LICENSE](../../LICENSE)、[第三方声明](../../THIRD_PARTY_NOTICES.md)、[依赖项声明](../../licenses/DEPENDENCIES.md)和[资源来源](../../licenses/ASSET_PROVENANCE.json)。分发字体、图标和二进制文件时，请附带相关声明。在分发 macOS 二进制文件前，需解决记录中 `dispatch` 与 `malloc_buf` 缺少独立许可文本的问题。本仓库发布源码与声明；未来发布二进制文件时，还需检查实际链接的依赖项。
 

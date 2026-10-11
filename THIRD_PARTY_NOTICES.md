@@ -1,8 +1,8 @@
 # Third-party notices
 
-PLITA project code is copyright (c) 2026 DAISUKE OBA and licensed under the
+plita project code is copyright (c) 2026 DAISUKE OBA and licensed under the
 [MIT License](LICENSE). The fonts, icon data and dependencies listed here retain
-their own copyrights and licenses. PLITA's MIT license does not relicense them.
+their own copyrights and licenses. plita's MIT license does not relicense them.
 
 ## Bundled fonts
 
@@ -20,10 +20,10 @@ Their embedded copyright and OFL information agree with the bundled license text
 When redistributing either font, include its copyright and complete OFL text.
 Keep the font under OFL-1.1; do not sell the font by itself. Modified versions
 must respect any Reserved Font Names declared by the applicable font license.
-Bundling these fonts does not require PLITA source code to use the OFL.
+Bundling these fonts does not require plita source code to use the OFL.
 See the [official OFL](https://openfontlicense.org/open-font-license-official-text/).
 
-PLITA can load fonts installed on the operating system or supplied by a user.
+plita can load fonts installed on the operating system or supplied by a user.
 Meiryo, Yu Gothic, Segoe UI, Helvetica, Noto and Inter names or paths in the code
 are runtime lookup candidates; those font files are not included here.
 Runtime access does not grant redistribution rights to those files.
@@ -50,7 +50,7 @@ Eight older SVGs match [Lucide 0.468.0](https://github.com/lucide-icons/lucide/t
 `clipboard-paste`, `eraser`, `flip-horizontal-2`, `flip-vertical-2`, `package`,
 `paint-bucket`, `pipette` and `trash-2`.
 The conversion script changes the representation into SVG path strings; it does
-not make the artwork original PLITA artwork. The notices are required when
+not make the artwork original plita artwork. The notices are required when
 redistributing these paths or a binary containing them, even without SVG files.
 No in-window credit screen is required by these licenses; distribute the notices
 and complete license texts with the software.
@@ -63,7 +63,7 @@ Hashes and exact verification sources are recorded in
 The resolved dependency graph includes 290 external packages across all target
 platforms, optional Python support and build dependencies. Most permit MIT or
 Apache-2.0; others use ISC, BSD, Zlib, CC0, Unicode terms or Apache with the LLVM
-exception. They are separately licensed, not relicensed as PLITA code.
+exception. They are separately licensed, not relicensed as plita code.
 
 See [the versioned inventory](licenses/DEPENDENCIES.md),
 [machine-readable metadata and source links](licenses/dependencies.json), and
@@ -86,5 +86,5 @@ The `dispatch 0.2.0` and `malloc_buf 0.0.6` crates declare MIT in their publishe
 metadata but do not ship standalone license texts; the corresponding upstream
 release trees also lack them. Their original manifest declarations are retained.
 Before distributing a macOS binary using these crates, obtain or verify the
-appropriate upstream copyright and permission notices. This source-only PLITA
+appropriate upstream copyright and permission notices. This source-only plita
 package does not redistribute those crates' implementation source or binaries.
