@@ -2,7 +2,7 @@
 
 Generated from the source workspace Cargo.lock and `cargo metadata --all-features`.
 This inventory includes all resolved target platforms, optional Python support,
-and build dependencies; a particular executable may use only a subset.
+and build/test dependencies; a particular executable may use only a subset.
 License expressions below are upstream declarations, not relicensing by plita.
 Retain the corresponding license and NOTICE files for binary redistribution.
 
@@ -89,6 +89,7 @@ Retain the corresponding license and NOTICE files for binary redistribution.
 | hexf-parse | 0.2.1 | CC0-1.0 | [files](dependencies/hexf-parse-0.2.1) |
 | indexmap | 2.14.0 | Apache-2.0 OR MIT | [files](dependencies/indexmap-2.14.0) |
 | indoc | 2.0.7 | MIT OR Apache-2.0 | [files](dependencies/indoc-2.0.7) |
+| itoa | 1.0.18 | MIT OR Apache-2.0 | [files](dependencies/itoa-1.0.18) |
 | jni | 0.22.4 | MIT OR Apache-2.0 | [files](dependencies/jni-0.22.4) |
 | jni-macros | 0.22.4 | MIT OR Apache-2.0 | [files](dependencies/jni-macros-0.22.4) |
 | jni-sys | 0.3.1 | MIT OR Apache-2.0 | [files](dependencies/jni-sys-0.3.1) |
@@ -195,6 +196,7 @@ Retain the corresponding license and NOTICE files for binary redistribution.
 | serde | 1.0.228 | MIT OR Apache-2.0 | [files](dependencies/serde-1.0.228) |
 | serde_core | 1.0.228 | MIT OR Apache-2.0 | [files](dependencies/serde_core-1.0.228) |
 | serde_derive | 1.0.228 | MIT OR Apache-2.0 | [files](dependencies/serde_derive-1.0.228) |
+| serde_json | 1.0.151 | MIT OR Apache-2.0 | [files](dependencies/serde_json-1.0.151) |
 | sharded-slab | 0.1.7 | MIT | [files](dependencies/sharded-slab-0.1.7) |
 | shlex | 1.3.0 | MIT OR Apache-2.0 | [files](dependencies/shlex-1.3.0) |
 | simd-adler32 | 0.3.9 | MIT | [files](dependencies/simd-adler32-0.3.9) |
@@ -298,3 +300,4 @@ Retain the corresponding license and NOTICE files for binary redistribution.
 | xml-rs | 0.8.28 | MIT | [files](dependencies/xml-rs-0.8.28) |
 | zerocopy | 0.8.48 | BSD-2-Clause OR Apache-2.0 OR MIT | [files](dependencies/zerocopy-0.8.48) |
 | zerocopy-derive | 0.8.48 | BSD-2-Clause OR Apache-2.0 OR MIT | [files](dependencies/zerocopy-derive-0.8.48) |
+| zmij | 1.0.23 | MIT | [files](dependencies/zmij-1.0.23) |

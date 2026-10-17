@@ -9,10 +9,10 @@
 </head>
 <body>
 <a class="skip" href="#main">本文へ</a>
-<header><a class="brand" href="index.html">plita</a><span>2026-10-11 · 0.0.1</span></header>
+<header><a class="brand" href="index.html">plita</a><span>2026-10-18 · 0.0.1</span></header>
 <nav class="languages" aria-label="Language"><a href="en.html" lang="en" hreflang="en">English</a> <a href="ja.html" lang="ja" hreflang="ja" aria-current="page">日本語</a> <a href="ko.html" lang="ko" hreflang="ko">한국어</a> <a href="zh-CN.html" lang="zh-CN" hreflang="zh-CN">简体中文</a> <a href="zh-TW.html" lang="zh-TW" hreflang="zh-TW">繁體中文</a> <a href="fr.html" lang="fr" hreflang="fr">Français</a> <a href="es.html" lang="es" hreflang="es">Español</a> <a href="de.html" lang="de" hreflang="de">Deutsch</a></nav>
 <div class="layout"><aside><nav aria-label="目次"><h2>目次</h2><a href="#section-1">1. 同梱内容</a><a href="#section-2">2. 必要環境とビルド</a><a href="#section-3">3. サンプルの起動</a><a href="#section-4">4. アプリの起動方法</a><a href="#section-5">5. 入力と補助ウィンドウ</a><a href="#section-6">6. ドッキング、キャンバス、保存</a><a href="#section-7">7. フォントとアイコン</a><a href="#section-8">8. 任意の描画ワーカー</a><a href="#section-9">9. 任意のPython補助機能</a><a href="#section-10">10. 問題の切り分けと検証</a><a href="#section-11">11. ライセンスと再配布</a><a href="#section-12">12. ソースへの案内</a></nav><p><a href="ja.md">Markdown</a></p></aside><main id="main"><h1>plita — 利用・開発マニュアル</h1>
-<p>DAISUKE OBA · ソース版 2026-10-11 · Cargoパッケージ版 0.0.1</p>
+<p>DAISUKE OBA · ソース版 2026-10-18 · Cargoパッケージ版 0.0.1</p>
 <h2 id="section-1">1. 同梱内容</h2>
 <p>plitaは、デスクトップの制作アプリを作るためのRust製GUI基盤です。このリポジトリには5個の基盤クレートと3個の実行可能なサンプルを同梱しています。ネイティブウィンドウ、入力処理、GPU描画、ウィジェット、ドッキング、キャンバスのモデルを提供します。個別エミュレーターのGUI、ROM、ビルド済み実行ファイルは含みません。</p>
 <ul>
@@ -63,9 +63,12 @@ fn main() -&gt; Result&lt;()&gt; {
 <p>UIの当たり判定とレイアウトにはplitaの論理座標を使います。DPI変換はウィンドウ層が担当します。ポインター、キーボード、IME、ファイルドロップのイベントがあります。受け取ったファイルパスの読み込み、解析、保存はアプリ側で実装してください。</p>
 <p><code>PointerDoubleClick</code>は2回目の<code>PointerUp</code>の後に届きます。同じボタンで完了した2回のクリックが500 ms以内、位置の差が6論理ピクセル以内のときに認識します。ドラッグ操作は除外し、各ネイティブウィンドウで独立して判定します。</p>
 <p>独自アプリでは<code>AuxiliaryWindowDescriptor</code>で補助ウィンドウを定義し、そのリサイズ・イベント・描画リストのコールバックを実装できます。標準シェルの分離したメモリーエディターが扱うのはシェル内のデモ用バッファです。エミュレーターや別プロセスへ自動接続する機能ではありません。</p>
+<p><code>PlitaProgram::minimum_window_size()</code>と<code>auxiliary_window_minimum_size(id)</code>で、クライアント領域の最小サイズを論理座標で指定できます。既定の<code>None</code>では制限しません。<code>auxiliary_window_activation_request(id)</code>は任意の要求トークンを返します。明示的に復元・フォーカスを要求するたびに値を変えてください。同じ値のままでは繰り返しアクティブ化しません。補助ウィンドウの生成に失敗した場合は、定義を一度取り下げるかトークンを変えると再試行します。メインウィンドウは動作を継続します。</p>
+<p><code>auxiliary_draw_revision(id)</code>では、補助ウィンドウの描画リストを任意で保持できます。<code>Some(revision)</code>を返す場合は、ホバー・押下状態を含む表示内容の変化ごとに版番号を変え、<code>UiResponse</code>で再描画も要求してください。ネイティブのリサイズやDPI変更では保持内容を無効化します。アニメーションや共有画像のウィンドウでは、既定の<code>None</code>を返してください。最小化中は描画を省略し、サイズがゼロのリサイズイベントは無視します。</p>
 <h2 id="section-6">6. ドッキング、キャンバス、保存</h2>
 <p><code>DockLayoutState</code>とドック座標の型でパネルの配置を表します。<code>DockLayoutProfile</code>はバージョン付きレイアウトプロファイルです。シェルはプロファイルのテキストを扱え、<code>AppBuilder::startup_layout_profile</code>で標準シェル起動時に復元できます。そのテキストをいつ、どこに保存するかはアプリで決めてください。メモリー内のレイアウトスロットはファイルへの永続保存の代わりにはなりません。</p>
 <p><code>CanvasDocument</code>と<code>LayerNode</code>は文書とレイヤーのモデルです。選択、矩形選択、スナップの補助機能と<code>CommandHistory</code>を使って編集操作を組み立てられます。<code>CommandRegistry</code>と<code>CommandDescriptor</code>はコマンドとショートカットの情報を記述します。完成したアプリ用ファイル形式や自動プロジェクト保存を提供するAPIではありません。モデルと独自コマンド、シリアライズ処理を接続してください。</p>
+<p><code>memory_viewer_address_at_point(rect, base_address, byte_count, position)</code>は、<code>draw_memory_viewer</code>に表示された16進数のバイト位置を<code>Option&lt;u16&gt;</code>のアドレスへ変換します。描画時と同じ矩形・開始アドレス、実際のバイト数、論理座標のポインター位置を渡してください。アドレス表示・ASCII欄・隙間・存在しないバイト・非表示行は<code>None</code>です。選択や書き込みはアプリ側で処理し、この関数自体はメモリーを変更しません。</p>
 <h2 id="section-7">7. フォントとアイコン</h2>
 <p>RobotoとRoboto Monoを<code>assets/fonts</code>に同梱しています。plitaは<code>fontdue</code>で文字をラスタライズし、小型ビットマップの代替描画も保持しています。インストール済みのシステムフォントも検索します。<code>PLITA_UI_FONT</code>・<code>PLITA_UI_FONT_FALLBACK</code>・<code>PLITA_MEMORY_FONT</code>でフォントファイルを指定する場合は、アプリ起動前に設定してください。表示したい文字を含むフォントが必要です。同梱のラテン文字用フォントだけでは日本語・中国語・韓国語を網羅しません。</p>
 <p><code>active_font_family</code>・<code>active_font_source</code>・<code>active_text_backend</code>・<code>active_memory_font_family</code>で使用中のフォントを調べられます。実行ファイルを移動する際はアセットの参照先を維持するか、適切なフォントパスを設定してください。ローダーにシステムフォントのパスが書かれていても、そのフォントファイルを同梱しているわけではありません。</p>
@@ -77,6 +80,8 @@ fn main() -&gt; Result&lt;()&gt; {
 }
 </code></pre>
 <p>GPU処理と画面への提示を各ウィンドウのワーカーが担当します。ウィンドウ管理、入力、<code>tick</code>、描画リストの構築はイベントループ側に残ります。描画が遅いときは待機中の要求を最新フレームに集約するため、全フレームを保存する録画APIではありません。共有RGBA画像の全体更新は同じmutexの中で行い、ロックを短く保ってください。設定はレンダラー生成時に読み取るもので、実行中の切り替えスイッチではありません。既定は同期描画です。</p>
+<p>レンダラーは不変RGBA画像の参照を保持してテクスチャキャッシュの識別衝突を防ぎ、頂点バッファと画像用の作業領域を再利用します。使われなくなった画像キャッシュは短いフレーム単位の保持期間後に解放します。共有RGBAデータはmutex内でコピーしてからGPUへ転送するため、更新も同じmutex内で行ってください。これらの内部変更に伴う既存の描画リスト呼び出しの変更は不要です。</p>
+<p>検証上の制約（2026-10-18）：公開作業環境では、通常のワークスペース試験、GPUのオフスクリーン回帰試験2件、同期描画のネイティブウィンドウ試験が成功しました。一方、描画ワーカーのネイティブ試験は復元・リサイズ後にタイムアウトし、別のデスクトップ実行では異常終了しました。原因は未特定で、この環境でのワーカーの正常動作は確認できていません。安定動作が必要な場合は既定の同期描画を維持し、任意の描画ワーカーは対象環境で検証してから有効にしてください。</p>
 <h2 id="section-9">9. 任意のPython補助機能</h2>
 <p>Python 3.10以降と、1.8以上2未満のmaturinを適切なPython環境に用意してください。リポジトリのルートから次を実行します。</p>
 <pre><code class="language-powershell">cd crates/plita
@@ -96,6 +101,7 @@ maturin develop --features python
 cargo run --locked -p hello_plita
 </code></pre>
 <p>本書は公開ソースの説明であり、すべての環境での動作試験完了を保証するものではありません。<code>cargo doc --workspace --no-deps --locked</code>でAPI文書も生成できます。</p>
+<p>動作するGPUがある環境では、外部データ不要の回帰試験を明示的に実行できます。<code>cargo test -p plita_render --locked offscreen_image_updates_and_draw_order -- --ignored --test-threads=1</code>と<code>cargo test -p plita_render --locked offscreen_cache_keeps_images_distinct_and_releases_old_sources -- --ignored --test-threads=1</code>です。通常のワークスペース試験はGPU試験とネイティブデスクトップ試験をスキップします。他の無効化済みベンチマークには外部入力と出力先の準備が必要なため、準備せずに全ignored試験を一括実行しないでください。</p>
 <h2 id="section-11">11. ライセンスと再配布</h2>
 <p>plitaのコードと本書はMITライセンスで、著作権者は2026 DAISUKE OBAです。コピーや主要部分の再配布ではMITの著作権表示と許諾文を保持してください。第三者のアセットには元のライセンスが適用されます。Roboto・Roboto MonoはOFL-1.1、LucideはISCで、由来となったFeatherのMIT表示も含みます。</p>
 <p><a href="../../LICENSE">LICENSE</a>、<a href="../../THIRD_PARTY_NOTICES.md">第三者の権利表示</a>、<a href="../../licenses/DEPENDENCIES.md">依存関係の表示</a>、<a href="../../licenses/ASSET_PROVENANCE.json">アセットの出典</a>を確認してください。フォント、アイコン、バイナリを配布するときは対応する表示を同梱します。macOSバイナリの配布前には、<code>dispatch</code>と<code>malloc_buf</code>について記録した独立した許諾文の不足を解決してください。このリポジトリはソースと表示文書の公開であり、将来のバイナリ配布では実際にリンクする依存関係の確認が必要です。</p>

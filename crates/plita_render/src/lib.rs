@@ -225,6 +225,7 @@ impl ImageVertex {
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 struct ImageCacheKey {
     slot: usize,
+    shared: bool,
     len: usize,
     width: u32,
     height: u32,
@@ -237,7 +238,25 @@ struct ImageVertexCacheKey {
     surface_height: u32,
 }
 
+// Retaining the source prevents allocator address reuse from aliasing cached
+// textures. Arc::make_mut also detaches edits from an immutable cached image.
+enum ImageSource {
+    Immutable(Arc<[u8]>),
+    Shared(Arc<std::sync::Mutex<Vec<u8>>>),
+}
+
+impl ImageSource {
+    fn identity(&self) -> (usize, bool) {
+        match self {
+            Self::Immutable(pixels) => (pixels.as_ptr() as usize, false),
+            Self::Shared(pixels) => (Arc::as_ptr(pixels) as usize, true),
+        }
+    }
+}
+
 struct CachedImage {
+    _source: ImageSource,
+    last_used_frame: u64,
     texture: wgpu::Texture,
     _view: wgpu::TextureView,
     bind_group: wgpu::BindGroup,
@@ -266,11 +285,7 @@ pub struct GpuRenderer {
     surface_config: wgpu::SurfaceConfiguration,
     clear_color: wgpu::Color,
     draw_list: DrawList,
-    rect_pipeline: wgpu::RenderPipeline,
-    image_pipeline: wgpu::RenderPipeline,
-    image_bind_group_layout: wgpu::BindGroupLayout,
-    image_sampler: wgpu::Sampler,
-    image_cache: HashMap<ImageCacheKey, CachedImage>,
+    ui_renderer: UiRenderer,
     ui_scale_factor: f64,
     /// Created to prove that the Vello layer can be initialized.
     /// Later phases will feed scenes into this renderer.
@@ -356,11 +371,7 @@ impl GpuRenderer {
         let vello_renderer = vello::Renderer::new(&device, vello::RendererOptions::default())
             .map_err(|err| RenderError::Vello(err.to_string()))?;
 
-        let rect_pipeline = create_rect_pipeline(&device, surface_config.format);
-        let image_bind_group_layout = create_image_bind_group_layout(&device);
-        let image_sampler = create_image_sampler(&device);
-        let image_pipeline =
-            create_image_pipeline(&device, surface_config.format, &image_bind_group_layout);
+        let ui_renderer = UiRenderer::new(&device, surface_config.format);
 
         info!(
             width = surface_config.width,
@@ -383,11 +394,7 @@ impl GpuRenderer {
                 config.clear_color.b as f32,
                 config.clear_color.a as f32,
             )),
-            rect_pipeline,
-            image_pipeline,
-            image_bind_group_layout,
-            image_sampler,
-            image_cache: HashMap::new(),
+            ui_renderer,
             ui_scale_factor,
             _vello_renderer: vello_renderer,
             frame_index: 0,
@@ -464,6 +471,82 @@ impl GpuRenderer {
                 label: Some("plita.phase1.command_encoder"),
             });
 
+        self.ui_renderer.encode(
+            &self.device,
+            &self.queue,
+            &mut encoder,
+            &view,
+            self.size(),
+            self.ui_size(),
+            &self.draw_list,
+        );
+
+        self.queue.submit(Some(encoder.finish()));
+        frame.present();
+
+        self.frame_index = self.frame_index.saturating_add(1);
+        let stats = FrameStats {
+            frame_index: self.frame_index,
+            width: self.surface_config.width,
+            height: self.surface_config.height,
+            draw_commands: self.draw_list.len(),
+            cpu_frame_ms: start.elapsed().as_secs_f64() * 1000.0,
+        };
+        Ok(stats)
+    }
+}
+
+// Surface-independent draw path, also used by offscreen GPU regression tests.
+struct UiRenderer {
+    rect_pipeline: wgpu::RenderPipeline,
+    image_pipeline: wgpu::RenderPipeline,
+    image_bind_group_layout: wgpu::BindGroupLayout,
+    image_sampler: wgpu::Sampler,
+    image_cache: HashMap<ImageCacheKey, CachedImage>,
+    rect_buffers: VertexBufferPool,
+    rect_scratch: Vec<UiVertex>,
+    image_scratch: Vec<u8>,
+    frame_index: u64,
+}
+
+impl UiRenderer {
+    fn new(device: &wgpu::Device, format: wgpu::TextureFormat) -> Self {
+        let rect_pipeline = create_rect_pipeline(device, format);
+        let image_bind_group_layout = create_image_bind_group_layout(device);
+        let image_sampler = create_image_sampler(device);
+        let image_pipeline = create_image_pipeline(device, format, &image_bind_group_layout);
+
+        Self {
+            rect_pipeline,
+            image_pipeline,
+            image_bind_group_layout,
+            image_sampler,
+            image_cache: HashMap::new(),
+            rect_buffers: VertexBufferPool::default(),
+            rect_scratch: Vec::new(),
+            image_scratch: Vec::new(),
+            frame_index: 0,
+        }
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    fn encode(
+        &mut self,
+        device: &wgpu::Device,
+        queue: &wgpu::Queue,
+        encoder: &mut wgpu::CommandEncoder,
+        view: &wgpu::TextureView,
+        size: RenderSize,
+        ui_size: Size,
+        draw_list: &DrawList,
+    ) {
+        self.frame_index = self.frame_index.saturating_add(1);
+        // Keep only current/recent images. Changing frame-counter text must not
+        // accumulate textures indefinitely or trigger whole-cache eviction.
+        self.image_cache
+            .retain(|_, image| image.last_used_frame.saturating_add(2) >= self.frame_index);
+        self.rect_buffers.next = 0;
+        let mut rect_vertices = std::mem::take(&mut self.rect_scratch);
         {
             let mut render_pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
                 label: Some("plita.phase1.ui_pass"),
@@ -472,7 +555,9 @@ impl GpuRenderer {
                     depth_slice: None,
                     resolve_target: None,
                     ops: wgpu::Operations {
-                        load: wgpu::LoadOp::Clear(self.clear_color),
+                        load: wgpu::LoadOp::Clear(
+                            ClearColor::from(draw_list.clear_color).to_wgpu(),
+                        ),
                         store: wgpu::StoreOp::Store,
                     },
                 })],
@@ -482,16 +567,13 @@ impl GpuRenderer {
                 multiview_mask: None,
             });
 
-            let surface_width = self.surface_config.width as f32;
-            let surface_height = self.surface_config.height as f32;
-            let ui_size = self.ui_size();
+            let surface_width = size.width as f32;
+            let surface_height = size.height as f32;
             let width = ui_size.width.max(1.0);
             let height = ui_size.height.max(1.0);
             let full_clip = Rect::new(0.0, 0.0, width, height);
             let mut clip_stack = vec![full_clip];
-            let mut rect_vertices = Vec::new();
-            let commands = self.draw_list.commands().to_vec();
-            for command in commands {
+            for command in draw_list.commands().iter().cloned() {
                 match command {
                     DrawCommand::FillRect { rect, color } => {
                         append_rect_vertices(&mut rect_vertices, rect, color, width, height);
@@ -530,14 +612,16 @@ impl GpuRenderer {
                     } => {
                         flush_rect_vertices(
                             &mut render_pass,
-                            &self.device,
+                            device,
+                            queue,
+                            &mut self.rect_buffers,
                             &self.rect_pipeline,
                             &mut rect_vertices,
                         );
                         draw_image_rgba(
                             &mut render_pass,
-                            &self.device,
-                            &self.queue,
+                            device,
+                            queue,
                             &self.image_pipeline,
                             &self.image_bind_group_layout,
                             &self.image_sampler,
@@ -545,9 +629,8 @@ impl GpuRenderer {
                             rect,
                             image_width,
                             image_height,
-                            pixels.as_ptr() as usize,
-                            // Owned draw-list buffers may reuse an address with new pixels next frame.
-                            true,
+                            ImageSource::Immutable(Arc::clone(&pixels)),
+                            self.frame_index,
                             &pixels,
                             width,
                             height,
@@ -561,16 +644,25 @@ impl GpuRenderer {
                     } => {
                         flush_rect_vertices(
                             &mut render_pass,
-                            &self.device,
+                            device,
+                            queue,
+                            &mut self.rect_buffers,
                             &self.rect_pipeline,
                             &mut rect_vertices,
                         );
-                        let snapshot = pixels.lock().ok().map(|pixels| pixels.clone());
-                        if let Some(pixels_snapshot) = snapshot {
+                        let snapshot_ready = if let Ok(locked) = pixels.lock() {
+                            self.image_scratch.clear();
+                            self.image_scratch.extend_from_slice(&locked);
+                            true
+                        } else {
+                            false
+                        };
+                        // Release the producer lock before GPU allocation/upload.
+                        if snapshot_ready {
                             draw_image_rgba(
                                 &mut render_pass,
-                                &self.device,
-                                &self.queue,
+                                device,
+                                queue,
                                 &self.image_pipeline,
                                 &self.image_bind_group_layout,
                                 &self.image_sampler,
@@ -578,9 +670,9 @@ impl GpuRenderer {
                                 rect,
                                 image_width,
                                 image_height,
-                                Arc::as_ptr(&pixels) as usize,
-                                true,
-                                &pixels_snapshot,
+                                ImageSource::Shared(Arc::clone(&pixels)),
+                                self.frame_index,
+                                &self.image_scratch,
                                 width,
                                 height,
                             );
@@ -589,7 +681,9 @@ impl GpuRenderer {
                     DrawCommand::PushClip { rect } => {
                         flush_rect_vertices(
                             &mut render_pass,
-                            &self.device,
+                            device,
+                            queue,
+                            &mut self.rect_buffers,
                             &self.rect_pipeline,
                             &mut rect_vertices,
                         );
@@ -609,7 +703,9 @@ impl GpuRenderer {
                     DrawCommand::PopClip => {
                         flush_rect_vertices(
                             &mut render_pass,
-                            &self.device,
+                            device,
+                            queue,
+                            &mut self.rect_buffers,
                             &self.rect_pipeline,
                             &mut rect_vertices,
                         );
@@ -630,24 +726,15 @@ impl GpuRenderer {
             }
             flush_rect_vertices(
                 &mut render_pass,
-                &self.device,
+                device,
+                queue,
+                &mut self.rect_buffers,
                 &self.rect_pipeline,
                 &mut rect_vertices,
             );
         }
-
-        self.queue.submit(Some(encoder.finish()));
-        frame.present();
-
-        self.frame_index = self.frame_index.saturating_add(1);
-        let stats = FrameStats {
-            frame_index: self.frame_index,
-            width: self.surface_config.width,
-            height: self.surface_config.height,
-            draw_commands: self.draw_list.len(),
-            cpu_frame_ms: start.elapsed().as_secs_f64() * 1000.0,
-        };
-        Ok(stats)
+        self.rect_scratch = rect_vertices;
+        self.rect_buffers.buffers.truncate(self.rect_buffers.next);
     }
 }
 
@@ -807,9 +894,51 @@ fn create_image_pipeline(
     })
 }
 
+#[derive(Default)]
+struct VertexBufferPool {
+    buffers: Vec<(wgpu::Buffer, u64)>,
+    next: usize,
+}
+
+impl VertexBufferPool {
+    fn upload(
+        &mut self,
+        device: &wgpu::Device,
+        queue: &wgpu::Queue,
+        bytes: &[u8],
+    ) -> &wgpu::Buffer {
+        let length = bytes.len() as u64;
+        let slot = self.next;
+        self.next += 1;
+        if self
+            .buffers
+            .get(slot)
+            .is_none_or(|(_, capacity)| *capacity < length)
+        {
+            let capacity = length.next_power_of_two();
+            let buffer = device.create_buffer(&wgpu::BufferDescriptor {
+                label: Some("plita.ui.reusable_vertices"),
+                size: capacity,
+                usage: wgpu::BufferUsages::VERTEX | wgpu::BufferUsages::COPY_DST,
+                mapped_at_creation: false,
+            });
+            if slot == self.buffers.len() {
+                self.buffers.push((buffer, capacity));
+            } else {
+                self.buffers[slot] = (buffer, capacity);
+            }
+        }
+        let buffer = &self.buffers[slot].0;
+        queue.write_buffer(buffer, 0, bytes);
+        buffer
+    }
+}
+
 fn flush_rect_vertices(
     render_pass: &mut wgpu::RenderPass<'_>,
     device: &wgpu::Device,
+    queue: &wgpu::Queue,
+    buffers: &mut VertexBufferPool,
     rect_pipeline: &wgpu::RenderPipeline,
     vertices: &mut Vec<UiVertex>,
 ) {
@@ -817,11 +946,7 @@ fn flush_rect_vertices(
         return;
     }
 
-    let vertex_buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
-        label: Some("plita.phase1.ui_vertices"),
-        contents: bytemuck::cast_slice(vertices),
-        usage: wgpu::BufferUsages::VERTEX,
-    });
+    let vertex_buffer = buffers.upload(device, queue, bytemuck::cast_slice(vertices));
     render_pass.set_pipeline(rect_pipeline);
     render_pass.set_vertex_buffer(0, vertex_buffer.slice(..));
     render_pass.draw(0..vertices.len() as u32, 0..1);
@@ -867,8 +992,8 @@ fn draw_image_rgba(
     rect: Rect,
     image_width: u32,
     image_height: u32,
-    cache_slot: usize,
-    force_update: bool,
+    source: ImageSource,
+    frame_index: u64,
     pixels: &[u8],
     surface_width: f32,
     surface_height: f32,
@@ -883,17 +1008,17 @@ fn draw_image_rgba(
         height: image_height,
         depth_or_array_layers: 1,
     };
+    let (slot, shared) = source.identity();
     let cache_key = ImageCacheKey {
-        slot: cache_slot,
+        slot,
+        shared,
         len: pixels.len(),
         width: image_width,
         height: image_height,
     };
 
-    if !image_cache.contains_key(&cache_key) {
-        if image_cache.len() > 768 {
-            image_cache.clear();
-        }
+    let created = !image_cache.contains_key(&cache_key);
+    if created {
         let cached = create_cached_image(
             device,
             queue,
@@ -901,6 +1026,8 @@ fn draw_image_rgba(
             image_sampler,
             size,
             pixels,
+            source,
+            frame_index,
         );
         image_cache.insert(cache_key, cached);
     }
@@ -908,9 +1035,10 @@ fn draw_image_rgba(
     let Some(cached) = image_cache.get_mut(&cache_key) else {
         return;
     };
-    if force_update {
+    if shared && !created {
         update_cached_image(queue, cached, size, pixels);
     }
+    cached.last_used_frame = frame_index;
 
     let vertex_key = ImageVertexCacheKey {
         rect: [
@@ -966,6 +1094,8 @@ fn create_cached_image(
     image_sampler: &wgpu::Sampler,
     size: wgpu::Extent3d,
     pixels: &[u8],
+    source: ImageSource,
+    frame_index: u64,
 ) -> CachedImage {
     let texture = device.create_texture(&wgpu::TextureDescriptor {
         label: Some("plita.phase2.image.rgba_texture"),
@@ -1009,6 +1139,8 @@ fn create_cached_image(
         ],
     });
     CachedImage {
+        _source: source,
+        last_used_frame: frame_index,
         texture,
         _view: texture_view,
         bind_group,
@@ -1384,3 +1516,6 @@ mod tests {
         assert!(descriptor.backends.intersects(compiled));
     }
 }
+
+#[cfg(test)]
+mod gpu_tests;

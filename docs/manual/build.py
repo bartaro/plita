@@ -112,7 +112,7 @@ def page(lang, title, body, toc='', skip='Skip to content'):
 </head>
 <body>
 <a class="skip" href="#main">{html.escape(skip)}</a>
-<header><a class="brand" href="index.html">plita</a><span>2026-10-11 · 0.0.1</span></header>
+<header><a class="brand" href="index.html">plita</a><span>2026-10-18 · 0.0.1</span></header>
 <nav class="languages" aria-label="Language">{navigation(lang)}</nav>
 <div class="layout">{toc}<main id="main">{body}
 <footer>Copyright (c) 2026 DAISUKE OBA · <a href="../../LICENSE">MIT</a></footer>

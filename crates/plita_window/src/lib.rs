@@ -199,6 +199,10 @@ impl AuxiliaryWindowDescriptor {
 /// The window layer owns the OS event loop and renderer. A program owns its
 /// domain state, consumes normalized UI events, and emits a `DrawList`.
 pub trait PlitaProgram {
+    /// Minimum logical client size; None leaves resizing unconstrained.
+    fn minimum_window_size(&self) -> Option<Size> {
+        None
+    }
     /// Some(true) requests borderless fullscreen; None leaves window state unmanaged.
     fn fullscreen_requested(&self) -> Option<bool> {
         None
@@ -258,6 +262,17 @@ pub trait PlitaProgram {
         Vec::new()
     }
 
+    /// Minimum logical client size for an auxiliary window.
+    fn auxiliary_window_minimum_size(&self, _id: u64) -> Option<Size> {
+        None
+    }
+
+    /// Change this token for each intentional restore/focus request.
+    /// A stable token never repeatedly steals focus. None requests no activation.
+    fn auxiliary_window_activation_request(&self, _id: u64) -> Option<u64> {
+        None
+    }
+
     /// Called when an auxiliary window is resized.
     fn resize_auxiliary_window(&mut self, _id: u64, _size: Size) -> UiResponse {
         UiResponse::none()
@@ -282,6 +297,14 @@ pub trait PlitaProgram {
 
     /// Build the draw list for an auxiliary window.
     fn auxiliary_draw_list(&self, _id: u64) -> Option<DrawList> {
+        None
+    }
+
+    /// Opt in to retaining an auxiliary draw list until this revision changes.
+    /// Return None for continuously animated/shared-image windows. Programs
+    /// returning Some must change the revision and request redraw when content
+    /// changes, including hover/pressed states. Native resize forces a rebuild.
+    fn auxiliary_draw_revision(&self, _id: u64) -> Option<u64> {
         None
     }
 }
@@ -412,7 +435,7 @@ struct Phase1WindowApp {
     renderer: Option<WindowRenderer>,
     auxiliary_windows: Vec<AuxiliaryWindowState>,
     pending_auxiliary_windows: Vec<PendingAuxiliaryWindow>,
-    failed_auxiliary_windows: Vec<u64>,
+    failed_auxiliary_windows: Vec<(u64, Option<u64>)>,
     ui: Option<Box<dyn PlitaProgram>>,
     last_pointer_position: Point,
     double_click: DoubleClickDetector,
@@ -433,6 +456,19 @@ struct AuxiliaryWindowState {
     renderer: WindowRenderer,
     last_pointer_position: Point,
     double_click: DoubleClickDetector,
+    activation_request: Option<u64>,
+    draw_revision: Option<u64>,
+    draw_dirty: bool,
+}
+
+fn auxiliary_draw_list_changed(previous: Option<u64>, current: Option<u64>) -> bool {
+    current.is_none() || previous != current
+}
+
+fn take_auxiliary_activation(last: &mut Option<u64>, requested: Option<u64>) -> bool {
+    let activate = requested.is_some() && requested != *last;
+    *last = requested;
+    activate
 }
 
 struct PendingAuxiliaryWindow {
@@ -533,13 +569,24 @@ impl Phase1WindowApp {
         &self,
         descriptor: &AuxiliaryWindowDescriptor,
     ) -> WindowAttributes {
-        Window::default_attributes()
+        let mut attributes = Window::default_attributes()
             .with_title(descriptor.title.clone())
             .with_inner_size(LogicalSize::new(
                 f64::from(descriptor.width),
                 f64::from(descriptor.height),
             ))
-            .with_visible(false)
+            .with_visible(false);
+        if let Some(size) = self
+            .ui
+            .as_ref()
+            .and_then(|ui| ui.auxiliary_window_minimum_size(descriptor.id))
+        {
+            attributes = attributes.with_min_inner_size(LogicalSize::new(
+                f64::from(size.width.max(1.0)),
+                f64::from(size.height.max(1.0)),
+            ));
+        }
+        attributes
     }
 
     fn initialize(&mut self, event_loop: &ActiveEventLoop) -> Result<(), WindowError> {
@@ -577,6 +624,12 @@ impl Phase1WindowApp {
             .take()
             .expect("program factory is used once");
         let ui = factory(renderer.ui_size());
+        if let Some(size) = ui.minimum_window_size() {
+            window.set_min_inner_size(Some(LogicalSize::new(
+                f64::from(size.width.max(1.0)),
+                f64::from(size.height.max(1.0)),
+            )));
+        }
         renderer.set_draw_list(ui.draw_list());
 
         info!(
@@ -620,12 +673,31 @@ impl Phase1WindowApp {
     }
 
     fn fail_auxiliary_window(&mut self, id: u64) {
-        if !self.failed_auxiliary_windows.contains(&id) {
-            self.failed_auxiliary_windows.push(id);
+        if !self
+            .failed_auxiliary_windows
+            .iter()
+            .any(|(failed, _)| *failed == id)
+        {
+            let request = self
+                .ui
+                .as_ref()
+                .and_then(|ui| ui.auxiliary_window_activation_request(id));
+            self.failed_auxiliary_windows.push((id, request));
             if let Some(ui) = self.ui.as_mut() {
                 ui.auxiliary_window_failed(id);
             }
         }
+    }
+
+    fn discard_obsolete_auxiliary_failures(&mut self, descriptors: &[AuxiliaryWindowDescriptor]) {
+        self.failed_auxiliary_windows.retain(|(id, request)| {
+            descriptors.iter().any(|descriptor| descriptor.id == *id)
+                && self
+                    .ui
+                    .as_ref()
+                    .and_then(|ui| ui.auxiliary_window_activation_request(*id))
+                    == *request
+        });
     }
 
     fn sync_auxiliary_windows(&mut self, event_loop: &ActiveEventLoop) -> Result<(), WindowError> {
@@ -643,9 +715,8 @@ impl Phase1WindowApp {
             .as_ref()
             .map(|ui| ui.auxiliary_windows())
             .unwrap_or_default();
-        // A failed live request must be withdrawn before retrying its id.
-        self.failed_auxiliary_windows
-            .retain(|id| descriptors.iter().any(|descriptor| descriptor.id == *id));
+        // Retry only after withdrawal or an explicit new activation request.
+        self.discard_obsolete_auxiliary_failures(&descriptors);
         self.auxiliary_windows.retain(|state| {
             descriptors
                 .iter()
@@ -704,11 +775,33 @@ impl Phase1WindowApp {
                 renderer,
                 last_pointer_position: Point::new(0., 0.),
                 double_click: DoubleClickDetector::default(),
+                activation_request: None,
+                draw_revision: self
+                    .ui
+                    .as_ref()
+                    .and_then(|ui| ui.auxiliary_draw_revision(state.id)),
+                draw_dirty: false,
             });
         }
 
+        for state in &mut self.auxiliary_windows {
+            let request = self
+                .ui
+                .as_ref()
+                .and_then(|ui| ui.auxiliary_window_activation_request(state.id));
+            if take_auxiliary_activation(&mut state.activation_request, request) {
+                state.window.set_visible(true);
+                state.window.set_minimized(false);
+                state.window.focus_window();
+                state.window.request_redraw();
+            }
+        }
+
         for descriptor in descriptors {
-            if self.failed_auxiliary_windows.contains(&descriptor.id)
+            if self
+                .failed_auxiliary_windows
+                .iter()
+                .any(|(id, _)| *id == descriptor.id)
                 || self
                     .pending_auxiliary_windows
                     .iter()
@@ -721,8 +814,16 @@ impl Phase1WindowApp {
                 continue;
             }
 
-            let window =
-                Arc::new(event_loop.create_window(self.auxiliary_window_attributes(&descriptor))?);
+            let window = match event_loop
+                .create_window(self.auxiliary_window_attributes(&descriptor))
+            {
+                Ok(window) => Arc::new(window),
+                Err(err) => {
+                    error!(id = descriptor.id, error = %err, "auxiliary window creation failed");
+                    self.fail_auxiliary_window(descriptor.id);
+                    continue;
+                }
+            };
             window.set_ime_allowed(true);
             let prepared = match GpuRenderer::prepare_surface(Arc::clone(&window)) {
                 Ok(prepared) => prepared,
@@ -789,7 +890,13 @@ impl Phase1WindowApp {
                 self.continuous_draw_dirty = false;
             }
             if should_redraw {
-                self.request_redraw_all();
+                self.request_redraw();
+                for state in &mut self.auxiliary_windows {
+                    if state.draw_dirty || state.draw_revision.is_none() {
+                        state.window.request_redraw();
+                        state.draw_dirty = false;
+                    }
+                }
             }
             self.next_continuous_redraw_at =
                 next_continuous_redraw_deadline(self.next_continuous_redraw_at, now);
@@ -851,25 +958,18 @@ impl Phase1WindowApp {
             return;
         };
         let main_draw_list = ui.draw_list();
-        let auxiliary_draw_lists: Vec<(u64, DrawList)> = self
-            .auxiliary_windows
-            .iter()
-            .filter_map(|state| {
-                ui.auxiliary_draw_list(state.id)
-                    .map(|draw_list| (state.id, draw_list))
-            })
-            .collect();
-
         if let Some(renderer) = self.renderer.as_mut() {
             renderer.set_draw_list(main_draw_list);
         }
-        for (id, draw_list) in auxiliary_draw_lists {
-            if let Some(state) = self
-                .auxiliary_windows
-                .iter_mut()
-                .find(|state| state.id == id)
-            {
+        for state in &mut self.auxiliary_windows {
+            let revision = ui.auxiliary_draw_revision(state.id);
+            if !auxiliary_draw_list_changed(state.draw_revision, revision) {
+                continue;
+            }
+            if let Some(draw_list) = ui.auxiliary_draw_list(state.id) {
                 state.renderer.set_draw_list(draw_list);
+                state.draw_revision = revision;
+                state.draw_dirty = true;
             }
         }
     }
@@ -902,6 +1002,10 @@ impl Phase1WindowApp {
                 self.request_redraw_all();
             }
             WindowEvent::RedrawRequested => {
+                if self.auxiliary_windows[index].window.is_minimized() == Some(true) {
+                    self.wait_for_next_continuous_redraw(event_loop);
+                    return;
+                }
                 let render_result = {
                     let state = &mut self.auxiliary_windows[index];
                     state.renderer.render()
@@ -922,6 +1026,9 @@ impl Phase1WindowApp {
                 self.wait_for_next_continuous_redraw(event_loop);
             }
             WindowEvent::Resized(size) => {
+                if size.width == 0 || size.height == 0 {
+                    return;
+                }
                 debug!(
                     id = auxiliary_id,
                     width = size.width,
@@ -930,6 +1037,7 @@ impl Phase1WindowApp {
                 );
                 let ui_size = {
                     let state = &mut self.auxiliary_windows[index];
+                    state.draw_revision = None;
                     state
                         .renderer
                         .set_ui_scale_factor(state.window.scale_factor());
@@ -950,6 +1058,7 @@ impl Phase1WindowApp {
                 );
                 let ui_size = {
                     let state = &mut self.auxiliary_windows[index];
+                    state.draw_revision = None;
                     state.renderer.set_ui_scale_factor(scale_factor);
                     state.renderer.ui_size()
                 };
@@ -1209,6 +1318,14 @@ impl ApplicationHandler for Phase1WindowApp {
                 if !self.config.continuous_redraw && self.tick_ui(event_loop) {
                     self.rebuild_all_draw_lists();
                 }
+                if self
+                    .window
+                    .as_ref()
+                    .is_some_and(|window| window.is_minimized() == Some(true))
+                {
+                    self.wait_for_next_continuous_redraw(event_loop);
+                    return;
+                }
                 if let Some(renderer) = self.renderer.as_mut() {
                     match renderer.render() {
                         Ok(stats) => {
@@ -1228,6 +1345,9 @@ impl ApplicationHandler for Phase1WindowApp {
                 self.wait_for_next_continuous_redraw(event_loop);
             }
             WindowEvent::Resized(size) => {
+                if size.width == 0 || size.height == 0 {
+                    return;
+                }
                 debug!(width = size.width, height = size.height, "window resized");
                 let mut ui_size = None;
                 let scale_factor = self
@@ -1569,6 +1689,25 @@ fn log_ime_event(ime: &Ime) {
 mod tests {
     use super::*;
 
+    #[test]
+    fn retained_auxiliary_views_ignore_main_frames_but_refresh_after_invalidation() {
+        let mut last_revision = None;
+        let mut rebuilds = 0;
+        for revision in std::iter::repeat_n(Some(7), 120).chain([Some(8), Some(8)]) {
+            if auxiliary_draw_list_changed(last_revision, revision) {
+                rebuilds += 1;
+                last_revision = revision;
+            }
+        }
+        assert_eq!(rebuilds, 2);
+        // Native resizing invalidates the retained revision.
+        last_revision = None;
+        assert!(auxiliary_draw_list_changed(last_revision, Some(8)));
+        // Animated views preserve the default refresh behavior.
+        assert!(auxiliary_draw_list_changed(Some(8), None));
+        assert!(auxiliary_draw_list_changed(None, None));
+    }
+
     #[cfg(target_os = "windows")]
     #[test]
     #[ignore = "requires a Windows desktop and a working WGPU adapter"]
@@ -1588,10 +1727,16 @@ mod tests {
         use std::{cell::Cell, rc::Rc};
         use winit::{dpi::PhysicalSize, platform::windows::EventLoopBuilderExtWindows};
 
-        struct Probe(Rc<Cell<bool>>, bool);
+        struct Probe(Rc<Cell<bool>>, bool, Rc<Cell<u64>>);
         impl PlitaProgram for Probe {
             fn render_on_worker_thread(&self) -> bool {
                 self.1
+            }
+            fn auxiliary_draw_revision(&self, _id: u64) -> Option<u64> {
+                Some(0)
+            }
+            fn auxiliary_window_activation_request(&self, _id: u64) -> Option<u64> {
+                Some(self.2.get())
             }
             fn resize(&mut self, _size: Size) -> UiResponse {
                 UiResponse::none()
@@ -1631,6 +1776,7 @@ mod tests {
         struct Harness {
             app: Phase1WindowApp,
             requested: Rc<Cell<bool>>,
+            activation: Rc<Cell<u64>>,
             deadline: Instant,
             phase: u8,
             first_window: Option<WindowId>,
@@ -1657,6 +1803,10 @@ mod tests {
                     return;
                 }
                 self.app.about_to_wait(event_loop);
+                // The probe submits frames after the app's pending-work poll.
+                event_loop.set_control_flow(ControlFlow::WaitUntil(
+                    Instant::now() + Duration::from_millis(10),
+                ));
                 if let Some(state) = self.app.auxiliary_windows.first_mut() {
                     match self.phase {
                         0 => {
@@ -1665,21 +1815,36 @@ mod tests {
                             if stats.draw_commands == 0 {
                                 return;
                             }
-                            let _ = state.window.request_inner_size(PhysicalSize::new(200, 320));
+                            state.window.set_minimized(true);
                             self.phase = 1;
-                            eprintln!("native auxiliary ready: image submitted, resize requested");
+                            eprintln!(
+                                "native auxiliary ready: image submitted, minimize requested"
+                            );
                         }
-                        1 if state.renderer.size() == RenderSize::clamped(200, 320) => {
+                        1 if state.window.is_minimized() == Some(true) => {
+                            // A stable request must not undo the user's minimize action.
+                            assert_eq!(state.activation_request, Some(self.activation.get()));
+                            self.activation.set(self.activation.get() + 1);
+                            self.phase = 2;
+                        }
+                        2 if state.window.is_minimized() == Some(false) => {
+                            assert_eq!(Some(state.window.id()), self.first_window);
+                            assert_eq!(state.activation_request, Some(self.activation.get()));
+                            let _ = state.window.request_inner_size(PhysicalSize::new(200, 320));
+                            self.phase = 3;
+                            eprintln!("native auxiliary restored: same window, resize requested");
+                        }
+                        3 if state.renderer.size() == RenderSize::clamped(200, 320) => {
                             let stats = state.renderer.render().expect("resized auxiliary present");
                             if (stats.width, stats.height) != (200, 320) {
                                 return;
                             }
                             assert_eq!((stats.width, stats.height), (200, 320));
                             self.requested.set(false);
-                            self.phase = 2;
+                            self.phase = 4;
                             eprintln!("native auxiliary resized: 200x320 image submitted");
                         }
-                        3 => {
+                        5 => {
                             assert_ne!(Some(state.window.id()), self.first_window);
                             let stats =
                                 state.renderer.render().expect("reopened auxiliary present");
@@ -1696,6 +1861,11 @@ mod tests {
                     }
                 }
                 if self.phase == 2 {
+                    self.app
+                        .sync_auxiliary_windows(event_loop)
+                        .expect("dispatch explicit restore request");
+                }
+                if self.phase == 4 {
                     self.app
                         .sync_auxiliary_windows(event_loop)
                         .expect("close auxiliary");
@@ -1718,16 +1888,15 @@ mod tests {
                     self.app
                         .sync_auxiliary_windows(event_loop)
                         .expect("reopen auxiliary");
-                    self.phase = 3;
+                    self.phase = 5;
                 }
-                event_loop.set_control_flow(ControlFlow::WaitUntil(
-                    Instant::now() + Duration::from_millis(10),
-                ));
             }
         }
 
         let requested = Rc::new(Cell::new(true));
         let program_requested = requested.clone();
+        let activation = Rc::new(Cell::new(0));
+        let program_activation = activation.clone();
         let app = Phase1WindowApp::new(
             WindowConfig {
                 title: "plita main surface probe".to_string(),
@@ -1737,12 +1906,13 @@ mod tests {
                 clear_color: ClearColor::rgb(0.8, 0.8, 0.8),
                 continuous_redraw: false,
             },
-            move |_| Probe(program_requested, threaded),
+            move |_| Probe(program_requested, threaded, program_activation),
         );
         let mut harness = Harness {
             app,
             requested,
-            deadline: Instant::now() + Duration::from_secs(20),
+            activation,
+            deadline: Instant::now() + Duration::from_secs(60),
             phase: 0,
             first_window: None,
             passed: false,
@@ -1788,7 +1958,7 @@ mod tests {
         app.fail_auxiliary_window(7);
         app.fail_auxiliary_window(8);
         assert_eq!(closed.get(), 2);
-        assert_eq!(app.failed_auxiliary_windows, vec![7, 8]);
+        assert_eq!(app.failed_auxiliary_windows, vec![(7, None), (8, None)]);
         assert!(
             app.startup_error.is_none(),
             "auxiliary failures must not exit the main window"
@@ -2001,6 +2171,60 @@ mod auxiliary_failure_dispatch_tests {
     use std::{cell::Cell, rc::Rc};
 
     #[test]
+    fn activation_is_only_consumed_when_the_request_changes() {
+        let mut last = None;
+        assert!(!take_auxiliary_activation(&mut last, None));
+        assert!(take_auxiliary_activation(&mut last, Some(1)));
+        assert!(!take_auxiliary_activation(&mut last, Some(1)));
+        assert!(take_auxiliary_activation(&mut last, Some(2)));
+        assert!(!take_auxiliary_activation(&mut last, Some(2)));
+        assert!(!take_auxiliary_activation(&mut last, None));
+        assert!(take_auxiliary_activation(&mut last, Some(0)));
+    }
+
+    #[test]
+    fn explicit_retry_clears_failure_without_recreating_the_main_window() {
+        struct Probe(Rc<Cell<u64>>);
+        impl PlitaProgram for Probe {
+            fn resize(&mut self, _: Size) -> UiResponse {
+                UiResponse::none()
+            }
+            fn handle_event(&mut self, _: UiEvent) -> UiResponse {
+                UiResponse::none()
+            }
+            fn draw_list(&self) -> DrawList {
+                DrawList::new(plita_ui::Color::rgb(0., 0., 0.))
+            }
+            fn auxiliary_window_activation_request(&self, _: u64) -> Option<u64> {
+                Some(self.0.get())
+            }
+        }
+        let token = Rc::new(Cell::new(1));
+        let factory_token = token.clone();
+        let config = WindowConfig {
+            title: "retry".into(),
+            width: 320,
+            height: 240,
+            centered: false,
+            clear_color: ClearColor::rgb(0., 0., 0.),
+            continuous_redraw: false,
+        };
+        let mut app = Phase1WindowApp::new(config, move |_| Probe(factory_token));
+        app.ui = Some(Box::new(Probe(token.clone())));
+        let descriptors = [AuxiliaryWindowDescriptor::new(7, "test", 320, 240)];
+        app.fail_auxiliary_window(7);
+        app.discard_obsolete_auxiliary_failures(&descriptors);
+        assert_eq!(app.failed_auxiliary_windows, vec![(7, Some(1))]);
+        token.set(2);
+        app.discard_obsolete_auxiliary_failures(&descriptors);
+        assert!(app.failed_auxiliary_windows.is_empty());
+        app.fail_auxiliary_window(7);
+        app.discard_obsolete_auxiliary_failures(&[]);
+        assert!(app.failed_auxiliary_windows.is_empty());
+        assert!(app.startup_error.is_none());
+    }
+
+    #[test]
     fn renderer_failure_is_not_dispatched_as_a_user_close() {
         struct Probe(Rc<Cell<usize>>, Rc<Cell<usize>>);
         impl PlitaProgram for Probe {
@@ -2042,7 +2266,7 @@ mod auxiliary_failure_dispatch_tests {
         app.fail_auxiliary_window(8);
         assert_eq!(failures.get(), 2);
         assert_eq!(closes.get(), 0);
-        assert_eq!(app.failed_auxiliary_windows, vec![7, 8]);
+        assert_eq!(app.failed_auxiliary_windows, vec![(7, None), (8, None)]);
         assert!(app.startup_error.is_none());
     }
 }

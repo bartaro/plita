@@ -2,7 +2,7 @@
 
 [English](en.md) · [日本語](ja.md) · [한국어](ko.md) · [简体中文](zh-CN.md) · [繁體中文](zh-TW.md) · [Français](fr.md) · [Español](es.md) · [Deutsch](de.md)
 
-DAISUKE OBA · Source edition 2026-10-11 · Cargo package version 0.0.1
+DAISUKE OBA · Source edition 2026-10-18 · Cargo package version 0.0.1
 
 ## 1. What is included
 
@@ -75,11 +75,17 @@ Use plita's logical coordinates for UI hit testing and layout; the window layer 
 
 Custom applications can describe auxiliary windows through `AuxiliaryWindowDescriptor` and implement their resize, event and draw-list callbacks. The shell's detached memory editor works on its retained demonstration buffer; it is not automatically connected to an emulator or another process.
 
+`PlitaProgram::minimum_window_size()` and `auxiliary_window_minimum_size(id)` specify minimum client sizes in logical coordinates; the default `None` leaves resizing unconstrained. `auxiliary_window_activation_request(id)` returns an optional request token: change it for each intentional restore/focus request. An unchanged token does not repeatedly activate the window. After an auxiliary-window creation failure, withdraw its descriptor or change the activation token to retry; the main window remains running.
+
+`auxiliary_draw_revision(id)` optionally retains an auxiliary draw list. Return `Some(revision)` and change the revision whenever visible content changes, including hover and pressed states, while also requesting redraw through `UiResponse`. Native resize or DPI changes invalidate the retained list. Return the default `None` for animated or shared-image windows. Rendering is skipped while a window is minimized, and zero-sized resize events are ignored.
+
 ## 6. Docking, canvas and persistence
 
 `DockLayoutState` and the dock geometry types describe panel placement. `DockLayoutProfile` represents a versioned layout profile. The shell supports layout profile text, and `AppBuilder::startup_layout_profile` restores it when launching the built-in shell. Your application must decide where and when to save that text; in-memory layout slots do not replace durable file storage.
 
 `CanvasDocument` and `LayerNode` provide the document and layer model. Selection, marquee and snapping helpers, together with `CommandHistory`, support editor behavior. `CommandRegistry` and `CommandDescriptor` describe commands and shortcuts. These APIs do not supply a complete application file format or an automatic project-save system. Connect the models to your own commands and serialization.
+
+`memory_viewer_address_at_point(rect, base_address, byte_count, position)` maps a visible hexadecimal byte in `draw_memory_viewer` to `Option<u16>`. Pass the same rectangle and base address as the renderer, the actual byte count, and a logical pointer position. Address labels, ASCII text, gaps, missing bytes and hidden rows return `None`. The application handles selection and writes; this helper does not modify memory.
 
 ## 7. Fonts and icons
 
@@ -100,6 +106,10 @@ fn render_on_worker_thread(&self) -> bool {
 ```
 
 GPU work and presentation move to a worker for each window. Window management, input, `tick` and draw-list construction stay on the event-loop thread. Slow rendering coalesces pending requests to the latest frame; it is not a lossless frame-recording API. Update a shared RGBA image entirely under the same mutex and keep that lock short. The option is read when a renderer is created, rather than acting as a live toggle. The default is synchronous rendering.
+
+The renderer retains immutable RGBA sources to prevent texture-cache identity collisions, reuses vertex buffers and temporary image storage, and releases unused image-cache entries after a short frame-based retention period. Shared RGBA data is copied under its mutex before GPU upload; keep updates inside that same mutex. These internal changes do not require changes to existing draw-list calls.
+
+Validation note (2026-10-18): the normal workspace tests, two offscreen GPU regressions, and the native synchronous-window test passed on the publication machine. The native render-worker test timed out after restore/resize, and a separate desktop run terminated abnormally. The cause has not been isolated, so successful native worker operation is not confirmed for this environment. Keep the default synchronous rendering when reliability is required; validate the opt-in worker on your own target before enabling it.
 
 ## 9. Optional Python helpers
 
@@ -128,6 +138,8 @@ cargo run --locked -p hello_plita
 ```
 
 The manuals describe the published source. They do not certify runtime testing on every platform. API documentation can also be generated with `cargo doc --workspace --no-deps --locked`.
+
+Two self-contained GPU regression tests can be run explicitly on a machine with a working GPU: `cargo test -p plita_render --locked offscreen_image_updates_and_draw_order -- --ignored --test-threads=1` and `cargo test -p plita_render --locked offscreen_cache_keeps_images_distinct_and_releases_old_sources -- --ignored --test-threads=1`. Normal workspace tests skip GPU and native desktop tests. The other ignored benchmarks require external fixtures and output paths; do not run every ignored test without preparing those inputs.
 
 ## 11. License and redistribution
 

@@ -942,6 +942,17 @@
     ]
   },
   {
+    "name": "itoa",
+    "version": "1.0.18",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/dtolnay/itoa",
+    "license_files": [
+      "licenses/dependencies/itoa-1.0.18/Cargo.toml.orig",
+      "licenses/dependencies/itoa-1.0.18/LICENSE-APACHE",
+      "licenses/dependencies/itoa-1.0.18/LICENSE-MIT"
+    ]
+  },
+  {
     "name": "jni",
     "version": "0.22.4",
     "license": "MIT OR Apache-2.0",
@@ -2429,6 +2440,17 @@
     ]
   },
   {
+    "name": "serde_json",
+    "version": "1.0.151",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/serde-rs/json",
+    "license_files": [
+      "licenses/dependencies/serde_json-1.0.151/Cargo.toml.orig",
+      "licenses/dependencies/serde_json-1.0.151/LICENSE-APACHE",
+      "licenses/dependencies/serde_json-1.0.151/LICENSE-MIT"
+    ]
+  },
+  {
     "name": "sharded-slab",
     "version": "0.1.7",
     "license": "MIT",
@@ -3577,6 +3599,16 @@
       "licenses/dependencies/zerocopy-derive-0.8.48/LICENSE-APACHE",
       "licenses/dependencies/zerocopy-derive-0.8.48/LICENSE-BSD",
       "licenses/dependencies/zerocopy-derive-0.8.48/LICENSE-MIT"
+    ]
+  },
+  {
+    "name": "zmij",
+    "version": "1.0.23",
+    "license": "MIT",
+    "repository": "https://github.com/dtolnay/zmij",
+    "license_files": [
+      "licenses/dependencies/zmij-1.0.23/Cargo.toml.orig",
+      "licenses/dependencies/zmij-1.0.23/LICENSE-MIT"
     ]
   }
 ]

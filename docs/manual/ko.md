@@ -2,7 +2,7 @@
 
 [English](en.md) · [日本語](ja.md) · [한국어](ko.md) · [简体中文](zh-CN.md) · [繁體中文](zh-TW.md) · [Français](fr.md) · [Español](es.md) · [Deutsch](de.md)
 
-DAISUKE OBA · 소스 배포판 2026-10-11 · Cargo 패키지 버전 0.0.1
+DAISUKE OBA · 소스 배포판 2026-10-18 · Cargo 패키지 버전 0.0.1
 
 ## 1. 포함된 구성 요소
 
@@ -75,11 +75,17 @@ UI 적중 검사와 배치에는 plita의 논리 좌표를 사용하세요. DPI 
 
 `AuxiliaryWindowDescriptor`로 보조 창을 정의하고 해당 창의 크기 변경, 이벤트 및 그리기 목록 콜백을 구현할 수 있습니다. 셸의 분리된 메모리 편집기는 셸이 보유한 데모 버퍼를 다룹니다. 에뮬레이터나 다른 프로세스에 자동으로 연결하지 않습니다.
 
+`PlitaProgram::minimum_window_size()`와 `auxiliary_window_minimum_size(id)`는 논리 좌표로 클라이언트 영역의 최소 크기를 지정합니다. 기본값 `None`은 크기를 제한하지 않습니다. `auxiliary_window_activation_request(id)`는 선택적 요청 토큰을 반환합니다. 의도적으로 복원하거나 포커스를 요청할 때마다 값을 바꾸세요. 같은 토큰은 창을 반복해서 활성화하지 않습니다. 보조 창 생성 실패 후에는 창 정의를 철회하거나 토큰을 변경하여 재시도할 수 있으며, 주 창은 계속 실행됩니다.
+
+`auxiliary_draw_revision(id)`로 보조 창의 그리기 목록을 유지할 수 있습니다. `Some(revision)`을 반환하면 호버 및 누름 상태를 포함한 표시 내용이 바뀔 때마다 버전을 변경하고 `UiResponse`로 다시 그리기도 요청하세요. 창 크기 또는 DPI 변경은 캐시를 무효화합니다. 애니메이션이나 공유 이미지 창에서는 기본값 `None`을 반환하세요. 최소화된 창은 렌더링하지 않으며 크기가 0인 크기 변경 이벤트는 무시합니다.
+
 ## 6. 도킹, 캔버스와 저장
 
 `DockLayoutState`와 도킹 기하 타입은 패널 배치를 나타냅니다. `DockLayoutProfile`은 버전 정보가 있는 배치 프로필입니다. 셸은 프로필 텍스트를 처리하며 `AppBuilder::startup_layout_profile`로 기본 셸 시작 시 복원할 수 있습니다. 텍스트를 언제 어디에 저장할지는 앱이 결정해야 합니다. 메모리의 배치 슬롯은 영구 파일 저장을 대신하지 않습니다.
 
 `CanvasDocument`와 `LayerNode`는 문서와 레이어 모델입니다. 선택, 영역 선택, 스냅 도우미와 `CommandHistory`로 편집 동작을 구성할 수 있습니다. `CommandRegistry`와 `CommandDescriptor`는 명령과 단축키 정보를 나타냅니다. 이 API는 완성된 앱 파일 형식이나 자동 프로젝트 저장 기능을 제공하지 않습니다. 자체 명령과 직렬화에 모델을 연결하세요.
+
+`memory_viewer_address_at_point(rect, base_address, byte_count, position)`는 `draw_memory_viewer`에 보이는 16진수 바이트 위치를 `Option<u16>` 주소로 변환합니다. 그릴 때와 같은 사각형과 시작 주소, 실제 바이트 수, 논리 포인터 좌표를 전달하세요. 주소 레이블, ASCII 영역, 간격, 없는 바이트 및 숨겨진 행은 `None`입니다. 선택과 쓰기는 앱이 처리하며 이 함수는 메모리를 수정하지 않습니다.
 
 ## 7. 글꼴과 아이콘
 
@@ -100,6 +106,10 @@ fn render_on_worker_thread(&self) -> bool {
 ```
 
 창마다 작업 스레드가 GPU 처리와 화면 표시를 맡습니다. 창 관리, 입력, `tick`, 그리기 목록 생성은 이벤트 루프 스레드에 남습니다. 렌더링이 느리면 대기 요청을 최신 프레임으로 합치므로 모든 프레임을 기록하는 API가 아닙니다. 공유 RGBA 이미지 전체를 같은 mutex 안에서 갱신하고 잠금 시간을 짧게 유지하세요. 설정은 렌더러 생성 시 읽으며 실행 중 전환 스위치가 아닙니다. 기본값은 동기 렌더링입니다.
+
+렌더러는 불변 RGBA 원본을 유지하여 텍스처 캐시의 식별 충돌을 방지하고, 정점 버퍼와 이미지 임시 저장 공간을 재사용합니다. 사용하지 않는 이미지 캐시는 짧은 프레임 단위 유지 기간 후 해제됩니다. 공유 RGBA 데이터는 mutex 안에서 복사한 뒤 GPU로 전송하므로 같은 mutex 안에서 갱신하세요. 기존 그리기 목록 호출은 변경할 필요가 없습니다.
+
+검증 제한(2026-10-18): 공개 작업 환경에서 일반 워크스페이스 시험, 오프스크린 GPU 회귀 시험 2건, 동기 렌더링의 네이티브 창 시험이 통과했습니다. 반면 네이티브 렌더 워커 시험은 복원 및 크기 변경 후 시간 초과가 발생했고, 별도의 데스크톱 실행은 비정상 종료되었습니다. 원인은 아직 확인되지 않았으며 이 환경에서 워커의 정상 동작은 검증되지 않았습니다. 안정성이 필요하면 기본 동기 렌더링을 유지하고, 선택적 워커는 대상 환경에서 검증한 후 활성화하세요.
 
 ## 9. 선택적 Python 도우미
 
@@ -128,6 +138,8 @@ cargo run --locked -p hello_plita
 ```
 
 이 설명서는 공개 소스를 설명하며 모든 플랫폼의 실행 시험을 보증하지 않습니다. `cargo doc --workspace --no-deps --locked`로 API 문서도 생성할 수 있습니다.
+
+GPU가 작동하는 환경에서는 외부 데이터 없이 두 회귀 시험을 명시적으로 실행할 수 있습니다: `cargo test -p plita_render --locked offscreen_image_updates_and_draw_order -- --ignored --test-threads=1` 및 `cargo test -p plita_render --locked offscreen_cache_keeps_images_distinct_and_releases_old_sources -- --ignored --test-threads=1`. 일반 워크스페이스 시험은 GPU 및 네이티브 데스크톱 시험을 건너뜁니다. 다른 ignored 벤치마크는 외부 입력과 출력 경로가 필요하므로 준비 없이 모든 ignored 시험을 실행하지 마세요.
 
 ## 11. 라이선스와 재배포
 

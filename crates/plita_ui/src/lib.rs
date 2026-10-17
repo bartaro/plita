@@ -2325,9 +2325,9 @@ pub fn draw_memory_viewer(
     bytes: &[u8],
     palette: MemoryViewerPalette,
 ) {
-    const BYTES_PER_ROW: usize = 8;
-    const HEADER_HEIGHT: f32 = 42.0;
-    const ROW_HEIGHT: f32 = 14.0;
+    const BYTES_PER_ROW: usize = MEMORY_VIEWER_BYTES_PER_ROW;
+    const HEADER_HEIGHT: f32 = MEMORY_VIEWER_HEADER_HEIGHT;
+    const ROW_HEIGHT: f32 = MEMORY_VIEWER_ROW_HEIGHT;
 
     if !rect.is_visible() {
         return;
@@ -2343,10 +2343,24 @@ pub fn draw_memory_viewer(
         list,
         rect.x + 10.0,
         rect.y + 28.0,
-        "ADDR   00 01 02 03 04 05 06 07  ASCII",
+        "ADDR",
         0.62,
         palette.muted,
     );
+    for col in 0..BYTES_PER_ROW {
+        let cell = memory_viewer_byte_rect(rect, 0, col);
+        draw_bitmap_text(
+            list,
+            cell.x,
+            rect.y + 28.0,
+            &format!("{col:02X}"),
+            0.62,
+            palette.muted,
+        );
+    }
+    let ascii_x = memory_viewer_byte_rect(rect, 0, BYTES_PER_ROW).x
+        + BITMAP_SPACE_ADVANCE * MEMORY_VIEWER_TEXT_SCALE * BITMAP_SCALE_FACTOR;
+    draw_bitmap_text(list, ascii_x, rect.y + 28.0, "ASCII", 0.62, palette.muted);
 
     list.push_clip(rect.inset(1.0));
     let rows = ((rect.height - HEADER_HEIGHT - 8.0) / ROW_HEIGHT)
@@ -2360,13 +2374,6 @@ pub fn draw_memory_viewer(
         }
         let row_bytes = &bytes[offset..bytes.len().min(offset + BYTES_PER_ROW)];
         let address = base_address.wrapping_add(offset as u16);
-        let mut hex = String::new();
-        for byte in row_bytes {
-            hex.push_str(&format!(" {:02X}", byte));
-        }
-        for _ in row_bytes.len()..BYTES_PER_ROW {
-            hex.push_str("   ");
-        }
         let ascii: String = row_bytes
             .iter()
             .map(|byte| {
@@ -2377,22 +2384,83 @@ pub fn draw_memory_viewer(
                 }
             })
             .collect();
-        let line = format!("{address:04X}:{hex}  {ascii}");
+        let color = if row == 0 {
+            palette.accent
+        } else {
+            palette.text
+        };
         draw_bitmap_text(
             list,
             rect.x + 10.0,
             y,
-            &line,
-            0.68,
-            if row == 0 {
-                palette.accent
-            } else {
-                palette.text
-            },
+            &format!("{address:04X}:"),
+            MEMORY_VIEWER_TEXT_SCALE,
+            color,
         );
+        for (col, byte) in row_bytes.iter().enumerate() {
+            let cell = memory_viewer_byte_rect(rect, row, col);
+            draw_bitmap_text(
+                list,
+                cell.x,
+                cell.y,
+                &format!("{byte:02X}"),
+                MEMORY_VIEWER_TEXT_SCALE,
+                color,
+            );
+        }
+        draw_bitmap_text(list, ascii_x, y, &ascii, MEMORY_VIEWER_TEXT_SCALE, color);
         y += ROW_HEIGHT;
     }
     list.pop_clip();
+}
+
+const MEMORY_VIEWER_BYTES_PER_ROW: usize = 8;
+const MEMORY_VIEWER_HEADER_HEIGHT: f32 = 42.0;
+const MEMORY_VIEWER_ROW_HEIGHT: f32 = 14.0;
+const MEMORY_VIEWER_TEXT_SCALE: f32 = 0.68;
+
+fn memory_viewer_byte_rect(rect: Rect, row: usize, col: usize) -> Rect {
+    let scale = MEMORY_VIEWER_TEXT_SCALE * BITMAP_SCALE_FACTOR;
+    let pitch = BITMAP_SPACE_ADVANCE + 2.0 * BITMAP_GLYPH_ADVANCE;
+    Rect::new(
+        rect.x
+            + 10.0
+            + (5.0 * BITMAP_GLYPH_ADVANCE + BITMAP_SPACE_ADVANCE + col as f32 * pitch) * scale,
+        rect.y + MEMORY_VIEWER_HEADER_HEIGHT + 7.0 + row as f32 * MEMORY_VIEWER_ROW_HEIGHT,
+        2.0 * BITMAP_GLYPH_ADVANCE * scale,
+        MEMORY_VIEWER_ROW_HEIGHT,
+    )
+}
+
+/// Hit-test only the visible hex bytes drawn by `draw_memory_viewer`.
+/// Address labels, ASCII text, inter-byte gaps and unused cells are not editable hits.
+pub fn memory_viewer_address_at_point(
+    rect: Rect,
+    base_address: u16,
+    byte_count: usize,
+    position: Point,
+) -> Option<u16> {
+    if !rect.inset(1.0).contains(position) {
+        return None;
+    }
+    let rows = ((rect.height - MEMORY_VIEWER_HEADER_HEIGHT - 8.0) / MEMORY_VIEWER_ROW_HEIGHT)
+        .floor()
+        .max(0.0) as usize;
+    let row_y = position.y - rect.y - MEMORY_VIEWER_HEADER_HEIGHT - 7.0;
+    if row_y < 0.0 {
+        return None;
+    }
+    let row = (row_y / MEMORY_VIEWER_ROW_HEIGHT).floor() as usize;
+    if row >= rows {
+        return None;
+    }
+    for col in 0..MEMORY_VIEWER_BYTES_PER_ROW {
+        let index = row * MEMORY_VIEWER_BYTES_PER_ROW + col;
+        if index < byte_count && memory_viewer_byte_rect(rect, row, col).contains(position) {
+            return Some(base_address.wrapping_add(index as u16));
+        }
+    }
+    None
 }
 
 /// Draw an editable compact hex memory view.
@@ -10577,11 +10645,11 @@ pub fn draw_text(list: &mut DrawList, x: f32, y: f32, text: &str, scale: f32, co
 ///
 /// This is the fallback renderer. It is clean-room and intentionally tiny.
 pub fn draw_bitmap_text(list: &mut DrawList, x: f32, y: f32, text: &str, scale: f32, color: Color) {
-    let scale = (scale * 1.25).max(0.75);
+    let scale = (scale * BITMAP_SCALE_FACTOR).max(0.75);
     let mut cursor_x = x;
     for ch in text.chars() {
         if ch == ' ' {
-            cursor_x += 4.0 * scale;
+            cursor_x += BITMAP_SPACE_ADVANCE * scale;
             continue;
         }
         if let Some(rows) = glyph_5x7(ch) {
@@ -10601,7 +10669,59 @@ pub fn draw_bitmap_text(list: &mut DrawList, x: f32, y: f32, text: &str, scale: 
                 }
             }
         }
-        cursor_x += 6.0 * scale;
+        cursor_x += BITMAP_GLYPH_ADVANCE * scale;
+    }
+}
+
+const BITMAP_SCALE_FACTOR: f32 = 1.25;
+const BITMAP_SPACE_ADVANCE: f32 = 4.0;
+const BITMAP_GLYPH_ADVANCE: f32 = 6.0;
+
+#[cfg(test)]
+mod memory_viewer_hit_tests {
+    use super::*;
+
+    #[test]
+    fn visible_hex_cells_map_to_their_drawn_byte_addresses() {
+        let rect = Rect::new(16., 134., 480., 356.);
+        for row in 0..21 {
+            for col in 0..8 {
+                let cell = memory_viewer_byte_rect(rect, row, col);
+                let point = Point::new(cell.x + cell.width / 2., cell.y + 3.);
+                assert_eq!(
+                    memory_viewer_address_at_point(rect, 0xc000, 168, point),
+                    Some(0xc000 + (row * 8 + col) as u16)
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn labels_ascii_gaps_and_missing_or_hidden_bytes_are_not_editable() {
+        let rect = Rect::new(16., 134., 480., 356.);
+        let first = memory_viewer_byte_rect(rect, 0, 0);
+        for point in [
+            Point::new(rect.x + 12., first.y + 3.),
+            Point::new(first.x - 1., first.y + 3.),
+            Point::new(first.x, rect.y + 28.),
+            Point::new(rect.x + 260., first.y + 3.),
+            Point::new(first.x, first.y + 21. * 14. + 3.),
+        ] {
+            assert_eq!(
+                memory_viewer_address_at_point(rect, 0xc000, 176, point),
+                None
+            );
+        }
+        let missing = memory_viewer_byte_rect(rect, 1, 1);
+        assert_eq!(
+            memory_viewer_address_at_point(
+                rect,
+                0xc000,
+                9,
+                Point::new(missing.x + 2., missing.y + 3.)
+            ),
+            None
+        );
     }
 }
 

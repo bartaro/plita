@@ -2,7 +2,7 @@
 
 [English](en.md) · [日本語](ja.md) · [한국어](ko.md) · [简体中文](zh-CN.md) · [繁體中文](zh-TW.md) · [Français](fr.md) · [Español](es.md) · [Deutsch](de.md)
 
-DAISUKE OBA · Quelltextausgabe vom 2026-10-11 · Cargo-Paketversion 0.0.1
+DAISUKE OBA · Quelltextausgabe vom 2026-10-18 · Cargo-Paketversion 0.0.1
 
 ## 1. Lieferumfang
 
@@ -75,11 +75,17 @@ Verwenden Sie die logischen Koordinaten von plita für Treffertests und Layout. 
 
 Eigene Anwendungen können Zusatzfenster mit `AuxiliaryWindowDescriptor` beschreiben und Rückrufe für Größenänderung, Ereignisse und Zeichenlisten implementieren. Der abgetrennte Speichereditor der eingebauten Oberfläche bearbeitet deren Demonstrationspuffer. Er verbindet sich nicht automatisch mit einem Emulator oder einem anderen Prozess.
 
+`PlitaProgram::minimum_window_size()` und `auxiliary_window_minimum_size(id)` legen die Mindestgröße des Clientbereichs in logischen Koordinaten fest. Der Standardwert `None` setzt keine Grenze. `auxiliary_window_activation_request(id)` liefert ein optionales Anforderungstoken: Ändern Sie es bei jeder beabsichtigten Wiederherstellung oder Fokussierung. Ein unverändertes Token aktiviert das Fenster nicht wiederholt. Nach einem Fehler beim Erstellen eines Zusatzfensters ziehen Sie dessen Definition zurück oder ändern das Token, um es erneut zu versuchen; das Hauptfenster läuft weiter.
+
+`auxiliary_draw_revision(id)` erlaubt es, die Zeichenliste eines Zusatzfensters beizubehalten. Bei `Some(revision)` ändern Sie die Revision bei jeder sichtbaren Änderung, einschließlich Hover- und Druckzuständen, und fordern über `UiResponse` auch ein Neuzeichnen an. Native Größen- oder DPI-Änderungen machen die Liste ungültig. Für Animationen und gemeinsam genutzte Bilder bleibt der Standardwert `None` geeignet. Minimierte Fenster werden nicht gerendert; Größenänderungen auf null werden ignoriert.
+
 ## 6. Docking, Canvas und Speicherung
 
 `DockLayoutState` und die Docking-Geometrietypen beschreiben die Anordnung der Bedienfelder. `DockLayoutProfile` ist ein versioniertes Layoutprofil. Die eingebaute Oberfläche verarbeitet Profiltext; `AppBuilder::startup_layout_profile` stellt ihn beim Start dieser Oberfläche wieder her. Wann und wo der Text gespeichert wird, entscheidet die Anwendung. Layoutplätze im Arbeitsspeicher ersetzen keine dauerhafte Speicherung in Dateien.
 
 `CanvasDocument` und `LayerNode` stellen Dokument- und Ebenenmodelle bereit. Auswahl, Rechteckauswahl und Einrasthilfen ermöglichen zusammen mit `CommandHistory` die Umsetzung von Bearbeitungsfunktionen. `CommandRegistry` und `CommandDescriptor` beschreiben Befehle und Tastenkürzel. Diese APIs liefern weder ein vollständiges Anwendungsdateiformat noch eine automatische Projektspeicherung. Verbinden Sie die Modelle mit eigenen Befehlen und Ihrer Serialisierung.
+
+`memory_viewer_address_at_point(rect, base_address, byte_count, position)` ordnet einem sichtbaren Hexadezimalbyte in `draw_memory_viewer` eine Adresse vom Typ `Option<u16>` zu. Übergeben Sie dasselbe Rechteck und dieselbe Basisadresse wie beim Zeichnen, die tatsächliche Byteanzahl und die logische Zeigerposition. Adressbeschriftungen, ASCII-Text, Zwischenräume, fehlende Bytes und ausgeblendete Zeilen ergeben `None`. Auswahl und Schreibzugriffe übernimmt die Anwendung; diese Funktion verändert keinen Speicher.
 
 ## 7. Schriftarten und Symbole
 
@@ -100,6 +106,10 @@ fn render_on_worker_thread(&self) -> bool {
 ```
 
 Ein Arbeitsthread pro Fenster übernimmt GPU-Arbeit und Bildausgabe. Fensterverwaltung, Eingaben, `tick` und der Aufbau der Zeichenlisten bleiben auf dem Thread der Ereignisschleife. Bei langsamem Rendering werden ausstehende Anforderungen auf das neueste Bild zusammengefasst. Dies ist keine API zur lückenlosen Aufnahme aller Bilder. Aktualisieren Sie ein geteiltes RGBA-Bild vollständig unter demselben Mutex und halten Sie die Sperre kurz. Die Option wird beim Erzeugen des Renderers gelesen und ist kein Schalter für den laufenden Betrieb. Standardmäßig wird synchron gerendert.
+
+Der Renderer hält unveränderliche RGBA-Quellen fest, um Identitätskollisionen im Texturcache zu verhindern, verwendet Vertexpuffer und temporären Bildspeicher erneut und gibt unbenutzte Cache-Einträge nach einer kurzen Anzahl von Frames frei. Gemeinsam genutzte RGBA-Daten werden unter ihrem Mutex kopiert und anschließend zur GPU übertragen; aktualisieren Sie sie unter demselben Mutex. Bestehende Aufrufe für Zeichenlisten bleiben unverändert.
+
+Validierungsgrenze (2026-10-18): Auf dem Veröffentlichungsrechner waren die normalen Workspace-Tests, zwei Offscreen-GPU-Regressionstests und der native Fenstertest mit synchronem Rendering erfolgreich. Der native Worker-Test überschritt nach Wiederherstellung und Größenänderung das Zeitlimit; ein weiterer Desktoplauf brach abnormal ab. Die Ursache ist noch nicht eingegrenzt, daher ist der native Workerbetrieb in dieser Umgebung nicht bestätigt. Behalten Sie für zuverlässigen Betrieb das synchrone Rendering als Standard bei und prüfen Sie den optionalen Worker vor der Aktivierung auf dem Zielsystem.
 
 ## 9. Optionale Python-Hilfsfunktionen
 
@@ -128,6 +138,8 @@ cargo run --locked -p hello_plita
 ```
 
 Dieses Handbuch beschreibt den veröffentlichten Quelltext und bestätigt keine Laufzeittests auf sämtlichen Plattformen. Mit `cargo doc --workspace --no-deps --locked` können Sie zusätzlich die API-Dokumentation erzeugen.
+
+Auf einem Rechner mit funktionierender GPU lassen sich zwei eigenständige Regressionstests ausdrücklich starten: `cargo test -p plita_render --locked offscreen_image_updates_and_draw_order -- --ignored --test-threads=1` und `cargo test -p plita_render --locked offscreen_cache_keeps_images_distinct_and_releases_old_sources -- --ignored --test-threads=1`. Normale Workspace-Tests überspringen GPU- und native Desktoptests. Die anderen ignorierten Benchmarks benötigen externe Eingabedaten und Ausgabepfade; führen Sie nicht alle ignored-Tests ohne diese Vorbereitung aus.
 
 ## 11. Lizenz und Weitergabe
 

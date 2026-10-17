@@ -2,7 +2,7 @@
 
 [English](en.md) · [日本語](ja.md) · [한국어](ko.md) · [简体中文](zh-CN.md) · [繁體中文](zh-TW.md) · [Français](fr.md) · [Español](es.md) · [Deutsch](de.md)
 
-DAISUKE OBA · Edición del código fuente: 2026-10-11 · Versión del paquete Cargo: 0.0.1
+DAISUKE OBA · Edición del código fuente: 2026-10-18 · Versión del paquete Cargo: 0.0.1
 
 ## 1. Contenido de la distribución
 
@@ -75,11 +75,17 @@ Use las coordenadas lógicas de plita para las pruebas de posición y la disposi
 
 Una aplicación puede definir ventanas auxiliares con `AuxiliaryWindowDescriptor` e implementar sus funciones de cambio de tamaño, eventos y listas de dibujo. El editor de memoria independiente de la interfaz incorporada utiliza su propio búfer de demostración; no se conecta automáticamente a un emulador ni a otro proceso.
 
+`PlitaProgram::minimum_window_size()` y `auxiliary_window_minimum_size(id)` definen el tamaño mínimo del área cliente en coordenadas lógicas; el valor predeterminado `None` no impone un límite. `auxiliary_window_activation_request(id)` devuelve un token opcional: cámbielo en cada solicitud intencionada de restauración o enfoque. Un token sin cambios no activa la ventana repetidamente. Tras un fallo al crear una ventana auxiliar, retire su definición o cambie el token para reintentar; la ventana principal sigue funcionando.
+
+`auxiliary_draw_revision(id)` permite conservar la lista de dibujo auxiliar. Si devuelve `Some(revision)`, cambie la revisión cuando cambie cualquier contenido visible, incluidos los estados del puntero y de pulsación, y solicite también el redibujado mediante `UiResponse`. Los cambios de tamaño nativo o DPI invalidan la lista. Use el valor predeterminado `None` para animaciones e imágenes compartidas. No se renderiza mientras la ventana está minimizada y se ignoran los cambios de tamaño a cero.
+
 ## 6. Acoplamiento, lienzo y persistencia
 
 `DockLayoutState` y los tipos geométricos de acoplamiento describen la disposición de los paneles. `DockLayoutProfile` representa un perfil de disposición con versión. La interfaz incorporada admite el perfil como texto, y `AppBuilder::startup_layout_profile` lo restaura al iniciarla. La aplicación decide cuándo y dónde guardar ese texto. Las posiciones de almacenamiento en memoria no sustituyen el guardado permanente en archivos.
 
 `CanvasDocument` y `LayerNode` ofrecen los modelos de documento y capas. Las utilidades de selección, selección rectangular y ajuste, junto con `CommandHistory`, permiten construir operaciones de edición. `CommandRegistry` y `CommandDescriptor` describen comandos y atajos. Estas API no proporcionan un formato de archivo completo ni un sistema automático de guardado de proyectos. Conecte los modelos a sus propios comandos y a su serialización.
+
+`memory_viewer_address_at_point(rect, base_address, byte_count, position)` convierte la posición de un byte hexadecimal visible en `draw_memory_viewer` en una dirección `Option<u16>`. Pase el mismo rectángulo y dirección base usados al dibujar, la cantidad real de bytes y la posición lógica del puntero. Las etiquetas de dirección, el texto ASCII, los huecos, los bytes ausentes y las filas ocultas devuelven `None`. La aplicación gestiona la selección y la escritura; esta función no modifica la memoria.
 
 ## 7. Fuentes e iconos
 
@@ -100,6 +106,10 @@ fn render_on_worker_thread(&self) -> bool {
 ```
 
 Un hilo por ventana se ocupa de las operaciones de GPU y de presentar la imagen. La gestión de ventanas, la entrada, `tick` y la creación de listas de dibujo permanecen en el hilo del bucle de eventos. Si el renderizado se retrasa, las solicitudes pendientes se agrupan para conservar el fotograma más reciente; no es una API para grabar todos los fotogramas. Actualice toda la imagen RGBA compartida dentro del mismo mutex y mantenga breve el bloqueo. La opción se lee al crear el renderizador y no sirve para cambiar de modo durante la ejecución. El modo predeterminado es síncrono.
+
+El renderizador conserva las fuentes RGBA inmutables para evitar colisiones de identidad en la caché de texturas, reutiliza los búferes de vértices y el almacenamiento temporal de imágenes, y libera las entradas sin uso tras un breve período de fotogramas. Los datos RGBA compartidos se copian bajo su mutex antes de subirlos a la GPU; actualícelos dentro del mismo mutex. No es necesario cambiar las llamadas existentes a las listas de dibujo.
+
+Límite de validación (2026-10-18): en el equipo de publicación pasaron las pruebas normales del workspace, dos regresiones GPU fuera de pantalla y la prueba de ventana nativa con renderizado síncrono. La prueba nativa del worker agotó el tiempo tras restaurar y redimensionar, y otra ejecución de escritorio terminó de forma anormal. La causa aún no se ha aislado, por lo que no se confirma el funcionamiento nativo del worker en este entorno. Si necesita fiabilidad, conserve el renderizado síncrono predeterminado y valide el worker en su plataforma antes de activarlo.
 
 ## 9. Utilidades opcionales de Python
 
@@ -128,6 +138,8 @@ cargo run --locked -p hello_plita
 ```
 
 Este manual describe el código publicado sin certificar pruebas de ejecución en todas las plataformas. También puede generar documentación de la API con `cargo doc --workspace --no-deps --locked`.
+
+En un equipo con una GPU operativa puede ejecutar explícitamente dos pruebas autónomas: `cargo test -p plita_render --locked offscreen_image_updates_and_draw_order -- --ignored --test-threads=1` y `cargo test -p plita_render --locked offscreen_cache_keeps_images_distinct_and_releases_old_sources -- --ignored --test-threads=1`. Las pruebas habituales omiten las pruebas de GPU y de escritorio nativo. Los demás benchmarks ignorados necesitan datos externos y rutas de salida; no ejecute todas las pruebas ignored sin preparar esas entradas.
 
 ## 11. Licencia y redistribución
 

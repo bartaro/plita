@@ -2,7 +2,7 @@
 
 [English](en.md) · [日本語](ja.md) · [한국어](ko.md) · [简体中文](zh-CN.md) · [繁體中文](zh-TW.md) · [Français](fr.md) · [Español](es.md) · [Deutsch](de.md)
 
-DAISUKE OBA · 原始碼版 2026-10-11 · Cargo 套件版本 0.0.1
+DAISUKE OBA · 原始碼版 2026-10-18 · Cargo 套件版本 0.0.1
 
 ## 1. 隨附內容
 
@@ -75,11 +75,17 @@ UI 命中測試與版面配置使用 plita 的邏輯座標；視窗層負責 DPI
 
 自訂應用程式可用 `AuxiliaryWindowDescriptor` 定義輔助視窗，並實作該視窗的大小調整、事件及繪製清單回呼。內建介面的獨立記憶體編輯器操作的是介面持有的示範緩衝區，不會自動連線至模擬器或其他程序。
 
+`PlitaProgram::minimum_window_size()`與`auxiliary_window_minimum_size(id)`以邏輯座標指定用戶端區域的最小尺寸；預設值`None`不限制縮放。`auxiliary_window_activation_request(id)`傳回可選的請求權杖。每次主動請求還原視窗或取得焦點時，請變更權杖；相同權杖不會反覆啟用視窗。輔助視窗建立失敗後，可撤回視窗定義或變更權杖以重試，主視窗會繼續執行。
+
+`auxiliary_draw_revision(id)`可選擇保留輔助視窗的繪製清單。傳回`Some(revision)`時，每次可見內容變化（包含懸停及按下狀態）都應更新版本，並透過`UiResponse`請求重繪。視窗大小或DPI變更會使保留的清單失效。動畫或共用影像視窗應傳回預設值`None`。視窗最小化時略過渲染，尺寸為零的大小變更事件會被忽略。
+
 ## 6. 停駐配置、畫布與永久儲存
 
 `DockLayoutState` 與停駐幾何型別描述面板配置。`DockLayoutProfile` 表示附有版本的配置設定。內建介面支援設定文字，`AppBuilder::startup_layout_profile` 可在啟動內建介面時還原設定。應用程式必須自行決定何時、在何處儲存文字。記憶體中的配置儲存槽不能取代永久檔案儲存。
 
 `CanvasDocument` 與 `LayerNode` 提供文件及圖層模型。選取、框選、貼齊輔助功能與 `CommandHistory` 可用於建立編輯操作。`CommandRegistry` 與 `CommandDescriptor` 描述指令及快速鍵資訊。這些 API 不提供完整的應用程式檔案格式或自動專案儲存系統；請將模型連接至自訂指令及序列化程式碼。
+
+`memory_viewer_address_at_point(rect, base_address, byte_count, position)`將`draw_memory_viewer`中可見的十六進位元組位置轉換為`Option<u16>`位址。請傳入與繪製時相同的矩形及起始位址、實際位元組數，以及邏輯指標座標。位址標籤、ASCII區域、間隙、不存在的位元組和隱藏列傳回`None`。選取及寫入由應用程式處理，此函式不會修改記憶體。
 
 ## 7. 字型與圖示
 
@@ -100,6 +106,10 @@ fn render_on_worker_thread(&self) -> bool {
 ```
 
 各視窗的工作執行緒負責 GPU 操作與畫面呈現。視窗管理、輸入、`tick` 及繪製清單建立仍在事件迴圈執行緒進行。算繪較慢時，會將待處理要求合併為最新畫面，因此它不是無損逐格錄影 API。共用 RGBA 影像應在同一個 mutex 內完成整張更新，並盡量縮短鎖定時間。設定在建立算繪器時讀取，不是執行中的切換開關。預設採用同步算繪。
+
+渲染器保留不可變RGBA來源以防止紋理快取識別衝突，並重複使用頂點緩衝區及影像暫存空間。未使用的影像快取會在短暫的影格保留期後釋放。共用RGBA資料在mutex內複製後上傳至GPU，因此更新也應在同一mutex內進行。這些內部變更不要求修改既有繪製清單呼叫。
+
+驗證限制（2026-10-18）：在發佈工作環境中，一般工作區測試、兩個離屏GPU回歸測試及原生同步視窗測試已通過。但原生渲染工作執行緒測試在還原及調整大小後逾時，另一次桌面執行則異常終止。原因尚未確定，因此尚未確認工作執行緒在此環境中能正常運作。需要可靠運作時，請保留預設同步渲染；啟用可選工作執行緒前，請在目標環境中驗證。
 
 ## 9. 選用的 Python 輔助功能
 
@@ -128,6 +138,8 @@ cargo run --locked -p hello_plita
 ```
 
 本手冊說明公開的原始碼，不保證所有平台都已完成執行測試。也可用 `cargo doc --workspace --no-deps --locked` 產生 API 文件。
+
+在GPU正常運作的環境中，可明確執行兩個無需外部資料的回歸測試：`cargo test -p plita_render --locked offscreen_image_updates_and_draw_order -- --ignored --test-threads=1`與`cargo test -p plita_render --locked offscreen_cache_keeps_images_distinct_and_releases_old_sources -- --ignored --test-threads=1`。一般工作區測試會略過GPU及原生桌面測試。其他ignored基準測試需要外部輸入與輸出路徑，請勿在未準備輸入時執行所有ignored測試。
 
 ## 11. 授權與再散布
 

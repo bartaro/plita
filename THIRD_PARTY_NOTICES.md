@@ -60,8 +60,8 @@ Hashes and exact verification sources are recorded in
 
 ## Rust dependencies
 
-The resolved dependency graph includes 290 external packages across all target
-platforms, optional Python support and build dependencies. Most permit MIT or
+The resolved dependency graph includes 293 external packages across all target
+platforms, optional Python support and build/test dependencies. Most permit MIT or
 Apache-2.0; others use ISC, BSD, Zlib, CC0, Unicode terms or Apache with the LLVM
 exception. They are separately licensed, not relicensed as plita code.
 

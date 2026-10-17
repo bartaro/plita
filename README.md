@@ -44,6 +44,25 @@ python docs/manual/build.py
 python docs/manual/build.py --check
 ```
 
+## Source update — 2026-10-18
+
+- Reuse GPU vertex buffers and image scratch storage; retain immutable image
+  sources safely and release unused texture-cache entries.
+- Add optional minimum window sizes, explicit auxiliary-window restore/focus
+  requests, and revision-based auxiliary draw-list retention to `PlitaProgram`.
+  Existing implementations keep the default behavior without adding methods.
+- Add `memory_viewer_address_at_point` for visible hexadecimal byte hit testing
+  and align the memory viewer's headers and byte cells.
+- Add opt-in offscreen GPU regression tests. See chapter 10 of each manual for
+  the self-contained commands; fixture-based benchmarks need separate inputs.
+
+The eight language manuals cover the new APIs and redraw requirements. The
+Cargo package version remains `0.0.1`; this is a source update.
+
+### Native render-worker validation limitation
+
+Validation note (2026-10-18): the normal workspace tests, two offscreen GPU regressions, and the native synchronous-window test passed on the publication machine. The native render-worker test timed out after restore/resize, and a separate desktop run terminated abnormally. The cause has not been isolated, so successful native worker operation is not confirmed for this environment. Keep the default synchronous rendering when reliability is required; validate the opt-in worker on your own target before enabling it.
+
 ## Framework overview
 
 v1.0 turns the Phase 2 shell into a reusable framework surface. plita now exposes a custom `PlitaProgram` app trait, retained Dock Tree geometry allocation, fixed/floating/detached dock operations, versioned layout profiles with startup restore support, canvas document/layer models, multi-select/marquee/snap model APIs, command registry metadata, style tokens, file-drop events, and demo applications.
