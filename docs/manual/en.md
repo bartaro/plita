@@ -2,7 +2,7 @@
 
 [English](en.md) · [日本語](ja.md) · [한국어](ko.md) · [简体中文](zh-CN.md) · [繁體中文](zh-TW.md) · [Français](fr.md) · [Español](es.md) · [Deutsch](de.md)
 
-DAISUKE OBA · Source edition 2026-10-18 · Cargo package version 0.0.1
+DAISUKE OBA · Source edition 2026-10-25 · Cargo package version 0.0.1
 
 ## 1. What is included
 
@@ -79,6 +79,10 @@ Custom applications can describe auxiliary windows through `AuxiliaryWindowDescr
 
 `auxiliary_draw_revision(id)` optionally retains an auxiliary draw list. Return `Some(revision)` and change the revision whenever visible content changes, including hover and pressed states, while also requesting redraw through `UiResponse`. Native resize or DPI changes invalidate the retained list. Return the default `None` for animated or shared-image windows. Rendering is skipped while a window is minimized, and zero-sized resize events are ignored.
 
+`PlitaProgram::ime_allowed()` defaults to `true`. Return `false` for an application that needs physical key input without host IME interception. The policy is read when the main and auxiliary windows are created; it is not a runtime toggle and does not change the input context of separate native file dialogs. Text applications should keep the default.
+
+`scale_factor_changed(scale_factor)` reports the main window's physical pixels per logical UI unit. It is called before the first draw and before `resize` when DPI is refreshed or changed. Store the value when aligning pixel-based content, and continue using logical coordinates for layout and hit testing. This callback does not report an auxiliary window's independent DPI.
+
 ## 6. Docking, canvas and persistence
 
 `DockLayoutState` and the dock geometry types describe panel placement. `DockLayoutProfile` represents a versioned layout profile. The shell supports layout profile text, and `AppBuilder::startup_layout_profile` restores it when launching the built-in shell. Your application must decide where and when to save that text; in-memory layout slots do not replace durable file storage.
@@ -87,7 +91,31 @@ Custom applications can describe auxiliary windows through `AuxiliaryWindowDescr
 
 `memory_viewer_address_at_point(rect, base_address, byte_count, position)` maps a visible hexadecimal byte in `draw_memory_viewer` to `Option<u16>`. Pass the same rectangle and base address as the renderer, the actual byte count, and a logical pointer position. Address labels, ASCII text, gaps, missing bytes and hidden rows return `None`. The application handles selection and writes; this helper does not modify memory.
 
-## 7. Fonts and icons
+## 7. Dropdown menu buttons
+
+`draw_menu_button` draws a complete menu-button surface, caption and right-aligned geometric chevron. The indicator is independent of fonts: pass the caption without an appended `v` or arrow character. `expanded = false` points downward; `true` points upward while the application's popup is open.
+
+```rust
+use plita::prelude::*;
+
+let mut list = DrawList::new(Color::rgb8(30, 30, 30));
+let rect = Rect::new(12.0, 12.0, 100.0, 32.0);
+let expanded = false;
+draw_menu_button(
+    &mut list,
+    rect,
+    "File",
+    expanded,
+    ButtonVisualState::Normal,
+    MenuButtonStyle::new(PanelStyle::dark(), Color::rgb8(240, 240, 240), 1.22),
+);
+```
+
+This fragment builds drawing commands inside a `draw_list` implementation; it does not open a window by itself. Use `ButtonInteractionState` to track hover and press, toggle your popup state on a matching press/release, and pass that state as `expanded`. Route both the caption and the arrow through the original button rectangle. The application draws popup items and handles selection and dismissal.
+
+`MenuButtonStyle` supplies the current surface, foreground color and text scale. `ButtonVisualState::Pressed` offsets the surface and its contents together. `MenuButtonLayout::new` exposes the caption and indicator regions; captions are clipped so they cannot cover the arrow. For automatic sizing, add `MENU_BUTTON_CHROME_WIDTH` (42 logical pixels) to `measure_text_width(label, scale)`. Select hover, pressed and active colors from your theme; popup opening is separate from visual state.
+
+## 8. Fonts and icons
 
 Roboto and Roboto Mono are bundled under `assets/fonts`. plita uses `fontdue` for text rasterization and retains a small bitmap fallback. Font discovery also checks installed system fonts. `PLITA_UI_FONT`, `PLITA_UI_FONT_FALLBACK` and `PLITA_MEMORY_FONT` can select font files; set them before starting the application. A font must contain the characters you want to display. The bundled Latin fonts alone are not a complete CJK font collection.
 
@@ -95,7 +123,7 @@ Roboto and Roboto Mono are bundled under `assets/fonts`. plita uses `fontdue` fo
 
 The repository includes 52 Lucide SVG icons. `lucide_icon_names()` lists supported names and `draw_lucide_icon` draws them. Preserve the SVGs and their notices when regenerating the Rust paths with `crates/plita_ui/assets/build_icons.py`.
 
-## 8. Optional rendering worker
+## 9. Optional rendering worker
 
 Add this method to your `PlitaProgram` implementation to opt in:
 
@@ -111,7 +139,7 @@ The renderer retains immutable RGBA sources to prevent texture-cache identity co
 
 Validation note (2026-10-18): the normal workspace tests, two offscreen GPU regressions, and the native synchronous-window test passed on the publication machine. The native render-worker test timed out after restore/resize, and a separate desktop run terminated abnormally. The cause has not been isolated, so successful native worker operation is not confirmed for this environment. Keep the default synchronous rendering when reliability is required; validate the opt-in worker on your own target before enabling it.
 
-## 9. Optional Python helpers
+## 10. Optional Python helpers
 
 Python support requires Python 3.10 or later and maturin 1.8 or later, below 2, in a suitable Python environment. From the repository root:
 
@@ -122,7 +150,7 @@ maturin develop --features python
 
 The `python` feature provides PyO3 wrappers for common values and registration helpers. It does not turn every Rust GUI into a complete Python application. Application crates using `#[pyclass]` or `#[pymodule]` still need their own optional `pyo3` dependency, because those macros refer to `::pyo3`. Return to the repository root before using the earlier commands.
 
-## 10. Troubleshooting and verification
+## 11. Troubleshooting and verification
 
 - Build failure: read the first compiler or linker error, check the Rust version and target toolchain, and preserve the lockfile.
 - No window or GPU initialization error: inspect logs and the installed graphics driver. A build alone does not prove GUI behavior.
@@ -141,13 +169,15 @@ The manuals describe the published source. They do not certify runtime testing o
 
 Two self-contained GPU regression tests can be run explicitly on a machine with a working GPU: `cargo test -p plita_render --locked offscreen_image_updates_and_draw_order -- --ignored --test-threads=1` and `cargo test -p plita_render --locked offscreen_cache_keeps_images_distinct_and_releases_old_sources -- --ignored --test-threads=1`. Normal workspace tests skip GPU and native desktop tests. The other ignored benchmarks require external fixtures and output paths; do not run every ignored test without preparing those inputs.
 
-## 11. License and redistribution
+The optional `offscreen_fixture_snapshot_with_dpi` test reads a draw-list fixture from `PLITA_DRAW_FIXTURE`, uses its `scale_factor` (default 1.0), and writes `gpu.json` and physical-size `desktop.rgba` to `PLITA_GPU_EVIDENCE`. It requires a GPU and an explicitly prepared fixture. It checks the offscreen encoder path, not native-window presentation.
+
+## 12. License and redistribution
 
 plita code and these manuals use the MIT License, copyright (c) 2026 DAISUKE OBA. Preserve the MIT copyright and permission notice when redistributing copies or substantial portions. Third-party assets retain their own licenses: Roboto and Roboto Mono use OFL-1.1; Lucide uses ISC and includes the inherited Feather MIT notice.
 
 Read [LICENSE](../../LICENSE), [THIRD_PARTY_NOTICES](../../THIRD_PARTY_NOTICES.md), [dependency notices](../../licenses/DEPENDENCIES.md) and [asset provenance](../../licenses/ASSET_PROVENANCE.json). Include the relevant notices with distributed fonts, icons and binaries. Before distributing macOS binaries, resolve the standalone notice gaps recorded for `dispatch` and `malloc_buf`. This repository publishes source and notices; a future binary release needs a review of its actual linked dependencies.
 
-## 12. Source map
+## 13. Source map
 
 - [Application builder](../../crates/plita_app/src/lib.rs)
 - [Window and program interface](../../crates/plita_window/src/lib.rs)
@@ -155,3 +185,4 @@ Read [LICENSE](../../LICENSE), [THIRD_PARTY_NOTICES](../../THIRD_PARTY_NOTICES.m
 - [Renderer](../../crates/plita_render/src/lib.rs)
 - [Icon assets and generation](../../crates/plita_ui/assets/README.md)
 - [Rendering-worker details (Japanese)](../render_worker_ja.md)
+- [Menu-button component](../../crates/plita_ui/src/menu_button.rs)

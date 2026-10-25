@@ -1,7 +1,9 @@
-//! GPU renderer foundation for plita UI.
+//! GPU rendering for plita draw lists.
 //!
-//! Phase 1 keeps the Phase 0 winit/wgpu/Vello foundation and adds a small GPU
-//! rectangle renderer for the first creative-app UI shell.
+//! The wgpu encoder handles colored geometry, clipping and RGBA images with
+//! reusable buffers and retained texture caches. Native surfaces use physical
+//! render sizes and DPI-derived logical viewports. Opt-in offscreen tests
+//! exercise the same encoder without presenting a native window.
 
 use std::{collections::HashMap, sync::Arc, time::Instant};
 

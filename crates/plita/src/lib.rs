@@ -1,9 +1,10 @@
-//! plita UI top-level crate.
+//! Public entry point for plita desktop applications.
 //!
-//! Phase 1 v2 exposes a small application builder, GPU-backed window loop,
-//! retained creative shell, widget tree, and event-routing primitives. Later
-//! phases will add docking, canvas editing, command history, and the final text
-//! system.
+//! Use [`prelude`] for the application builder, native window interface, draw
+//! lists, reusable controls, docking, canvas models and command history.
+//! Custom applications implement [`PlitaProgram`] and own their documents,
+//! popup contents and persistence. The optional `python` feature supplies
+//! shared value wrappers and registration helpers.
 
 pub use plita_app::{App, AppBuilder, AppConfig, AppError, Result};
 pub use plita_render::{ClearColor, RenderConfig, RenderError, RenderSize};
@@ -21,6 +22,7 @@ pub use plita_ui::{
     ToolKind, UiEvent, UiResponse, Widget, WidgetId, WidgetNode, WidgetRole, WidgetTree,
     WidgetVisualState, CREATIVE_MEMORY_WINDOW_ID, DEFAULT_FONT_FAMILY,
 };
+pub use plita_ui::{draw_menu_button, MenuButtonLayout, MenuButtonStyle, MENU_BUTTON_CHROME_WIDTH};
 pub use plita_window::{AuxiliaryWindowDescriptor, PlitaProgram};
 
 #[cfg(feature = "python")]
@@ -43,6 +45,9 @@ pub mod prelude {
         SplitterKind, TextInputState, ThemeTokens, ToolKind, UiEvent, UiResponse, Widget, WidgetId,
         WidgetNode, WidgetRole, WidgetTree, WidgetVisualState, CREATIVE_MEMORY_WINDOW_ID,
         DEFAULT_FONT_FAMILY,
+    };
+    pub use crate::{
+        draw_menu_button, MenuButtonLayout, MenuButtonStyle, MENU_BUTTON_CHROME_WIDTH,
     };
 
     #[cfg(feature = "python")]

@@ -9,10 +9,10 @@
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<header><a class="brand" href="index.html">plita</a><span>2026-10-18 · 0.0.1</span></header>
+<header><a class="brand" href="index.html">plita</a><span>2026-10-25 · 0.0.1</span></header>
 <nav class="languages" aria-label="Language"><a href="en.html" lang="en" hreflang="en" aria-current="page">English</a> <a href="ja.html" lang="ja" hreflang="ja">日本語</a> <a href="ko.html" lang="ko" hreflang="ko">한국어</a> <a href="zh-CN.html" lang="zh-CN" hreflang="zh-CN">简体中文</a> <a href="zh-TW.html" lang="zh-TW" hreflang="zh-TW">繁體中文</a> <a href="fr.html" lang="fr" hreflang="fr">Français</a> <a href="es.html" lang="es" hreflang="es">Español</a> <a href="de.html" lang="de" hreflang="de">Deutsch</a></nav>
-<div class="layout"><aside><nav aria-label="Contents"><h2>Contents</h2><a href="#section-1">1. What is included</a><a href="#section-2">2. Requirements and build</a><a href="#section-3">3. Start the examples</a><a href="#section-4">4. Launch an application</a><a href="#section-5">5. Input and auxiliary windows</a><a href="#section-6">6. Docking, canvas and persistence</a><a href="#section-7">7. Fonts and icons</a><a href="#section-8">8. Optional rendering worker</a><a href="#section-9">9. Optional Python helpers</a><a href="#section-10">10. Troubleshooting and verification</a><a href="#section-11">11. License and redistribution</a><a href="#section-12">12. Source map</a></nav><p><a href="en.md">Markdown</a></p></aside><main id="main"><h1>plita — User and developer manual</h1>
-<p>DAISUKE OBA · Source edition 2026-10-18 · Cargo package version 0.0.1</p>
+<div class="layout"><aside><nav aria-label="Contents"><h2>Contents</h2><a href="#section-1">1. What is included</a><a href="#section-2">2. Requirements and build</a><a href="#section-3">3. Start the examples</a><a href="#section-4">4. Launch an application</a><a href="#section-5">5. Input and auxiliary windows</a><a href="#section-6">6. Docking, canvas and persistence</a><a href="#section-7">7. Dropdown menu buttons</a><a href="#section-8">8. Fonts and icons</a><a href="#section-9">9. Optional rendering worker</a><a href="#section-10">10. Optional Python helpers</a><a href="#section-11">11. Troubleshooting and verification</a><a href="#section-12">12. License and redistribution</a><a href="#section-13">13. Source map</a></nav><p><a href="en.md">Markdown</a></p></aside><main id="main"><h1>plita — User and developer manual</h1>
+<p>DAISUKE OBA · Source edition 2026-10-25 · Cargo package version 0.0.1</p>
 <h2 id="section-1">1. What is included</h2>
 <p>plita is a Rust GUI foundation for creative desktop applications. This repository contains five framework crates and three executable examples. It provides native windows, input routing, GPU drawing, widgets, docking and canvas models. Application-specific emulator GUIs, ROMs and prebuilt executables are outside this distribution.</p>
 <ul>
@@ -65,15 +65,35 @@ fn main() -&gt; Result&lt;()&gt; {
 <p>Custom applications can describe auxiliary windows through <code>AuxiliaryWindowDescriptor</code> and implement their resize, event and draw-list callbacks. The shell&#x27;s detached memory editor works on its retained demonstration buffer; it is not automatically connected to an emulator or another process.</p>
 <p><code>PlitaProgram::minimum_window_size()</code> and <code>auxiliary_window_minimum_size(id)</code> specify minimum client sizes in logical coordinates; the default <code>None</code> leaves resizing unconstrained. <code>auxiliary_window_activation_request(id)</code> returns an optional request token: change it for each intentional restore/focus request. An unchanged token does not repeatedly activate the window. After an auxiliary-window creation failure, withdraw its descriptor or change the activation token to retry; the main window remains running.</p>
 <p><code>auxiliary_draw_revision(id)</code> optionally retains an auxiliary draw list. Return <code>Some(revision)</code> and change the revision whenever visible content changes, including hover and pressed states, while also requesting redraw through <code>UiResponse</code>. Native resize or DPI changes invalidate the retained list. Return the default <code>None</code> for animated or shared-image windows. Rendering is skipped while a window is minimized, and zero-sized resize events are ignored.</p>
+<p><code>PlitaProgram::ime_allowed()</code> defaults to <code>true</code>. Return <code>false</code> for an application that needs physical key input without host IME interception. The policy is read when the main and auxiliary windows are created; it is not a runtime toggle and does not change the input context of separate native file dialogs. Text applications should keep the default.</p>
+<p><code>scale_factor_changed(scale_factor)</code> reports the main window&#x27;s physical pixels per logical UI unit. It is called before the first draw and before <code>resize</code> when DPI is refreshed or changed. Store the value when aligning pixel-based content, and continue using logical coordinates for layout and hit testing. This callback does not report an auxiliary window&#x27;s independent DPI.</p>
 <h2 id="section-6">6. Docking, canvas and persistence</h2>
 <p><code>DockLayoutState</code> and the dock geometry types describe panel placement. <code>DockLayoutProfile</code> represents a versioned layout profile. The shell supports layout profile text, and <code>AppBuilder::startup_layout_profile</code> restores it when launching the built-in shell. Your application must decide where and when to save that text; in-memory layout slots do not replace durable file storage.</p>
 <p><code>CanvasDocument</code> and <code>LayerNode</code> provide the document and layer model. Selection, marquee and snapping helpers, together with <code>CommandHistory</code>, support editor behavior. <code>CommandRegistry</code> and <code>CommandDescriptor</code> describe commands and shortcuts. These APIs do not supply a complete application file format or an automatic project-save system. Connect the models to your own commands and serialization.</p>
 <p><code>memory_viewer_address_at_point(rect, base_address, byte_count, position)</code> maps a visible hexadecimal byte in <code>draw_memory_viewer</code> to <code>Option&lt;u16&gt;</code>. Pass the same rectangle and base address as the renderer, the actual byte count, and a logical pointer position. Address labels, ASCII text, gaps, missing bytes and hidden rows return <code>None</code>. The application handles selection and writes; this helper does not modify memory.</p>
-<h2 id="section-7">7. Fonts and icons</h2>
+<h2 id="section-7">7. Dropdown menu buttons</h2>
+<p><code>draw_menu_button</code> draws a complete menu-button surface, caption and right-aligned geometric chevron. The indicator is independent of fonts: pass the caption without an appended <code>v</code> or arrow character. <code>expanded = false</code> points downward; <code>true</code> points upward while the application&#x27;s popup is open.</p>
+<pre><code class="language-rust">use plita::prelude::*;
+
+let mut list = DrawList::new(Color::rgb8(30, 30, 30));
+let rect = Rect::new(12.0, 12.0, 100.0, 32.0);
+let expanded = false;
+draw_menu_button(
+    &amp;mut list,
+    rect,
+    &quot;File&quot;,
+    expanded,
+    ButtonVisualState::Normal,
+    MenuButtonStyle::new(PanelStyle::dark(), Color::rgb8(240, 240, 240), 1.22),
+);
+</code></pre>
+<p>This fragment builds drawing commands inside a <code>draw_list</code> implementation; it does not open a window by itself. Use <code>ButtonInteractionState</code> to track hover and press, toggle your popup state on a matching press/release, and pass that state as <code>expanded</code>. Route both the caption and the arrow through the original button rectangle. The application draws popup items and handles selection and dismissal.</p>
+<p><code>MenuButtonStyle</code> supplies the current surface, foreground color and text scale. <code>ButtonVisualState::Pressed</code> offsets the surface and its contents together. <code>MenuButtonLayout::new</code> exposes the caption and indicator regions; captions are clipped so they cannot cover the arrow. For automatic sizing, add <code>MENU_BUTTON_CHROME_WIDTH</code> (42 logical pixels) to <code>measure_text_width(label, scale)</code>. Select hover, pressed and active colors from your theme; popup opening is separate from visual state.</p>
+<h2 id="section-8">8. Fonts and icons</h2>
 <p>Roboto and Roboto Mono are bundled under <code>assets/fonts</code>. plita uses <code>fontdue</code> for text rasterization and retains a small bitmap fallback. Font discovery also checks installed system fonts. <code>PLITA_UI_FONT</code>, <code>PLITA_UI_FONT_FALLBACK</code> and <code>PLITA_MEMORY_FONT</code> can select font files; set them before starting the application. A font must contain the characters you want to display. The bundled Latin fonts alone are not a complete CJK font collection.</p>
 <p><code>active_font_family</code>, <code>active_font_source</code>, <code>active_text_backend</code> and <code>active_memory_font_family</code> help diagnose font selection. Keep the asset directory available when moving an executable, or configure an appropriate font path. System fonts are not bundled merely because their paths appear in the loader.</p>
 <p>The repository includes 52 Lucide SVG icons. <code>lucide_icon_names()</code> lists supported names and <code>draw_lucide_icon</code> draws them. Preserve the SVGs and their notices when regenerating the Rust paths with <code>crates/plita_ui/assets/build_icons.py</code>.</p>
-<h2 id="section-8">8. Optional rendering worker</h2>
+<h2 id="section-9">9. Optional rendering worker</h2>
 <p>Add this method to your <code>PlitaProgram</code> implementation to opt in:</p>
 <pre><code class="language-rust">fn render_on_worker_thread(&amp;self) -&gt; bool {
     true
@@ -82,13 +102,13 @@ fn main() -&gt; Result&lt;()&gt; {
 <p>GPU work and presentation move to a worker for each window. Window management, input, <code>tick</code> and draw-list construction stay on the event-loop thread. Slow rendering coalesces pending requests to the latest frame; it is not a lossless frame-recording API. Update a shared RGBA image entirely under the same mutex and keep that lock short. The option is read when a renderer is created, rather than acting as a live toggle. The default is synchronous rendering.</p>
 <p>The renderer retains immutable RGBA sources to prevent texture-cache identity collisions, reuses vertex buffers and temporary image storage, and releases unused image-cache entries after a short frame-based retention period. Shared RGBA data is copied under its mutex before GPU upload; keep updates inside that same mutex. These internal changes do not require changes to existing draw-list calls.</p>
 <p>Validation note (2026-10-18): the normal workspace tests, two offscreen GPU regressions, and the native synchronous-window test passed on the publication machine. The native render-worker test timed out after restore/resize, and a separate desktop run terminated abnormally. The cause has not been isolated, so successful native worker operation is not confirmed for this environment. Keep the default synchronous rendering when reliability is required; validate the opt-in worker on your own target before enabling it.</p>
-<h2 id="section-9">9. Optional Python helpers</h2>
+<h2 id="section-10">10. Optional Python helpers</h2>
 <p>Python support requires Python 3.10 or later and maturin 1.8 or later, below 2, in a suitable Python environment. From the repository root:</p>
 <pre><code class="language-powershell">cd crates/plita
 maturin develop --features python
 </code></pre>
 <p>The <code>python</code> feature provides PyO3 wrappers for common values and registration helpers. It does not turn every Rust GUI into a complete Python application. Application crates using <code>#[pyclass]</code> or <code>#[pymodule]</code> still need their own optional <code>pyo3</code> dependency, because those macros refer to <code>::pyo3</code>. Return to the repository root before using the earlier commands.</p>
-<h2 id="section-10">10. Troubleshooting and verification</h2>
+<h2 id="section-11">11. Troubleshooting and verification</h2>
 <ul>
 <li>Build failure: read the first compiler or linker error, check the Rust version and target toolchain, and preserve the lockfile.</li>
 <li>No window or GPU initialization error: inspect logs and the installed graphics driver. A build alone does not prove GUI behavior.</li>
@@ -102,10 +122,11 @@ cargo run --locked -p hello_plita
 </code></pre>
 <p>The manuals describe the published source. They do not certify runtime testing on every platform. API documentation can also be generated with <code>cargo doc --workspace --no-deps --locked</code>.</p>
 <p>Two self-contained GPU regression tests can be run explicitly on a machine with a working GPU: <code>cargo test -p plita_render --locked offscreen_image_updates_and_draw_order -- --ignored --test-threads=1</code> and <code>cargo test -p plita_render --locked offscreen_cache_keeps_images_distinct_and_releases_old_sources -- --ignored --test-threads=1</code>. Normal workspace tests skip GPU and native desktop tests. The other ignored benchmarks require external fixtures and output paths; do not run every ignored test without preparing those inputs.</p>
-<h2 id="section-11">11. License and redistribution</h2>
+<p>The optional <code>offscreen_fixture_snapshot_with_dpi</code> test reads a draw-list fixture from <code>PLITA_DRAW_FIXTURE</code>, uses its <code>scale_factor</code> (default 1.0), and writes <code>gpu.json</code> and physical-size <code>desktop.rgba</code> to <code>PLITA_GPU_EVIDENCE</code>. It requires a GPU and an explicitly prepared fixture. It checks the offscreen encoder path, not native-window presentation.</p>
+<h2 id="section-12">12. License and redistribution</h2>
 <p>plita code and these manuals use the MIT License, copyright (c) 2026 DAISUKE OBA. Preserve the MIT copyright and permission notice when redistributing copies or substantial portions. Third-party assets retain their own licenses: Roboto and Roboto Mono use OFL-1.1; Lucide uses ISC and includes the inherited Feather MIT notice.</p>
 <p>Read <a href="../../LICENSE">LICENSE</a>, <a href="../../THIRD_PARTY_NOTICES.md">THIRD_PARTY_NOTICES</a>, <a href="../../licenses/DEPENDENCIES.md">dependency notices</a> and <a href="../../licenses/ASSET_PROVENANCE.json">asset provenance</a>. Include the relevant notices with distributed fonts, icons and binaries. Before distributing macOS binaries, resolve the standalone notice gaps recorded for <code>dispatch</code> and <code>malloc_buf</code>. This repository publishes source and notices; a future binary release needs a review of its actual linked dependencies.</p>
-<h2 id="section-12">12. Source map</h2>
+<h2 id="section-13">13. Source map</h2>
 <ul>
 <li><a href="../../crates/plita_app/src/lib.rs">Application builder</a></li>
 <li><a href="../../crates/plita_window/src/lib.rs">Window and program interface</a></li>
@@ -113,6 +134,7 @@ cargo run --locked -p hello_plita
 <li><a href="../../crates/plita_render/src/lib.rs">Renderer</a></li>
 <li><a href="../../crates/plita_ui/assets/README.md">Icon assets and generation</a></li>
 <li><a href="../render_worker_ja.md">Rendering-worker details (Japanese)</a></li>
+<li><a href="../../crates/plita_ui/src/menu_button.rs">Menu-button component</a></li>
 </ul>
 <footer>Copyright (c) 2026 DAISUKE OBA · <a href="../../LICENSE">MIT</a></footer>
 </main></div>

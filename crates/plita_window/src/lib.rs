@@ -6,6 +6,8 @@ use std::{
 };
 
 use plita_render::{ClearColor, GpuRenderer, RenderConfig, RenderError, RenderSize};
+#[cfg(test)]
+mod ime_tests;
 mod render_worker;
 use plita_ui::{CreativeShell, DrawList, Point, PointerButton, Size, UiEvent, UiResponse};
 use render_worker::WindowRenderer;
@@ -24,6 +26,10 @@ const CONTINUOUS_REDRAW_INTERVAL: Duration = Duration::from_nanos(16_666_667);
 const MIN_CONTINUOUS_TICK_INTERVAL: Duration = Duration::from_micros(500);
 const DOUBLE_CLICK_INTERVAL: Duration = Duration::from_millis(500);
 const DOUBLE_CLICK_DISTANCE: f32 = 6.0;
+
+fn configure_program_ime(window: &Window, program: &dyn PlitaProgram) {
+    window.set_ime_allowed(program.ime_allowed());
+}
 
 #[derive(Clone, Copy, Debug)]
 struct CompletedClick {
@@ -199,6 +205,13 @@ impl AuxiliaryWindowDescriptor {
 /// The window layer owns the OS event loop and renderer. A program owns its
 /// domain state, consumes normalized UI events, and emits a `DrawList`.
 pub trait PlitaProgram {
+    /// Whether the host IME may consume keys in this program's native windows.
+    /// Read at main/auxiliary window creation. Physical-key applications can
+    /// opt out; separate native file dialogs retain their own input contexts.
+    fn ime_allowed(&self) -> bool {
+        true
+    }
+
     /// Minimum logical client size; None leaves resizing unconstrained.
     fn minimum_window_size(&self) -> Option<Size> {
         None
@@ -210,6 +223,13 @@ pub trait PlitaProgram {
     /// Return false to cancel closing, for example when a document is unsaved.
     fn close_requested(&mut self) -> bool {
         true
+    }
+
+    /// Main-window physical pixels per logical UI unit. Called before the first
+    /// draw and before resize when the OS DPI is refreshed or changed.
+    /// Pixel-oriented programs can use this to align their content and effects.
+    fn scale_factor_changed(&mut self, _scale_factor: f64) -> UiResponse {
+        UiResponse::none()
     }
 
     /// Called when the window is resized.
@@ -598,10 +618,6 @@ impl Phase1WindowApp {
         if self.config.centered {
             center_window_on_monitor(&window, event_loop);
         }
-        // Keep IME available for the retained TextInput prototype. The UI layer
-        // accepts IME commits only while its TextInput has focus, so enabling IME
-        // here is safe and lets Japanese input work on Windows.
-        window.set_ime_allowed(true);
         let scale_factor = window.scale_factor();
         let inner_size = window.inner_size();
 
@@ -623,7 +639,9 @@ impl Phase1WindowApp {
             .program_factory
             .take()
             .expect("program factory is used once");
-        let ui = factory(renderer.ui_size());
+        let mut ui = factory(renderer.ui_size());
+        configure_program_ime(&window, ui.as_ref());
+        ui.scale_factor_changed(scale_factor);
         if let Some(size) = ui.minimum_window_size() {
             window.set_min_inner_size(Some(LogicalSize::new(
                 f64::from(size.width.max(1.0)),
@@ -824,7 +842,9 @@ impl Phase1WindowApp {
                     continue;
                 }
             };
-            window.set_ime_allowed(true);
+            if let Some(ui) = self.ui.as_ref() {
+                configure_program_ime(&window, ui.as_ref());
+            }
             let prepared = match GpuRenderer::prepare_surface(Arc::clone(&window)) {
                 Ok(prepared) => prepared,
                 Err(err) => {
@@ -1361,6 +1381,7 @@ impl ApplicationHandler for Phase1WindowApp {
                     ui_size = Some(renderer.ui_size());
                 }
                 if let (Some(ui), Some(size)) = (self.ui.as_mut(), ui_size) {
+                    ui.scale_factor_changed(scale_factor);
                     ui.resize(size);
                 }
                 self.sync_auxiliary_windows_or_exit(event_loop);
@@ -1375,6 +1396,7 @@ impl ApplicationHandler for Phase1WindowApp {
                     ui_size = Some(renderer.ui_size());
                 }
                 if let (Some(ui), Some(size)) = (self.ui.as_mut(), ui_size) {
+                    ui.scale_factor_changed(scale_factor);
                     ui.resize(size);
                 }
                 self.sync_auxiliary_windows_or_exit(event_loop);

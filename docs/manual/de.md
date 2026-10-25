@@ -2,7 +2,7 @@
 
 [English](en.md) · [日本語](ja.md) · [한국어](ko.md) · [简体中文](zh-CN.md) · [繁體中文](zh-TW.md) · [Français](fr.md) · [Español](es.md) · [Deutsch](de.md)
 
-DAISUKE OBA · Quelltextausgabe vom 2026-10-18 · Cargo-Paketversion 0.0.1
+DAISUKE OBA · Quelltextausgabe vom 2026-10-25 · Cargo-Paketversion 0.0.1
 
 ## 1. Lieferumfang
 
@@ -79,6 +79,10 @@ Eigene Anwendungen können Zusatzfenster mit `AuxiliaryWindowDescriptor` beschre
 
 `auxiliary_draw_revision(id)` erlaubt es, die Zeichenliste eines Zusatzfensters beizubehalten. Bei `Some(revision)` ändern Sie die Revision bei jeder sichtbaren Änderung, einschließlich Hover- und Druckzuständen, und fordern über `UiResponse` auch ein Neuzeichnen an. Native Größen- oder DPI-Änderungen machen die Liste ungültig. Für Animationen und gemeinsam genutzte Bilder bleibt der Standardwert `None` geeignet. Minimierte Fenster werden nicht gerendert; Größenänderungen auf null werden ignoriert.
 
+`PlitaProgram::ime_allowed()` liefert standardmäßig `true`. Geben Sie `false` zurück, wenn Ihre Anwendung physische Tasten ohne Abfangen durch die Host-IME benötigt. Diese Einstellung wird beim Erstellen des Hauptfensters und der Zusatzfenster gelesen; sie ist kein Laufzeitschalter und verändert den Eingabekontext separater nativer Dateidialoge nicht. Texteingabeprogramme sollten den Standard beibehalten.
+
+`scale_factor_changed(scale_factor)` meldet die physischen Pixel pro logischer Einheit des Hauptfensters. Der Aufruf erfolgt vor dem ersten Zeichnen und vor `resize`, wenn die DPI aktualisiert oder geändert wird. Speichern Sie den Wert zum Ausrichten pixelbasierter Inhalte; Layout und Trefferprüfung verwenden weiterhin logische Koordinaten. Dieser Callback meldet nicht die eigenständige DPI eines Zusatzfensters.
+
 ## 6. Docking, Canvas und Speicherung
 
 `DockLayoutState` und die Docking-Geometrietypen beschreiben die Anordnung der Bedienfelder. `DockLayoutProfile` ist ein versioniertes Layoutprofil. Die eingebaute Oberfläche verarbeitet Profiltext; `AppBuilder::startup_layout_profile` stellt ihn beim Start dieser Oberfläche wieder her. Wann und wo der Text gespeichert wird, entscheidet die Anwendung. Layoutplätze im Arbeitsspeicher ersetzen keine dauerhafte Speicherung in Dateien.
@@ -87,7 +91,31 @@ Eigene Anwendungen können Zusatzfenster mit `AuxiliaryWindowDescriptor` beschre
 
 `memory_viewer_address_at_point(rect, base_address, byte_count, position)` ordnet einem sichtbaren Hexadezimalbyte in `draw_memory_viewer` eine Adresse vom Typ `Option<u16>` zu. Übergeben Sie dasselbe Rechteck und dieselbe Basisadresse wie beim Zeichnen, die tatsächliche Byteanzahl und die logische Zeigerposition. Adressbeschriftungen, ASCII-Text, Zwischenräume, fehlende Bytes und ausgeblendete Zeilen ergeben `None`. Auswahl und Schreibzugriffe übernimmt die Anwendung; diese Funktion verändert keinen Speicher.
 
-## 7. Schriftarten und Symbole
+## 7. Schaltflächen für Dropdown-Menüs
+
+`draw_menu_button` zeichnet die Schaltfläche, ihre Beschriftung und einen geometrischen Pfeil am rechten Rand. Der Pfeil ist unabhängig von der Schrift: Hängen Sie kein `v` oder Pfeilzeichen an die Beschriftung an. Bei `expanded = false` zeigt er nach unten; setzen Sie den Wert während eines geöffneten Menüs auf `true`, damit er nach oben zeigt.
+
+```rust
+use plita::prelude::*;
+
+let mut list = DrawList::new(Color::rgb8(30, 30, 30));
+let rect = Rect::new(12.0, 12.0, 100.0, 32.0);
+let expanded = false;
+draw_menu_button(
+    &mut list,
+    rect,
+    "File",
+    expanded,
+    ButtonVisualState::Normal,
+    MenuButtonStyle::new(PanelStyle::dark(), Color::rgb8(240, 240, 240), 1.22),
+);
+```
+
+Dieser Ausschnitt erzeugt Zeichenbefehle innerhalb einer `draw_list`-Implementierung und öffnet allein kein Fenster. Verfolgen Sie Zeiger und Tastendruck mit `ButtonInteractionState`, schalten Sie den Menüzustand nach Drücken und Loslassen auf derselben Schaltfläche um und übergeben Sie ihn als `expanded`. Beschriftung und Pfeil verwenden das ursprüngliche Rechteck als gemeinsame Klickfläche. Die Anwendung zeichnet die Menüeinträge und verarbeitet Auswahl und Schließen.
+
+`MenuButtonStyle` enthält Oberfläche, Vordergrundfarbe und Textskalierung für den aktuellen Zustand. `ButtonVisualState::Pressed` verschiebt Oberfläche und Inhalt gemeinsam. `MenuButtonLayout::new` liefert die Bereiche für Beschriftung und Pfeil; lange Beschriftungen werden abgeschnitten, damit sie den Pfeil nicht verdecken. Addieren Sie für die automatische Breite `MENU_BUTTON_CHROME_WIDTH` (42 logische Pixel) zu `measure_text_width(label, scale)`. Die Farben für Zeigerkontakt, Drücken und Aktivierung kommen aus dem Theme; der geöffnete Menüzustand wird getrennt vom visuellen Zustand verwaltet.
+
+## 8. Schriftarten und Symbole
 
 Roboto und Roboto Mono liegen unter `assets/fonts`. plita rastert Text mit `fontdue` und behält eine kleine Bitmap-Ersatzschrift bei. Es sucht außerdem nach installierten Systemschriften. Mit `PLITA_UI_FONT`, `PLITA_UI_FONT_FALLBACK` und `PLITA_MEMORY_FONT` lassen sich Schriftdateien auswählen; setzen Sie diese Variablen vor dem Programmstart. Die Schrift muss die gewünschten Zeichen enthalten. Die mitgelieferten lateinischen Schriften decken Chinesisch, Japanisch und Koreanisch nicht vollständig ab.
 
@@ -95,7 +123,7 @@ Roboto und Roboto Mono liegen unter `assets/fonts`. plita rastert Text mit `font
 
 Das Repository enthält 52 Lucide-SVG-Symbole. `lucide_icon_names()` listet ihre Namen auf; `draw_lucide_icon` zeichnet sie. Behalten Sie die SVGs und Lizenzhinweise bei, wenn Sie mit `crates/plita_ui/assets/build_icons.py` die Rust-Pfaddaten neu erzeugen.
 
-## 8. Optionaler Rendering-Thread
+## 9. Optionaler Rendering-Thread
 
 Fügen Sie Ihrer `PlitaProgram`-Implementierung diese Methode hinzu, um ihn zu aktivieren:
 
@@ -111,7 +139,7 @@ Der Renderer hält unveränderliche RGBA-Quellen fest, um Identitätskollisionen
 
 Validierungsgrenze (2026-10-18): Auf dem Veröffentlichungsrechner waren die normalen Workspace-Tests, zwei Offscreen-GPU-Regressionstests und der native Fenstertest mit synchronem Rendering erfolgreich. Der native Worker-Test überschritt nach Wiederherstellung und Größenänderung das Zeitlimit; ein weiterer Desktoplauf brach abnormal ab. Die Ursache ist noch nicht eingegrenzt, daher ist der native Workerbetrieb in dieser Umgebung nicht bestätigt. Behalten Sie für zuverlässigen Betrieb das synchrone Rendering als Standard bei und prüfen Sie den optionalen Worker vor der Aktivierung auf dem Zielsystem.
 
-## 9. Optionale Python-Hilfsfunktionen
+## 10. Optionale Python-Hilfsfunktionen
 
 Richten Sie Python ab Version 3.10 und maturin ab 1.8, aber unter 2, in einer geeigneten Python-Umgebung ein. Vom Stammverzeichnis des Repositorys aus:
 
@@ -122,7 +150,7 @@ maturin develop --features python
 
 Das Feature `python` liefert PyO3-Wrapper für gemeinsame Wertetypen und Registrierungshilfen. Es verwandelt nicht automatisch eine ganze Rust-Oberfläche in eine vollständige Python-Anwendung. Anwendungs-Crates mit `#[pyclass]` oder `#[pymodule]` benötigen weiterhin eine eigene optionale Abhängigkeit von `pyo3`, da diese Makros auf `::pyo3` verweisen. Wechseln Sie vor den früheren Befehlen wieder ins Stammverzeichnis des Repositorys.
 
-## 10. Fehlersuche und Prüfung
+## 11. Fehlersuche und Prüfung
 
 - Build-Fehler: Lesen Sie den ersten Compiler- oder Linkerfehler, prüfen Sie Rust-Version und Ziel-Toolchain und behalten Sie die Lockdatei bei.
 - Kein Fenster oder fehlgeschlagene GPU-Initialisierung: Prüfen Sie Protokolle und Grafiktreiber. Ein erfolgreicher Build bestätigt noch keine funktionierende Oberfläche.
@@ -141,13 +169,15 @@ Dieses Handbuch beschreibt den veröffentlichten Quelltext und bestätigt keine 
 
 Auf einem Rechner mit funktionierender GPU lassen sich zwei eigenständige Regressionstests ausdrücklich starten: `cargo test -p plita_render --locked offscreen_image_updates_and_draw_order -- --ignored --test-threads=1` und `cargo test -p plita_render --locked offscreen_cache_keeps_images_distinct_and_releases_old_sources -- --ignored --test-threads=1`. Normale Workspace-Tests überspringen GPU- und native Desktoptests. Die anderen ignorierten Benchmarks benötigen externe Eingabedaten und Ausgabepfade; führen Sie nicht alle ignored-Tests ohne diese Vorbereitung aus.
 
-## 11. Lizenz und Weitergabe
+Der optionale Test `offscreen_fixture_snapshot_with_dpi` liest die Zeichenliste und `scale_factor` (Standard 1.0) aus `PLITA_DRAW_FIXTURE` und schreibt `gpu.json` sowie `desktop.rgba` in physischer Größe nach `PLITA_GPU_EVIDENCE`. Er benötigt eine GPU und ausdrücklich vorbereitete Eingabedaten. Geprüft wird der Offscreen-Encoder, nicht die Anzeige eines nativen Fensters.
+
+## 12. Lizenz und Weitergabe
 
 plita-Code und diese Handbücher stehen unter der MIT-Lizenz, Copyright (c) 2026 DAISUKE OBA. Behalten Sie bei der Weitergabe von Kopien oder wesentlichen Teilen den MIT-Urheberrechts- und Erlaubnisvermerk bei. Fremde Ressourcen behalten ihre eigenen Lizenzen: Roboto und Roboto Mono verwenden OFL-1.1; Lucide verwendet ISC einschließlich des übernommenen MIT-Hinweises von Feather.
 
 Lesen Sie [LICENSE](../../LICENSE), die [Drittanbieterhinweise](../../THIRD_PARTY_NOTICES.md), die [Abhängigkeitshinweise](../../licenses/DEPENDENCIES.md) und die [Herkunft der Ressourcen](../../licenses/ASSET_PROVENANCE.json). Legen Sie weitergegebenen Schriften, Symbolen und Binärdateien die jeweils nötigen Hinweise bei. Klären Sie vor der Weitergabe von macOS-Binärdateien die dokumentierten Lücken bei eigenständigen Erlaubnistexten für `dispatch` und `malloc_buf`. Dieses Repository veröffentlicht Quelltext und Hinweise; eine spätere Binärverteilung erfordert die Prüfung der tatsächlich eingebundenen Abhängigkeiten.
 
-## 12. Orientierung im Quelltext
+## 13. Orientierung im Quelltext
 
 - [Anwendungs-Builder](../../crates/plita_app/src/lib.rs)
 - [Fenster- und Programmschnittstelle](../../crates/plita_window/src/lib.rs)
@@ -155,3 +185,4 @@ Lesen Sie [LICENSE](../../LICENSE), die [Drittanbieterhinweise](../../THIRD_PART
 - [Renderer](../../crates/plita_render/src/lib.rs)
 - [Symbole und Erzeugung](../../crates/plita_ui/assets/README.md)
 - [Einzelheiten zum Rendering-Thread auf Japanisch](../render_worker_ja.md)
+- [Menüschaltflächen-Komponente](../../crates/plita_ui/src/menu_button.rs)

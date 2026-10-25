@@ -2,7 +2,7 @@
 
 [English](en.md) · [日本語](ja.md) · [한국어](ko.md) · [简体中文](zh-CN.md) · [繁體中文](zh-TW.md) · [Français](fr.md) · [Español](es.md) · [Deutsch](de.md)
 
-DAISUKE OBA · Edición del código fuente: 2026-10-18 · Versión del paquete Cargo: 0.0.1
+DAISUKE OBA · Edición del código fuente: 2026-10-25 · Versión del paquete Cargo: 0.0.1
 
 ## 1. Contenido de la distribución
 
@@ -79,6 +79,10 @@ Una aplicación puede definir ventanas auxiliares con `AuxiliaryWindowDescriptor
 
 `auxiliary_draw_revision(id)` permite conservar la lista de dibujo auxiliar. Si devuelve `Some(revision)`, cambie la revisión cuando cambie cualquier contenido visible, incluidos los estados del puntero y de pulsación, y solicite también el redibujado mediante `UiResponse`. Los cambios de tamaño nativo o DPI invalidan la lista. Use el valor predeterminado `None` para animaciones e imágenes compartidas. No se renderiza mientras la ventana está minimizada y se ignoran los cambios de tamaño a cero.
 
+`PlitaProgram::ime_allowed()` devuelve `true` de forma predeterminada. Devuelva `false` si la aplicación necesita teclas físicas sin que el IME del sistema las intercepte. La política se lee al crear las ventanas principal y auxiliares; no es un interruptor en tiempo de ejecución ni cambia el contexto de entrada de los diálogos nativos de archivos independientes. Las aplicaciones de texto deben conservar el valor predeterminado.
+
+`scale_factor_changed(scale_factor)` informa de los píxeles físicos por unidad lógica de la ventana principal. Se llama antes del primer dibujo y antes de `resize` cuando se actualiza o cambia el DPI. Guarde el valor para alinear contenido por píxeles y siga utilizando coordenadas lógicas para el diseño y las pruebas de posición. Esta función no informa del DPI independiente de una ventana auxiliar.
+
 ## 6. Acoplamiento, lienzo y persistencia
 
 `DockLayoutState` y los tipos geométricos de acoplamiento describen la disposición de los paneles. `DockLayoutProfile` representa un perfil de disposición con versión. La interfaz incorporada admite el perfil como texto, y `AppBuilder::startup_layout_profile` lo restaura al iniciarla. La aplicación decide cuándo y dónde guardar ese texto. Las posiciones de almacenamiento en memoria no sustituyen el guardado permanente en archivos.
@@ -87,7 +91,31 @@ Una aplicación puede definir ventanas auxiliares con `AuxiliaryWindowDescriptor
 
 `memory_viewer_address_at_point(rect, base_address, byte_count, position)` convierte la posición de un byte hexadecimal visible en `draw_memory_viewer` en una dirección `Option<u16>`. Pase el mismo rectángulo y dirección base usados al dibujar, la cantidad real de bytes y la posición lógica del puntero. Las etiquetas de dirección, el texto ASCII, los huecos, los bytes ausentes y las filas ocultas devuelven `None`. La aplicación gestiona la selección y la escritura; esta función no modifica la memoria.
 
-## 7. Fuentes e iconos
+## 7. Botones de menú desplegable
+
+`draw_menu_button` dibuja la superficie del botón, la etiqueta y una flecha geométrica a la derecha. La flecha no depende de la fuente: no añada `v` ni un carácter de flecha a la etiqueta. Con `expanded = false` apunta hacia abajo; use `true` mientras el menú de la aplicación esté abierto para que apunte hacia arriba.
+
+```rust
+use plita::prelude::*;
+
+let mut list = DrawList::new(Color::rgb8(30, 30, 30));
+let rect = Rect::new(12.0, 12.0, 100.0, 32.0);
+let expanded = false;
+draw_menu_button(
+    &mut list,
+    rect,
+    "File",
+    expanded,
+    ButtonVisualState::Normal,
+    MenuButtonStyle::new(PanelStyle::dark(), Color::rgb8(240, 240, 240), 1.22),
+);
+```
+
+Este fragmento genera órdenes dentro de una implementación de `draw_list`; por sí solo no abre una ventana. Use `ButtonInteractionState` para seguir el puntero y la pulsación, cambie el estado del menú cuando la pulsación y la liberación coincidan en el mismo botón y pase ese estado a `expanded`. La etiqueta y la flecha comparten el rectángulo original como zona de clic. La aplicación dibuja los elementos y gestiona la selección y el cierre.
+
+`MenuButtonStyle` define la superficie, el color de primer plano y la escala del texto para el estado actual. `ButtonVisualState::Pressed` desplaza juntos la superficie y su contenido. `MenuButtonLayout::new` expone las zonas de la etiqueta y la flecha; las etiquetas largas se recortan para no tapar la flecha. Para calcular el ancho, sume `MENU_BUTTON_CHROME_WIDTH` (42 píxeles lógicos) a `measure_text_width(label, scale)`. El tema proporciona los colores de puntero, pulsación y activación; la apertura del menú se gestiona aparte del estado visual.
+
+## 8. Fuentes e iconos
 
 Roboto y Roboto Mono se incluyen en `assets/fonts`. plita rasteriza texto con `fontdue` y conserva una pequeña fuente de mapa de bits como alternativa. También busca fuentes instaladas en el sistema. `PLITA_UI_FONT`, `PLITA_UI_FONT_FALLBACK` y `PLITA_MEMORY_FONT` permiten seleccionar archivos de fuentes; configure estas variables antes de iniciar la aplicación. La fuente debe contener los caracteres que desea mostrar. Las fuentes latinas incluidas no cubren todos los caracteres chinos, japoneses y coreanos.
 
@@ -95,7 +123,7 @@ Roboto y Roboto Mono se incluyen en `assets/fonts`. plita rasteriza texto con `f
 
 El repositorio incluye 52 iconos SVG de Lucide. `lucide_icon_names()` enumera sus nombres y `draw_lucide_icon` los dibuja. Conserve los SVG y sus avisos de licencia cuando regenere los trazados de Rust con `crates/plita_ui/assets/build_icons.py`.
 
-## 8. Hilo opcional de renderizado
+## 9. Hilo opcional de renderizado
 
 Añada este método a su implementación de `PlitaProgram` para activarlo:
 
@@ -111,7 +139,7 @@ El renderizador conserva las fuentes RGBA inmutables para evitar colisiones de i
 
 Límite de validación (2026-10-18): en el equipo de publicación pasaron las pruebas normales del workspace, dos regresiones GPU fuera de pantalla y la prueba de ventana nativa con renderizado síncrono. La prueba nativa del worker agotó el tiempo tras restaurar y redimensionar, y otra ejecución de escritorio terminó de forma anormal. La causa aún no se ha aislado, por lo que no se confirma el funcionamiento nativo del worker en este entorno. Si necesita fiabilidad, conserve el renderizado síncrono predeterminado y valide el worker en su plataforma antes de activarlo.
 
-## 9. Utilidades opcionales de Python
+## 10. Utilidades opcionales de Python
 
 Prepare Python 3.10 o posterior y maturin de versión igual o superior a 1.8 e inferior a 2 en un entorno de Python adecuado. Desde la raíz del repositorio:
 
@@ -122,7 +150,7 @@ maturin develop --features python
 
 La función `python` proporciona clases envoltorio de PyO3 para valores comunes y utilidades de registro. No convierte automáticamente toda una interfaz Rust en una aplicación Python completa. Los crates que usan `#[pyclass]` o `#[pymodule]` siguen necesitando su propia dependencia opcional de `pyo3`, porque esas macros hacen referencia a `::pyo3`. Vuelva a la raíz del repositorio antes de utilizar los comandos anteriores.
 
-## 10. Diagnóstico y verificación
+## 11. Diagnóstico y verificación
 
 - Error de compilación: lea el primer error del compilador o enlazador, compruebe Rust y la cadena de herramientas del destino, y conserve el archivo de bloqueo.
 - No aparece la ventana o falla la inicialización de GPU: revise los registros y el controlador gráfico. Una compilación correcta no verifica el funcionamiento de la interfaz.
@@ -141,13 +169,15 @@ Este manual describe el código publicado sin certificar pruebas de ejecución e
 
 En un equipo con una GPU operativa puede ejecutar explícitamente dos pruebas autónomas: `cargo test -p plita_render --locked offscreen_image_updates_and_draw_order -- --ignored --test-threads=1` y `cargo test -p plita_render --locked offscreen_cache_keeps_images_distinct_and_releases_old_sources -- --ignored --test-threads=1`. Las pruebas habituales omiten las pruebas de GPU y de escritorio nativo. Los demás benchmarks ignorados necesitan datos externos y rutas de salida; no ejecute todas las pruebas ignored sin preparar esas entradas.
 
-## 11. Licencia y redistribución
+La prueba opcional `offscreen_fixture_snapshot_with_dpi` lee la lista de dibujo y `scale_factor` (1.0 de forma predeterminada) de `PLITA_DRAW_FIXTURE` y escribe `gpu.json` y `desktop.rgba` con dimensiones físicas en `PLITA_GPU_EVIDENCE`. Requiere una GPU y datos preparados expresamente. Comprueba la ruta del codificador fuera de pantalla, no la presentación de ventanas nativas.
+
+## 12. Licencia y redistribución
 
 El código de plita y estos manuales se distribuyen bajo la licencia MIT, copyright (c) 2026 DAISUKE OBA. Conserve el aviso de copyright y el texto de autorización MIT al redistribuir copias o partes sustanciales. Los recursos de terceros mantienen sus propias licencias: Roboto y Roboto Mono usan OFL-1.1; Lucide usa ISC e incluye el aviso MIT heredado de Feather.
 
 Consulte [LICENSE](../../LICENSE), los [avisos de terceros](../../THIRD_PARTY_NOTICES.md), los [avisos de dependencias](../../licenses/DEPENDENCIES.md) y la [procedencia de recursos](../../licenses/ASSET_PROVENANCE.json). Adjunte los avisos pertinentes al distribuir fuentes, iconos y binarios. Antes de distribuir binarios de macOS, resuelva la falta de textos de autorización independientes registrada para `dispatch` y `malloc_buf`. Este repositorio publica código fuente y avisos; una futura distribución binaria requiere revisar las dependencias que realmente se enlacen.
 
-## 12. Guía de archivos fuente
+## 13. Guía de archivos fuente
 
 - [Constructor de aplicaciones](../../crates/plita_app/src/lib.rs)
 - [Interfaz de ventanas y programas](../../crates/plita_window/src/lib.rs)
@@ -155,3 +185,4 @@ Consulte [LICENSE](../../LICENSE), los [avisos de terceros](../../THIRD_PARTY_NO
 - [Renderizador](../../crates/plita_render/src/lib.rs)
 - [Iconos y generación](../../crates/plita_ui/assets/README.md)
 - [Detalles del hilo de renderizado, en japonés](../render_worker_ja.md)
+- [Componente de botón de menú](../../crates/plita_ui/src/menu_button.rs)

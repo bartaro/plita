@@ -2,7 +2,7 @@
 
 [English](en.md) · [日本語](ja.md) · [한국어](ko.md) · [简体中文](zh-CN.md) · [繁體中文](zh-TW.md) · [Français](fr.md) · [Español](es.md) · [Deutsch](de.md)
 
-DAISUKE OBA · ソース版 2026-10-18 · Cargoパッケージ版 0.0.1
+DAISUKE OBA · ソース版 2026-10-25 · Cargoパッケージ版 0.0.1
 
 ## 1. 同梱内容
 
@@ -79,6 +79,10 @@ UIの当たり判定とレイアウトにはplitaの論理座標を使います�
 
 `auxiliary_draw_revision(id)`では、補助ウィンドウの描画リストを任意で保持できます。`Some(revision)`を返す場合は、ホバー・押下状態を含む表示内容の変化ごとに版番号を変え、`UiResponse`で再描画も要求してください。ネイティブのリサイズやDPI変更では保持内容を無効化します。アニメーションや共有画像のウィンドウでは、既定の`None`を返してください。最小化中は描画を省略し、サイズがゼロのリサイズイベントは無視します。
 
+`PlitaProgram::ime_allowed()`の既定値は`true`です。ホスト側IMEにキーを消費させず、物理キーを扱うアプリでは`false`を返せます。メイン・補助ウィンドウの作成時に読み取る設定で、実行中の切り替えではありません。別のネイティブファイルダイアログの入力コンテキストには影響しません。文字入力を行うアプリでは既定値を維持してください。
+
+`scale_factor_changed(scale_factor)`は、メインウィンドウの論理座標1単位に対応する物理ピクセル数を通知します。初回描画前と、DPIを再取得・変更した際の`resize`より前に呼ばれます。ピクセル単位の表示を揃える場合は値を保持し、レイアウトと当たり判定には引き続き論理座標を使います。この通知は補助ウィンドウ固有のDPIを通知するものではありません。
+
 ## 6. ドッキング、キャンバス、保存
 
 `DockLayoutState`とドック座標の型でパネルの配置を表します。`DockLayoutProfile`はバージョン付きレイアウトプロファイルです。シェルはプロファイルのテキストを扱え、`AppBuilder::startup_layout_profile`で標準シェル起動時に復元できます。そのテキストをいつ、どこに保存するかはアプリで決めてください。メモリー内のレイアウトスロットはファイルへの永続保存の代わりにはなりません。
@@ -87,7 +91,31 @@ UIの当たり判定とレイアウトにはplitaの論理座標を使います�
 
 `memory_viewer_address_at_point(rect, base_address, byte_count, position)`は、`draw_memory_viewer`に表示された16進数のバイト位置を`Option<u16>`のアドレスへ変換します。描画時と同じ矩形・開始アドレス、実際のバイト数、論理座標のポインター位置を渡してください。アドレス表示・ASCII欄・隙間・存在しないバイト・非表示行は`None`です。選択や書き込みはアプリ側で処理し、この関数自体はメモリーを変更しません。
 
-## 7. フォントとアイコン
+## 7. ドロップダウン付きメニューボタン
+
+`draw_menu_button`は、ボタンの面・ラベル・右端の図形の矢印をまとめて描画します。矢印はフォントに依存しません。ラベルに`v`や矢印文字を付けずに渡してください。`expanded = false`では下向き、アプリのポップアップを開いている間は`true`にして上向きにします。
+
+```rust
+use plita::prelude::*;
+
+let mut list = DrawList::new(Color::rgb8(30, 30, 30));
+let rect = Rect::new(12.0, 12.0, 100.0, 32.0);
+let expanded = false;
+draw_menu_button(
+    &mut list,
+    rect,
+    "File",
+    expanded,
+    ButtonVisualState::Normal,
+    MenuButtonStyle::new(PanelStyle::dark(), Color::rgb8(240, 240, 240), 1.22),
+);
+```
+
+この例は`draw_list`の実装内で描画命令を作るコードで、単独でウィンドウを開くものではありません。`ButtonInteractionState`でホバーと押下を管理し、同じボタンで押下・解放が完了したらポップアップの状態を切り替えて`expanded`へ渡します。文字と矢印には元のボタン矩形を共通の当たり判定として使います。項目の描画・選択・ポップアップを閉じる処理はアプリ側で実装します。
+
+`MenuButtonStyle`には現在の状態の面、文字・矢印の色、文字倍率を指定します。`ButtonVisualState::Pressed`では面と中身が一緒に押下位置へずれます。`MenuButtonLayout::new`で文字領域と矢印領域を取得でき、長い文字は矢印を覆わないようクリップされます。自動幅は`measure_text_width(label, scale)`に`MENU_BUTTON_CHROME_WIDTH`（42論理ピクセル）を足して求めます。ホバー・押下・選択中の色はテーマから渡し、ポップアップの開閉状態は表示状態とは別に管理します。
+
+## 8. フォントとアイコン
 
 RobotoとRoboto Monoを`assets/fonts`に同梱しています。plitaは`fontdue`で文字をラスタライズし、小型ビットマップの代替描画も保持しています。インストール済みのシステムフォントも検索します。`PLITA_UI_FONT`・`PLITA_UI_FONT_FALLBACK`・`PLITA_MEMORY_FONT`でフォントファイルを指定する場合は、アプリ起動前に設定してください。表示したい文字を含むフォントが必要です。同梱のラテン文字用フォントだけでは日本語・中国語・韓国語を網羅しません。
 
@@ -95,7 +123,7 @@ RobotoとRoboto Monoを`assets/fonts`に同梱しています。plitaは`fontdue
 
 LucideのSVGアイコンを52個同梱しています。`lucide_icon_names()`で対応名を取得し、`draw_lucide_icon`で描画します。`crates/plita_ui/assets/build_icons.py`でRustのパスデータを再生成する場合も、SVGとライセンス表示を保持してください。
 
-## 8. 任意の描画ワーカー
+## 9. 任意の描画ワーカー
 
 `PlitaProgram`実装に次のメソッドを追加すると有効になります。
 
@@ -111,7 +139,7 @@ GPU処理と画面への提示を各ウィンドウのワーカーが担当し�
 
 検証上の制約（2026-10-18）：公開作業環境では、通常のワークスペース試験、GPUのオフスクリーン回帰試験2件、同期描画のネイティブウィンドウ試験が成功しました。一方、描画ワーカーのネイティブ試験は復元・リサイズ後にタイムアウトし、別のデスクトップ実行では異常終了しました。原因は未特定で、この環境でのワーカーの正常動作は確認できていません。安定動作が必要な場合は既定の同期描画を維持し、任意の描画ワーカーは対象環境で検証してから有効にしてください。
 
-## 9. 任意のPython補助機能
+## 10. 任意のPython補助機能
 
 Python 3.10以降と、1.8以上2未満のmaturinを適切なPython環境に用意してください。リポジトリのルートから次を実行します。
 
@@ -122,7 +150,7 @@ maturin develop --features python
 
 `python`機能は、共通の値の型を包むPyO3クラスと登録用の補助関数を提供します。RustのGUI全体が自動的にPythonアプリになるわけではありません。`#[pyclass]`や`#[pymodule]`を使うアプリのクレートには、マクロが`::pyo3`を参照するため、任意の`pyo3`依存関係も必要です。前の節のコマンドに戻る場合は、作業ディレクトリをリポジトリのルートに戻してください。
 
-## 10. 問題の切り分けと検証
+## 11. 問題の切り分けと検証
 
 - ビルド失敗：最初のコンパイラーまたはリンカーのエラーを確認し、Rustの版と対象ツールチェーンを確認します。ロックファイルを保持してください。
 - ウィンドウが出ない・GPU初期化失敗：ログとグラフィックスドライバーを確認します。ビルド成功だけではGUI動作の確認にはなりません。
@@ -141,13 +169,15 @@ cargo run --locked -p hello_plita
 
 動作するGPUがある環境では、外部データ不要の回帰試験を明示的に実行できます。`cargo test -p plita_render --locked offscreen_image_updates_and_draw_order -- --ignored --test-threads=1`と`cargo test -p plita_render --locked offscreen_cache_keeps_images_distinct_and_releases_old_sources -- --ignored --test-threads=1`です。通常のワークスペース試験はGPU試験とネイティブデスクトップ試験をスキップします。他の無効化済みベンチマークには外部入力と出力先の準備が必要なため、準備せずに全ignored試験を一括実行しないでください。
 
-## 11. ライセンスと再配布
+任意の`offscreen_fixture_snapshot_with_dpi`試験は、`PLITA_DRAW_FIXTURE`の描画リストと`scale_factor`（省略時1.0）を読み、`PLITA_GPU_EVIDENCE`へ`gpu.json`と物理サイズの`desktop.rgba`を出力します。GPUと明示的に用意した入力が必要です。検証対象はオフスクリーン描画経路で、ネイティブウィンドウの表示確認ではありません。
+
+## 12. ライセンスと再配布
 
 plitaのコードと本書はMITライセンスで、著作権者は2026 DAISUKE OBAです。コピーや主要部分の再配布ではMITの著作権表示と許諾文を保持してください。第三者のアセットには元のライセンスが適用されます。Roboto・Roboto MonoはOFL-1.1、LucideはISCで、由来となったFeatherのMIT表示も含みます。
 
 [LICENSE](../../LICENSE)、[第三者の権利表示](../../THIRD_PARTY_NOTICES.md)、[依存関係の表示](../../licenses/DEPENDENCIES.md)、[アセットの出典](../../licenses/ASSET_PROVENANCE.json)を確認してください。フォント、アイコン、バイナリを配布するときは対応する表示を同梱します。macOSバイナリの配布前には、`dispatch`と`malloc_buf`について記録した独立した許諾文の不足を解決してください。このリポジトリはソースと表示文書の公開であり、将来のバイナリ配布では実際にリンクする依存関係の確認が必要です。
 
-## 12. ソースへの案内
+## 13. ソースへの案内
 
 - [アプリビルダー](../../crates/plita_app/src/lib.rs)
 - [ウィンドウとプログラムのインターフェース](../../crates/plita_window/src/lib.rs)
@@ -155,3 +185,4 @@ plitaのコードと本書はMITライセンスで、著作権者は2026 DAISUKE
 - [レンダラー](../../crates/plita_render/src/lib.rs)
 - [アイコンと生成方法](../../crates/plita_ui/assets/README.md)
 - [描画ワーカーの詳細（日本語）](../render_worker_ja.md)
+- [メニューボタン部品](../../crates/plita_ui/src/menu_button.rs)

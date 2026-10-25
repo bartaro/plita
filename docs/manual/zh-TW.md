@@ -2,7 +2,7 @@
 
 [English](en.md) · [日本語](ja.md) · [한국어](ko.md) · [简体中文](zh-CN.md) · [繁體中文](zh-TW.md) · [Français](fr.md) · [Español](es.md) · [Deutsch](de.md)
 
-DAISUKE OBA · 原始碼版 2026-10-18 · Cargo 套件版本 0.0.1
+DAISUKE OBA · 原始碼版 2026-10-25 · Cargo 套件版本 0.0.1
 
 ## 1. 隨附內容
 
@@ -79,6 +79,10 @@ UI 命中測試與版面配置使用 plita 的邏輯座標；視窗層負責 DPI
 
 `auxiliary_draw_revision(id)`可選擇保留輔助視窗的繪製清單。傳回`Some(revision)`時，每次可見內容變化（包含懸停及按下狀態）都應更新版本，並透過`UiResponse`請求重繪。視窗大小或DPI變更會使保留的清單失效。動畫或共用影像視窗應傳回預設值`None`。視窗最小化時略過渲染，尺寸為零的大小變更事件會被忽略。
 
+`PlitaProgram::ime_allowed()`預設為`true`。需要實體按鍵輸入、不希望主機IME攔截按鍵的應用程式可傳回`false`。此原則在主視窗與輔助視窗建立時讀取，並非執行階段的開關，也不會改變獨立原生檔案對話框的輸入內容。文字輸入應用程式應保留預設值。
+
+`scale_factor_changed(scale_factor)`通知主視窗每個邏輯單位對應的實體像素數。首次繪製前，以及重新取得或變更DPI時的`resize`之前皆會呼叫。對齊像素內容時可保存此值，版面配置與命中測試仍使用邏輯座標。此回呼不回報輔助視窗個別的DPI。
+
 ## 6. 停駐配置、畫布與永久儲存
 
 `DockLayoutState` 與停駐幾何型別描述面板配置。`DockLayoutProfile` 表示附有版本的配置設定。內建介面支援設定文字，`AppBuilder::startup_layout_profile` 可在啟動內建介面時還原設定。應用程式必須自行決定何時、在何處儲存文字。記憶體中的配置儲存槽不能取代永久檔案儲存。
@@ -87,7 +91,31 @@ UI 命中測試與版面配置使用 plita 的邏輯座標；視窗層負責 DPI
 
 `memory_viewer_address_at_point(rect, base_address, byte_count, position)`將`draw_memory_viewer`中可見的十六進位元組位置轉換為`Option<u16>`位址。請傳入與繪製時相同的矩形及起始位址、實際位元組數，以及邏輯指標座標。位址標籤、ASCII區域、間隙、不存在的位元組和隱藏列傳回`None`。選取及寫入由應用程式處理，此函式不會修改記憶體。
 
-## 7. 字型與圖示
+## 7. 下拉式選單按鈕
+
+`draw_menu_button`統一繪製按鈕表面、標籤與右側的幾何箭頭。箭頭不依賴字型；傳入標籤時不要附加`v`或箭頭字元。`expanded = false`時箭頭朝下；應用程式的彈出選單開啟時設為`true`，箭頭朝上。
+
+```rust
+use plita::prelude::*;
+
+let mut list = DrawList::new(Color::rgb8(30, 30, 30));
+let rect = Rect::new(12.0, 12.0, 100.0, 32.0);
+let expanded = false;
+draw_menu_button(
+    &mut list,
+    rect,
+    "File",
+    expanded,
+    ButtonVisualState::Normal,
+    MenuButtonStyle::new(PanelStyle::dark(), Color::rgb8(240, 240, 240), 1.22),
+);
+```
+
+此片段在`draw_list`實作中產生繪製命令，本身不會開啟視窗。使用`ButtonInteractionState`追蹤懸停與按下狀態，在同一按鈕上完成按下與放開後切換彈出選單狀態，再傳給`expanded`。文字與箭頭共用原按鈕矩形作為命中區域。選單項目的繪製、選取與關閉由應用程式處理。
+
+`MenuButtonStyle`提供目前狀態的表面、前景色與文字縮放。`ButtonVisualState::Pressed`會一起位移表面與內容。`MenuButtonLayout::new`提供標籤區與箭頭區；過長標籤會被裁切，不會遮住箭頭。自動寬度可用`measure_text_width(label, scale)`加上`MENU_BUTTON_CHROME_WIDTH`（42邏輯像素）。懸停、按下與啟用顏色由主題提供，選單展開狀態與視覺狀態分別管理。
+
+## 8. 字型與圖示
 
 `assets/fonts` 隨附 Roboto 與 Roboto Mono。plita 透過 `fontdue` 點陣化文字，並保留小型點陣備援字型，也會尋找已安裝的系統字型。可用 `PLITA_UI_FONT`、`PLITA_UI_FONT_FALLBACK`、`PLITA_MEMORY_FONT` 指定字型檔，請在啟動應用程式前設定。字型必須包含要顯示的字元。隨附的拉丁字型不足以涵蓋所有中日韓文字。
 
@@ -95,7 +123,7 @@ UI 命中測試與版面配置使用 plita 的邏輯座標；視窗層負責 DPI
 
 儲存庫隨附 52 個 Lucide SVG 圖示。`lucide_icon_names()` 列出支援的名稱，`draw_lucide_icon` 用於繪製。以 `crates/plita_ui/assets/build_icons.py` 重新產生 Rust 路徑資料時，請保留 SVG 與授權聲明。
 
-## 8. 選用的算繪工作執行緒
+## 9. 選用的算繪工作執行緒
 
 在 `PlitaProgram` 實作中加入以下方法即可啟用。
 
@@ -111,7 +139,7 @@ fn render_on_worker_thread(&self) -> bool {
 
 驗證限制（2026-10-18）：在發佈工作環境中，一般工作區測試、兩個離屏GPU回歸測試及原生同步視窗測試已通過。但原生渲染工作執行緒測試在還原及調整大小後逾時，另一次桌面執行則異常終止。原因尚未確定，因此尚未確認工作執行緒在此環境中能正常運作。需要可靠運作時，請保留預設同步渲染；啟用可選工作執行緒前，請在目標環境中驗證。
 
-## 9. 選用的 Python 輔助功能
+## 10. 選用的 Python 輔助功能
 
 請在適當的 Python 環境準備 Python 3.10 以上版本，以及 1.8 以上、未滿 2 的 maturin。從儲存庫根目錄執行：
 
@@ -122,7 +150,7 @@ maturin develop --features python
 
 `python` 功能提供常用值型別的 PyO3 包裝類別及註冊輔助函式，不會自動將整個 Rust GUI 轉換為完整 Python 應用程式。使用 `#[pyclass]` 或 `#[pymodule]` 的應用程式 crate 仍須自行加入選用的 `pyo3` 相依套件，因為這些巨集參照 `::pyo3`。再次執行前面章節的指令前，請回到儲存庫根目錄。
 
-## 10. 疑難排解與驗證
+## 11. 疑難排解與驗證
 
 - 建置失敗：查看第一個編譯器或連結器錯誤，確認 Rust 版本及目標工具鏈，並保留鎖定檔。
 - 未顯示視窗或 GPU 初始化失敗：查看紀錄及顯示卡驅動程式。建置成功不代表 GUI 運作已通過驗證。
@@ -141,13 +169,15 @@ cargo run --locked -p hello_plita
 
 在GPU正常運作的環境中，可明確執行兩個無需外部資料的回歸測試：`cargo test -p plita_render --locked offscreen_image_updates_and_draw_order -- --ignored --test-threads=1`與`cargo test -p plita_render --locked offscreen_cache_keeps_images_distinct_and_releases_old_sources -- --ignored --test-threads=1`。一般工作區測試會略過GPU及原生桌面測試。其他ignored基準測試需要外部輸入與輸出路徑，請勿在未準備輸入時執行所有ignored測試。
 
-## 11. 授權與再散布
+選用的`offscreen_fixture_snapshot_with_dpi`測試讀取`PLITA_DRAW_FIXTURE`內的繪製清單與`scale_factor`（預設1.0），將`gpu.json`及實體尺寸的`desktop.rgba`寫入`PLITA_GPU_EVIDENCE`。它需要GPU與明確準備的輸入，僅檢查離屏編碼器路徑，不驗證原生視窗顯示。
+
+## 12. 授權與再散布
 
 plita 程式碼與本手冊採用 MIT 授權，著作權為 (c) 2026 DAISUKE OBA。再散布副本或重要部分時，請保留 MIT 著作權聲明與授權文字。第三方資源保留原有授權：Roboto 與 Roboto Mono 採用 OFL-1.1；Lucide 採用 ISC，並包含源自 Feather 的 MIT 聲明。
 
 請閱讀 [LICENSE](../../LICENSE)、[第三方聲明](../../THIRD_PARTY_NOTICES.md)、[相依套件聲明](../../licenses/DEPENDENCIES.md)及[資源來源](../../licenses/ASSET_PROVENANCE.json)。散布字型、圖示及二進位檔時，請附上相關聲明。散布 macOS 二進位檔前，須先處理紀錄中 `dispatch` 與 `malloc_buf` 缺少獨立授權文字的問題。本儲存庫公開原始碼與聲明；未來散布二進位檔時，仍需檢查實際連結的相依套件。
 
-## 12. 原始碼導覽
+## 13. 原始碼導覽
 
 - [應用程式建構器](../../crates/plita_app/src/lib.rs)
 - [視窗與程式介面](../../crates/plita_window/src/lib.rs)
@@ -155,3 +185,4 @@ plita 程式碼與本手冊採用 MIT 授權，著作權為 (c) 2026 DAISUKE OBA
 - [算繪器](../../crates/plita_render/src/lib.rs)
 - [圖示資源與產生方法](../../crates/plita_ui/assets/README.md)
 - [算繪工作執行緒詳解（日文）](../render_worker_ja.md)
+- [選單按鈕元件](../../crates/plita_ui/src/menu_button.rs)

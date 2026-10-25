@@ -2,7 +2,7 @@
 
 [English](en.md) · [日本語](ja.md) · [한국어](ko.md) · [简体中文](zh-CN.md) · [繁體中文](zh-TW.md) · [Français](fr.md) · [Español](es.md) · [Deutsch](de.md)
 
-DAISUKE OBA · Édition source du 2026-10-18 · Version du paquet Cargo : 0.0.1
+DAISUKE OBA · Édition source du 2026-10-25 · Version du paquet Cargo : 0.0.1
 
 ## 1. Contenu de la distribution
 
@@ -79,6 +79,10 @@ Une application peut définir des fenêtres auxiliaires avec `AuxiliaryWindowDes
 
 `auxiliary_draw_revision(id)` permet de conserver la liste de dessin auxiliaire. Avec `Some(revision)`, changez la révision à chaque modification visible, y compris les états de survol et d'appui, et demandez aussi un rafraîchissement via `UiResponse`. Un redimensionnement natif ou un changement de DPI invalide la liste. Gardez la valeur par défaut `None` pour les animations et les images partagées. Le rendu est suspendu lorsque la fenêtre est réduite ; les redimensionnements de taille nulle sont ignorés.
 
+`PlitaProgram::ime_allowed()` renvoie `true` par défaut. Renvoyez `false` si l’application doit recevoir les touches physiques sans interception par l’IME hôte. Cette politique est lue à la création des fenêtres principale et auxiliaires ; ce n’est pas un interrupteur dynamique et elle ne modifie pas le contexte de saisie des boîtes de dialogue de fichiers natives séparées. Les applications de saisie de texte doivent conserver la valeur par défaut.
+
+`scale_factor_changed(scale_factor)` indique le nombre de pixels physiques par unité logique de la fenêtre principale. L’appel précède le premier dessin et `resize` lors d’une actualisation ou d’un changement de DPI. Mémorisez cette valeur pour aligner le contenu au pixel, tout en conservant les coordonnées logiques pour la disposition et les tests de position. Ce rappel ne fournit pas le DPI propre à une fenêtre auxiliaire.
+
 ## 6. Ancrage, canevas et persistance
 
 `DockLayoutState` et les types géométriques d'ancrage décrivent la disposition des panneaux. `DockLayoutProfile` représente un profil de disposition versionné. L'interface intégrée traite ce profil sous forme de texte ; `AppBuilder::startup_layout_profile` le restaure à son lancement. L'application choisit quand et où enregistrer ce texte. Les emplacements de disposition en mémoire ne remplacent pas une sauvegarde durable dans un fichier.
@@ -87,7 +91,31 @@ Une application peut définir des fenêtres auxiliaires avec `AuxiliaryWindowDes
 
 `memory_viewer_address_at_point(rect, base_address, byte_count, position)` convertit la position d'un octet hexadécimal visible dans `draw_memory_viewer` en adresse `Option<u16>`. Fournissez le même rectangle et la même adresse de base que pour le dessin, le nombre réel d'octets et la position logique du pointeur. Les adresses affichées, le texte ASCII, les espaces, les octets absents et les lignes masquées renvoient `None`. L'application gère la sélection et l'écriture ; cette fonction ne modifie pas la mémoire.
 
-## 7. Polices et icônes
+## 7. Boutons de menu déroulant
+
+`draw_menu_button` dessine la surface du bouton, son libellé et un chevron géométrique à droite. Le chevron ne dépend pas de la police : ne terminez pas le libellé par `v` ou un caractère de flèche. `expanded = false` l’oriente vers le bas ; utilisez `true` tant que le menu de l’application est ouvert pour l’orienter vers le haut.
+
+```rust
+use plita::prelude::*;
+
+let mut list = DrawList::new(Color::rgb8(30, 30, 30));
+let rect = Rect::new(12.0, 12.0, 100.0, 32.0);
+let expanded = false;
+draw_menu_button(
+    &mut list,
+    rect,
+    "File",
+    expanded,
+    ButtonVisualState::Normal,
+    MenuButtonStyle::new(PanelStyle::dark(), Color::rgb8(240, 240, 240), 1.22),
+);
+```
+
+Ce fragment produit des commandes dans une implémentation de `draw_list` ; il n’ouvre pas de fenêtre à lui seul. Suivez le survol et l’appui avec `ButtonInteractionState`, basculez l’état du menu après un appui et un relâchement sur le même bouton, puis transmettez cet état à `expanded`. Le libellé et la flèche partagent le rectangle d’origine comme zone de clic. L’application dessine les entrées et gère la sélection et la fermeture du menu.
+
+`MenuButtonStyle` fournit la surface, la couleur de premier plan et l’échelle du texte pour l’état courant. `ButtonVisualState::Pressed` décale ensemble la surface et son contenu. `MenuButtonLayout::new` expose les zones du libellé et du chevron ; les libellés longs sont découpés pour ne pas recouvrir la flèche. Pour calculer la largeur, ajoutez `MENU_BUTTON_CHROME_WIDTH` (42 pixels logiques) à `measure_text_width(label, scale)`. Les couleurs de survol, d’appui et d’activation viennent du thème ; l’ouverture du menu est distincte de l’état visuel.
+
+## 8. Polices et icônes
 
 Roboto et Roboto Mono sont incluses dans `assets/fonts`. plita utilise `fontdue` pour la rastérisation du texte et conserve une petite police bitmap de secours. Il recherche également des polices système installées. `PLITA_UI_FONT`, `PLITA_UI_FONT_FALLBACK` et `PLITA_MEMORY_FONT` permettent de choisir des fichiers de police ; définissez ces variables avant le lancement. La police doit contenir les caractères à afficher. Les polices latines incluses ne couvrent pas intégralement le chinois, le japonais et le coréen.
 
@@ -95,7 +123,7 @@ Roboto et Roboto Mono sont incluses dans `assets/fonts`. plita utilise `fontdue`
 
 Le dépôt inclut 52 icônes SVG Lucide. `lucide_icon_names()` en énumère les noms et `draw_lucide_icon` les dessine. Conservez les SVG et leurs mentions de licence lors de la régénération des tracés Rust avec `crates/plita_ui/assets/build_icons.py`.
 
-## 8. Thread de rendu facultatif
+## 9. Thread de rendu facultatif
 
 Ajoutez cette méthode à votre implémentation de `PlitaProgram` pour l'activer :
 
@@ -111,7 +139,7 @@ Le moteur conserve les sources RGBA immuables pour éviter les collisions d'iden
 
 Limite de validation (2026-10-18) : les tests ordinaires du workspace, deux tests GPU hors écran et le test de fenêtre native à rendu synchrone ont réussi sur la machine de publication. En revanche, le test natif du worker a dépassé le délai après restauration/redimensionnement, et une autre exécution sur le bureau s'est terminée anormalement. La cause n'est pas isolée ; le bon fonctionnement natif du worker n'est donc pas confirmé dans cet environnement. Pour privilégier la fiabilité, gardez le rendu synchrone par défaut et validez le worker sur votre cible avant de l'activer.
 
-## 9. Aides Python facultatives
+## 10. Aides Python facultatives
 
 Préparez Python 3.10 ou ultérieur et maturin de version au moins 1.8 et inférieure à 2 dans un environnement Python adapté. Depuis la racine du dépôt :
 
@@ -122,7 +150,7 @@ maturin develop --features python
 
 La fonctionnalité `python` fournit des classes PyO3 pour les valeurs courantes et des aides à l'enregistrement. Elle ne transforme pas automatiquement une interface Rust entière en application Python complète. Les crates applicatives utilisant `#[pyclass]` ou `#[pymodule]` doivent conserver leur propre dépendance facultative `pyo3`, car ces macros référencent `::pyo3`. Revenez à la racine du dépôt avant de réutiliser les commandes des sections précédentes.
 
-## 10. Diagnostic et vérification
+## 11. Diagnostic et vérification
 
 - Échec de compilation : lisez la première erreur du compilateur ou de l'éditeur de liens, vérifiez Rust et la chaîne d'outils cible, et conservez le fichier de verrouillage.
 - Fenêtre absente ou échec d'initialisation GPU : examinez les journaux et le pilote graphique. Compiler ne suffit pas à valider l'interface.
@@ -141,13 +169,15 @@ Ce manuel décrit le code publié sans certifier son exécution sur toutes les p
 
 Sur une machine disposant d'un GPU fonctionnel, lancez explicitement les deux tests autonomes : `cargo test -p plita_render --locked offscreen_image_updates_and_draw_order -- --ignored --test-threads=1` et `cargo test -p plita_render --locked offscreen_cache_keeps_images_distinct_and_releases_old_sources -- --ignored --test-threads=1`. Les tests ordinaires ignorent les tests GPU et de bureau natif. Les autres benchmarks ignorés nécessitent des données externes et des chemins de sortie ; ne lancez pas tous les tests ignored sans préparer ces entrées.
 
-## 11. Licence et redistribution
+Le test facultatif `offscreen_fixture_snapshot_with_dpi` lit la liste de dessin et `scale_factor` (1.0 par défaut) depuis `PLITA_DRAW_FIXTURE`, puis écrit `gpu.json` et `desktop.rgba` aux dimensions physiques dans `PLITA_GPU_EVIDENCE`. Il exige un GPU et des données préparées explicitement. Il vérifie le chemin de rendu hors écran, pas la présentation d’une fenêtre native.
+
+## 12. Licence et redistribution
 
 Le code plita et ces manuels sont sous licence MIT, copyright (c) 2026 DAISUKE OBA. Conservez l'avis de copyright et le texte d'autorisation MIT lors de la redistribution de copies ou de parties substantielles. Les ressources tierces gardent leurs propres licences : OFL-1.1 pour Roboto et Roboto Mono ; ISC pour Lucide, avec l'avis MIT hérité de Feather.
 
 Consultez [LICENSE](../../LICENSE), les [mentions tierces](../../THIRD_PARTY_NOTICES.md), les [mentions des dépendances](../../licenses/DEPENDENCIES.md) et la [provenance des ressources](../../licenses/ASSET_PROVENANCE.json). Joignez les mentions pertinentes aux polices, icônes et binaires distribués. Avant de distribuer des binaires macOS, résolvez les lacunes de textes d'autorisation distincts signalées pour `dispatch` et `malloc_buf`. Ce dépôt publie du code source et des mentions ; une future distribution binaire devra examiner les dépendances effectivement liées.
 
-## 12. Repères dans les sources
+## 13. Repères dans les sources
 
 - [Constructeur d'application](../../crates/plita_app/src/lib.rs)
 - [Interface des fenêtres et programmes](../../crates/plita_window/src/lib.rs)
@@ -155,3 +185,4 @@ Consultez [LICENSE](../../LICENSE), les [mentions tierces](../../THIRD_PARTY_NOT
 - [Moteur de rendu](../../crates/plita_render/src/lib.rs)
 - [Icônes et génération](../../crates/plita_ui/assets/README.md)
 - [Détails du thread de rendu, en japonais](../render_worker_ja.md)
+- [Composant de bouton de menu](../../crates/plita_ui/src/menu_button.rs)

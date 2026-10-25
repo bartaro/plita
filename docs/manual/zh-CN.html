@@ -9,10 +9,10 @@
 </head>
 <body>
 <a class="skip" href="#main">跳转到正文</a>
-<header><a class="brand" href="index.html">plita</a><span>2026-10-18 · 0.0.1</span></header>
+<header><a class="brand" href="index.html">plita</a><span>2026-10-25 · 0.0.1</span></header>
 <nav class="languages" aria-label="Language"><a href="en.html" lang="en" hreflang="en">English</a> <a href="ja.html" lang="ja" hreflang="ja">日本語</a> <a href="ko.html" lang="ko" hreflang="ko">한국어</a> <a href="zh-CN.html" lang="zh-CN" hreflang="zh-CN" aria-current="page">简体中文</a> <a href="zh-TW.html" lang="zh-TW" hreflang="zh-TW">繁體中文</a> <a href="fr.html" lang="fr" hreflang="fr">Français</a> <a href="es.html" lang="es" hreflang="es">Español</a> <a href="de.html" lang="de" hreflang="de">Deutsch</a></nav>
-<div class="layout"><aside><nav aria-label="目录"><h2>目录</h2><a href="#section-1">1. 包含的内容</a><a href="#section-2">2. 环境要求与构建</a><a href="#section-3">3. 运行示例</a><a href="#section-4">4. 启动应用</a><a href="#section-5">5. 输入与辅助窗口</a><a href="#section-6">6. 停靠、画布与持久化</a><a href="#section-7">7. 字体与图标</a><a href="#section-8">8. 可选的渲染工作线程</a><a href="#section-9">9. 可选的 Python 辅助功能</a><a href="#section-10">10. 故障排查与验证</a><a href="#section-11">11. 许可与再分发</a><a href="#section-12">12. 源码导航</a></nav><p><a href="zh-CN.md">Markdown</a></p></aside><main id="main"><h1>plita — 使用与开发手册</h1>
-<p>DAISUKE OBA · 源码版 2026-10-18 · Cargo 包版本 0.0.1</p>
+<div class="layout"><aside><nav aria-label="目录"><h2>目录</h2><a href="#section-1">1. 包含的内容</a><a href="#section-2">2. 环境要求与构建</a><a href="#section-3">3. 运行示例</a><a href="#section-4">4. 启动应用</a><a href="#section-5">5. 输入与辅助窗口</a><a href="#section-6">6. 停靠、画布与持久化</a><a href="#section-7">7. 下拉菜单按钮</a><a href="#section-8">8. 字体与图标</a><a href="#section-9">9. 可选的渲染工作线程</a><a href="#section-10">10. 可选的 Python 辅助功能</a><a href="#section-11">11. 故障排查与验证</a><a href="#section-12">12. 许可与再分发</a><a href="#section-13">13. 源码导航</a></nav><p><a href="zh-CN.md">Markdown</a></p></aside><main id="main"><h1>plita — 使用与开发手册</h1>
+<p>DAISUKE OBA · 源码版 2026-10-25 · Cargo 包版本 0.0.1</p>
 <h2 id="section-1">1. 包含的内容</h2>
 <p>plita 是面向桌面创作应用的 Rust GUI 基础库。本仓库包含 5 个框架 crate 和 3 个可运行示例，提供原生窗口、输入路由、GPU 绘制、控件、停靠和画布模型。不包含各个模拟器专用的 GUI、ROM 或预编译可执行文件。</p>
 <ul>
@@ -65,15 +65,35 @@ fn main() -&gt; Result&lt;()&gt; {
 <p>自定义应用可通过 <code>AuxiliaryWindowDescriptor</code> 定义辅助窗口，并实现该窗口的大小调整、事件和绘制列表回调。内置界面的独立内存编辑器操作的是界面持有的演示缓冲区，不会自动连接模拟器或其他进程。</p>
 <p><code>PlitaProgram::minimum_window_size()</code>和<code>auxiliary_window_minimum_size(id)</code>以逻辑坐标指定客户区的最小尺寸；默认值<code>None</code>不限制缩放。<code>auxiliary_window_activation_request(id)</code>返回可选的请求令牌。每次主动请求恢复窗口或获取焦点时，请更改令牌；相同令牌不会反复激活窗口。辅助窗口创建失败后，可撤回窗口定义或更改令牌以重试，主窗口会继续运行。</p>
 <p><code>auxiliary_draw_revision(id)</code>可选择保留辅助窗口的绘制列表。返回<code>Some(revision)</code>时，每次可见内容变化（包括悬停和按下状态）都应更新版本，并通过<code>UiResponse</code>请求重绘。窗口大小或DPI变化会使保留的列表失效。动画或共享图像窗口应返回默认值<code>None</code>。窗口最小化时跳过渲染，尺寸为零的大小变化事件会被忽略。</p>
+<p><code>PlitaProgram::ime_allowed()</code>默认为<code>true</code>。需要物理按键输入、不希望宿主IME截获按键的应用可以返回<code>false</code>。此策略在主窗口和辅助窗口创建时读取，不是运行时开关，也不会改变独立的原生文件对话框的输入上下文。文字输入应用应保留默认值。</p>
+<p><code>scale_factor_changed(scale_factor)</code>通知主窗口每个逻辑单位对应的物理像素数。首次绘制前，以及刷新或改变DPI时的<code>resize</code>之前都会调用。对齐像素内容时可保存该值，布局和命中测试仍使用逻辑坐标。此回调不报告辅助窗口独立的DPI。</p>
 <h2 id="section-6">6. 停靠、画布与持久化</h2>
 <p><code>DockLayoutState</code> 和停靠几何类型描述面板布局。<code>DockLayoutProfile</code> 表示带版本的布局配置。内置界面支持配置文本，<code>AppBuilder::startup_layout_profile</code> 可在启动内置界面时恢复它。应用必须自行决定何时、在何处保存文本。内存中的布局槽位不能代替持久化文件保存。</p>
 <p><code>CanvasDocument</code> 与 <code>LayerNode</code> 提供文档和图层模型。选择、框选、吸附辅助功能与 <code>CommandHistory</code> 可用于实现编辑操作。<code>CommandRegistry</code> 和 <code>CommandDescriptor</code> 描述命令与快捷键信息。这些 API 不提供完整的应用文件格式或自动项目保存系统；请将模型连接到自己的命令与序列化代码。</p>
 <p><code>memory_viewer_address_at_point(rect, base_address, byte_count, position)</code>将<code>draw_memory_viewer</code>中可见的十六进制字节位置转换为<code>Option&lt;u16&gt;</code>地址。请传入与绘制时相同的矩形和起始地址、实际字节数以及逻辑指针坐标。地址标签、ASCII区域、间隙、不存在的字节和隐藏行返回<code>None</code>。选择及写入由应用处理，此函数不会修改内存。</p>
-<h2 id="section-7">7. 字体与图标</h2>
+<h2 id="section-7">7. 下拉菜单按钮</h2>
+<p><code>draw_menu_button</code>统一绘制按钮表面、标签和右侧的几何箭头。箭头不依赖字体；传入标签时不要附加<code>v</code>或箭头字符。<code>expanded = false</code>时箭头向下；应用的弹出菜单打开时设为<code>true</code>，箭头向上。</p>
+<pre><code class="language-rust">use plita::prelude::*;
+
+let mut list = DrawList::new(Color::rgb8(30, 30, 30));
+let rect = Rect::new(12.0, 12.0, 100.0, 32.0);
+let expanded = false;
+draw_menu_button(
+    &amp;mut list,
+    rect,
+    &quot;File&quot;,
+    expanded,
+    ButtonVisualState::Normal,
+    MenuButtonStyle::new(PanelStyle::dark(), Color::rgb8(240, 240, 240), 1.22),
+);
+</code></pre>
+<p>此片段在<code>draw_list</code>实现中生成绘制命令，本身不会打开窗口。用<code>ButtonInteractionState</code>记录悬停和按下状态，在同一按钮上完成按下与释放后切换弹出菜单状态，并传给<code>expanded</code>。文字与箭头共用原按钮矩形作为命中区域。弹出菜单项的绘制、选择和关闭由应用处理。</p>
+<p><code>MenuButtonStyle</code>提供当前状态的表面、前景色和文字缩放。<code>ButtonVisualState::Pressed</code>会一起偏移表面和内容。<code>MenuButtonLayout::new</code>提供标签区和箭头区；长标签会被裁剪，不会遮住箭头。自动宽度可用<code>measure_text_width(label, scale)</code>加上<code>MENU_BUTTON_CHROME_WIDTH</code>（42逻辑像素）。悬停、按下和激活颜色由主题提供，菜单展开状态与视觉状态分别管理。</p>
+<h2 id="section-8">8. 字体与图标</h2>
 <p><code>assets/fonts</code> 中附带 Roboto 和 Roboto Mono。plita 通过 <code>fontdue</code> 栅格化文字，并保留小型位图备用字体，也会查找已安装的系统字体。可用 <code>PLITA_UI_FONT</code>、<code>PLITA_UI_FONT_FALLBACK</code>、<code>PLITA_MEMORY_FONT</code> 指定字体文件，请在启动应用前设置。字体必须包含要显示的字符。附带的拉丁文字体不足以覆盖全部中日韩文字。</p>
 <p><code>active_font_family</code>、<code>active_font_source</code>、<code>active_text_backend</code> 和 <code>active_memory_font_family</code> 可用于诊断字体选择。移动可执行文件时，请确保资源目录仍然可访问，或配置合适的字体路径。加载器出现系统字体路径，并不表示分发包包含该字体文件。</p>
 <p>仓库附带 52 个 Lucide SVG 图标。<code>lucide_icon_names()</code> 列出支持的名称，<code>draw_lucide_icon</code> 用于绘制。使用 <code>crates/plita_ui/assets/build_icons.py</code> 重新生成 Rust 路径数据时，请保留 SVG 和许可声明。</p>
-<h2 id="section-8">8. 可选的渲染工作线程</h2>
+<h2 id="section-9">9. 可选的渲染工作线程</h2>
 <p>向 <code>PlitaProgram</code> 实现添加以下方法即可启用。</p>
 <pre><code class="language-rust">fn render_on_worker_thread(&amp;self) -&gt; bool {
     true
@@ -82,13 +102,13 @@ fn main() -&gt; Result&lt;()&gt; {
 <p>每个窗口的工作线程负责 GPU 操作与画面呈现。窗口管理、输入、<code>tick</code> 和绘制列表生成仍在事件循环线程中进行。渲染较慢时会将待处理请求合并为最新帧，因此它不是无损逐帧录制 API。共享 RGBA 图像应在同一个 mutex 内完成整幅更新，并尽量缩短持锁时间。该选项在创建渲染器时读取，不是运行中切换开关。默认采用同步渲染。</p>
 <p>渲染器保留不可变RGBA源以防止纹理缓存标识冲突，并复用顶点缓冲区及图像临时存储。未使用的图像缓存会在短暂的帧保留期后释放。共享RGBA数据在mutex内复制后上传至GPU，因此更新也应在同一mutex内进行。这些内部更改不要求修改现有绘制列表调用。</p>
 <p>验证限制（2026-10-18）：在发布工作环境中，普通工作区测试、两个离屏GPU回归测试和原生同步窗口测试已通过。但原生渲染工作线程测试在恢复及调整大小后超时，另一次桌面运行异常终止。原因尚未确定，因此尚未确认工作线程在此环境中能正常运行。需要可靠运行时，请保留默认同步渲染；启用可选工作线程前，请在目标环境中验证。</p>
-<h2 id="section-9">9. 可选的 Python 辅助功能</h2>
+<h2 id="section-10">10. 可选的 Python 辅助功能</h2>
 <p>在适当的 Python 环境中准备 Python 3.10 或更高版本，以及 1.8 以上、2 以下的 maturin。从仓库根目录运行：</p>
 <pre><code class="language-powershell">cd crates/plita
 maturin develop --features python
 </code></pre>
 <p><code>python</code> 功能提供常用值类型的 PyO3 包装类和注册辅助函数，不会自动把整个 Rust GUI 转换为完整的 Python 应用。使用 <code>#[pyclass]</code> 或 <code>#[pymodule]</code> 的应用 crate 仍需要自己的可选 <code>pyo3</code> 依赖项，因为这些宏引用 <code>::pyo3</code>。再次执行前面章节的命令时，请返回仓库根目录。</p>
-<h2 id="section-10">10. 故障排查与验证</h2>
+<h2 id="section-11">11. 故障排查与验证</h2>
 <ul>
 <li>构建失败：查看首个编译器或链接器错误，确认 Rust 版本与目标工具链，并保留锁定文件。</li>
 <li>不显示窗口或 GPU 初始化失败：查看日志和显卡驱动。仅构建成功不能证明 GUI 正常工作。</li>
@@ -102,10 +122,11 @@ cargo run --locked -p hello_plita
 </code></pre>
 <p>本手册描述发布的源码，并不保证所有平台都完成了运行测试。也可以使用 <code>cargo doc --workspace --no-deps --locked</code> 生成 API 文档。</p>
 <p>在GPU正常工作的环境中，可显式运行两个无需外部数据的回归测试：<code>cargo test -p plita_render --locked offscreen_image_updates_and_draw_order -- --ignored --test-threads=1</code>和<code>cargo test -p plita_render --locked offscreen_cache_keeps_images_distinct_and_releases_old_sources -- --ignored --test-threads=1</code>。普通工作区测试会跳过GPU及原生桌面测试。其他ignored基准测试需要外部输入和输出路径，请勿在未准备输入时运行所有ignored测试。</p>
-<h2 id="section-11">11. 许可与再分发</h2>
+<p>可选的<code>offscreen_fixture_snapshot_with_dpi</code>测试读取<code>PLITA_DRAW_FIXTURE</code>中的绘制列表和<code>scale_factor</code>（默认1.0），将<code>gpu.json</code>和物理尺寸的<code>desktop.rgba</code>写入<code>PLITA_GPU_EVIDENCE</code>。它需要GPU和明确准备的输入，只检查离屏编码器路径，不验证原生窗口显示。</p>
+<h2 id="section-12">12. 许可与再分发</h2>
 <p>plita 代码和本手册采用 MIT 许可证，版权为 (c) 2026 DAISUKE OBA。再分发副本或重要部分时，请保留 MIT 版权声明与许可文本。第三方资源保留原有许可证：Roboto 与 Roboto Mono 采用 OFL-1.1；Lucide 采用 ISC，并包含继承自 Feather 的 MIT 声明。</p>
 <p>请阅读 <a href="../../LICENSE">LICENSE</a>、<a href="../../THIRD_PARTY_NOTICES.md">第三方声明</a>、<a href="../../licenses/DEPENDENCIES.md">依赖项声明</a>和<a href="../../licenses/ASSET_PROVENANCE.json">资源来源</a>。分发字体、图标和二进制文件时，请附带相关声明。在分发 macOS 二进制文件前，需解决记录中 <code>dispatch</code> 与 <code>malloc_buf</code> 缺少独立许可文本的问题。本仓库发布源码与声明；未来发布二进制文件时，还需检查实际链接的依赖项。</p>
-<h2 id="section-12">12. 源码导航</h2>
+<h2 id="section-13">13. 源码导航</h2>
 <ul>
 <li><a href="../../crates/plita_app/src/lib.rs">应用构建器</a></li>
 <li><a href="../../crates/plita_window/src/lib.rs">窗口与程序接口</a></li>
@@ -113,6 +134,7 @@ cargo run --locked -p hello_plita
 <li><a href="../../crates/plita_render/src/lib.rs">渲染器</a></li>
 <li><a href="../../crates/plita_ui/assets/README.md">图标资源与生成方法</a></li>
 <li><a href="../render_worker_ja.md">渲染工作线程详解（日语）</a></li>
+<li><a href="../../crates/plita_ui/src/menu_button.rs">菜单按钮组件</a></li>
 </ul>
 <footer>Copyright (c) 2026 DAISUKE OBA · <a href="../../LICENSE">MIT</a></footer>
 </main></div>

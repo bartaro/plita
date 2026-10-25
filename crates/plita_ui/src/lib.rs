@@ -1,14 +1,10 @@
-//! Basic UI model for plita UI Phase 2.
+//! Geometry, drawing commands and reusable UI models for plita.
 //!
-//! Phase 2 v3 begins the retained Dock Layout State foundation. It keeps the
-//! lightweight rectangle-rendered shell and v12 floating dock behavior stable,
-//! then adds Dock Tree, tab-group, floating-panel, and JSON-seed state models
-//! that can grow into full layout persistence and attach/detach docking.
-//!
-//! Phase 2 v4.0 starts Dock Tab Group hardening. It keeps the v25 live split
-//! ratio behavior stable, then adds retained tab visibility, tab persistence
-//! seed data, restore-all-tab operations, and layout-memory slots that prepare
-//! plita for true attach/detach docking.
+//! [`DrawList`] describes panels, meshes, text and images. Shared controls
+//! include menu buttons, text input, scrolling and memory editing. Dock and
+//! canvas models support layout profiles, floating panels, selection and
+//! command history. [`CreativeShell`] combines these facilities in the demos;
+//! applications can use the same primitives with their own event routing.
 
 use std::collections::HashMap;
 use std::path::PathBuf;
@@ -237,6 +233,10 @@ impl Color {
 
 pub mod icons;
 pub use icons::{draw_lucide_icon, lucide_icon_names};
+mod menu_button;
+pub use menu_button::{
+    draw_menu_button, MenuButtonLayout, MenuButtonStyle, MENU_BUTTON_CHROME_WIDTH,
+};
 
 /// Colored vertex used by mesh-backed plita UI drawing commands.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]

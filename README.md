@@ -1,26 +1,152 @@
-# plita UI v1.0
+# plita
 
-plita UI is a clean-room Rust GUI foundation for lightweight creative desktop applications.
+plita is a Rust GUI foundation for desktop creative tools. It provides native
+windows, GPU drawing, input and text handling, docking, canvas models and reusable
+controls. Applications own their data and behavior through `PlitaProgram`.
 
-Author: **DAISUKE OBA**.
+Author: **DAISUKE OBA** · **MIT License** · Cargo package version: **0.0.1**.
+The v1.0 label used in some demo titles describes the framework milestone.
 
-Project code is available under the [MIT License](LICENSE), copyright (c) 2026
-DAISUKE OBA. Bundled Roboto and Roboto Mono fonts remain under OFL-1.1; Lucide
-icons remain under ISC, with the inherited Feather MIT notice. These assets are
-not relicensed by plita. See [third-party notices](THIRD_PARTY_NOTICES.md) for
-copyright holders, full license texts, source links and redistribution guidance.
+## Specification
 
-This public source workspace contains the five plita foundation crates and the
-`hello_plita`, `docking_demo` and `canvas_demo` examples. Downstream applications,
-emulator integrations, ROMs, development screenshots and prebuilt executables
-are not part of this distribution.
+| Area | What plita provides |
+| --- | --- |
+| Windows | winit event loop, main and auxiliary windows, minimum sizes, activation requests, main-window DPI notifications |
+| Rendering | wgpu draw lists for panels, gradients, triangle meshes, clipped content and immutable/shared RGBA images |
+| Input | Pointer, keyboard, double-click, IME, file-drop events and an application-level IME policy |
+| Controls | Theme tokens, buttons, dropdown menu buttons with geometric arrows, text input, scrollbars and a memory editor |
+| Docking | Fixed, floating and detached panels, split geometry and versioned layout profiles |
+| Canvas | Document/layer models, selection, movement, resizing, snapping, command metadata and undo/redo |
+| Text and icons | Bundled Roboto and Roboto Mono, system fallback fonts and 52 embedded Lucide icons |
+| Integration | Custom Rust applications and optional Python value wrappers and registration helpers |
+
+The source workspace contains five foundation crates (`plita`, `plita_app`,
+`plita_window`, `plita_render`, `plita_ui`) and three sample applications.
+Popup contents, file formats, file dialogs, project persistence and application
+commands are implemented by the consuming application.
+
+## Requirements and quick start
+
+Install Git, Rust **1.92 or later**, and a linker for your target. Windows MSVC
+builds need Visual Studio Build Tools with C++ tools and the Windows SDK.
+Native rendering also needs a compatible GPU and driver. The first build may
+download Cargo dependencies; keep `Cargo.lock` for reproducible dependency versions.
+
+```powershell
+git clone https://github.com/bartaro/plita.git
+cd plita
+cargo check --workspace --locked
+cargo test --workspace --locked
+cargo run --locked -p hello_plita
+```
+
+The workspace explicitly enables wgpu's DX12, GLES and Vulkan backends. Metal is
+not enabled in this manifest. These build commands are validation procedures,
+not a claim that every operating system or GPU configuration has been tested.
+
+## Using the examples
+
+Close one example before starting the next:
+
+```powershell
+cargo run --locked -p docking_demo
+cargo run --locked -p canvas_demo
+```
+
+All three examples currently launch the shared `CreativeShell`; their titles
+and initial sizes differ. The shell contains a menu bar, tools, a grid canvas,
+inspector, timeline and status bar. Try these controls when a text or memory
+input does not have focus:
+
+- `1`–`5`: selection, pan, rectangle, text and grid tools; wheel to zoom and `F` to reset the view.
+- Drag selected objects or their corner handles; `Ctrl+D` duplicates, `Delete` removes, and arrow keys move them.
+- `Ctrl+Z` undoes; `Ctrl+Y` or `Ctrl+Shift+Z` redoes.
+- `Ctrl+1`–`Ctrl+6` selects panels; `Ctrl+Shift+1`–`Ctrl+Shift+6` opens floating panels; `Ctrl+0` closes them.
+- In this demo, `Ctrl+S` reports an in-memory snapshot size and `Ctrl+O` resets the demo document. They do not save or open files.
+
+## Creating an application
+
+The smallest entry point starts the built-in shell:
+
+```rust
+use plita::prelude::*;
+
+fn main() -> Result<()> {
+    App::new()
+        .title("My plita application")
+        .window_size(1280, 800)
+        .continuous_redraw(false)
+        .run()
+}
+```
+
+For your own application state, implement `PlitaProgram::{resize, handle_event,
+draw_list}` and pass a factory to `AppBuilder::run_program`. The factory receives
+the initial logical `Size`. Use `tick` for periodic updates and `UiResponse` to
+request redraws. Construct drawing commands in `DrawList`; the renderer submits
+them to the GPU. With `continuous_redraw(false)`, redraws follow UI changes and
+explicit requests.
+
+### Dropdown menu buttons
+
+```rust
+use plita::prelude::*;
+
+let mut list = DrawList::new(Color::rgb8(30, 30, 30));
+let rect = Rect::new(12.0, 12.0, 100.0, 32.0);
+let expanded = false;
+draw_menu_button(
+    &mut list,
+    rect,
+    "File",
+    expanded,
+    ButtonVisualState::Normal,
+    MenuButtonStyle::new(PanelStyle::dark(), Color::rgb8(240, 240, 240), 1.22),
+);
+```
+
+Use this drawing fragment inside `draw_list`. `expanded` controls the arrow:
+down when closed, up when open. The caption is clipped separately from the
+right-aligned arrow, so long names cannot obscure it. No arrow character is
+needed in the label.
+
+Track interactions with `ButtonInteractionState`, use the original `rect` as
+the shared hit target for caption and arrow, and manage popup contents and
+selection in your app. Pass state-specific theme colors through `MenuButtonStyle`.
+`MenuButtonLayout::new` exposes the content regions. For automatic width, add
+`MENU_BUTTON_CHROME_WIDTH` (42 logical pixels) to `measure_text_width(label, scale)`.
+
+### Input, DPI and auxiliary windows
+
+- `PlitaProgram::ime_allowed()` defaults to `true`. Physical-key applications can return `false`; the policy is read at main/auxiliary window creation, without changing separate native file dialogs.
+- `scale_factor_changed(scale_factor)` reports the main window's physical pixels per logical unit before the first draw and before `resize` on DPI refresh/change. Layout and hit testing continue to use logical coordinates.
+- `UiEvent::PointerDoubleClick` follows the second completed `PointerUp` within 500 ms and 6 logical pixels; drag gestures are excluded. Detection is independent for each window.
+- Describe auxiliary windows with `AuxiliaryWindowDescriptor` and implement their input, resize and drawing callbacks. Optional minimum sizes, activation tokens and draw revisions control their lifecycle.
+
+### Fonts, icons and Python
+
+Set `PLITA_UI_FONT`, `PLITA_UI_FONT_FALLBACK` or `PLITA_MEMORY_FONT` before launch
+when you need a particular font. Bundled Latin fonts do not cover all CJK text;
+provide an appropriate installed fallback. Inspect `active_font_source()` when
+diagnosing missing glyphs. `draw_lucide_icon` and `lucide_icon_names` expose the
+52 bundled icons; see [the icon guide](crates/plita_ui/assets/README.md).
+
+For optional Python helpers, install Python 3.10+ and maturin 1.8–1.x, then run:
+
+```powershell
+cd crates/plita
+maturin develop --features python
+```
+
+The feature provides PyO3 wrappers and registration helpers. An application
+defining `#[pyclass]` or `#[pymodule]` also needs its own optional `pyo3` dependency
+and an application-specific module. Return to the repository root for the other
+commands in this README. See chapter 10 of the manuals for details.
 
 ## Manuals / 多言語説明書
 
-The complete user and developer manual is included in the same eight languages
-as the KITAQ series. Each edition covers setup, demo controls, application APIs,
-docking and canvas models, fonts and icons, rendering workers, Python helpers,
-troubleshooting and redistribution notices.
+All eight editions describe the same public APIs. Read Markdown on GitHub or
+open the generated HTML locally; HTML uses no external scripts, fonts or services.
 
 | Language | Read on GitHub | Offline HTML |
 | --- | --- | --- |
@@ -33,277 +159,65 @@ troubleshooting and redistribution notices.
 | Español | [Manual](docs/manual/es.md) | [HTML](docs/manual/es.html) |
 | Deutsch | [Handbuch](docs/manual/de.md) | [HTML](docs/manual/de.html) |
 
-After cloning or downloading the repository, open `docs/manual/index.html` in a
-browser. Keep the repository directory structure so that styles and source links
-remain available. The HTML manuals work offline and use no external scripts or
-font services. GitHub's normal file view displays HTML source; use the Markdown
-links above for reading on GitHub. To regenerate HTML after editing Markdown:
+Open `docs/manual/index.html` after cloning. Regenerate and check HTML with:
 
 ```powershell
 python docs/manual/build.py
 python docs/manual/build.py --check
+cargo doc --workspace --no-deps --locked
 ```
 
-## Source update — 2026-10-18
+Additional references: [framework scope](docs/v1_0_completion.md),
+[render-worker guide (Japanese)](docs/render_worker_ja.md),
+[historical development notes](docs/history.md).
 
-- Reuse GPU vertex buffers and image scratch storage; retain immutable image
-  sources safely and release unused texture-cache entries.
-- Add optional minimum window sizes, explicit auxiliary-window restore/focus
-  requests, and revision-based auxiliary draw-list retention to `PlitaProgram`.
-  Existing implementations keep the default behavior without adding methods.
-- Add `memory_viewer_address_at_point` for visible hexadecimal byte hit testing
-  and align the memory viewer's headers and byte cells.
-- Add opt-in offscreen GPU regression tests. See chapter 10 of each manual for
-  the self-contained commands; fixture-based benchmarks need separate inputs.
-
-The eight language manuals cover the new APIs and redraw requirements. The
-Cargo package version remains `0.0.1`; this is a source update.
-
-### Native render-worker validation limitation
-
-Validation note (2026-10-18): the normal workspace tests, two offscreen GPU regressions, and the native synchronous-window test passed on the publication machine. The native render-worker test timed out after restore/resize, and a separate desktop run terminated abnormally. The cause has not been isolated, so successful native worker operation is not confirmed for this environment. Keep the default synchronous rendering when reliability is required; validate the opt-in worker on your own target before enabling it.
-
-## Framework overview
-
-v1.0 turns the Phase 2 shell into a reusable framework surface. plita now exposes a custom `PlitaProgram` app trait, retained Dock Tree geometry allocation, fixed/floating/detached dock operations, versioned layout profiles with startup restore support, canvas document/layer models, multi-select/marquee/snap model APIs, command registry metadata, style tokens, file-drop events, and demo applications.
-
-- MIT-licensed repository skeleton
-- Cargo workspace
-- top-level `plita` re-export crate
-- `plita_app` application builder
-- `plita_window` winit event-loop integration
-- `plita_render` wgpu surface/device setup
-- Vello renderer initialization placeholder
-- `plita_ui` crate with geometry, colors, draw lists, and a deterministic creative layout
-- GPU rectangle pipeline for UI panels, grid, timeline, simple buttons, and bitmap bootstrap text
-- resize handling with draw-list regeneration
-- DPI/event logging
-- keyboard/mouse/IME/file-drop logging hooks
-- shared `PointerDoubleClick` routing for main and auxiliary windows
-- unit tests for geometry, layout, draw lists, vertex generation, event routing, canvas hit testing, object creation, object dragging, and undo/redo
-- `PlitaProgram` for custom apps on the plita window/render loop
-- Dock Tree geometry allocation and profile text persistence
-- Dock tab close, detach, attach, restore, and in-memory slot operations
-- Canvas document snapshot, layer tree, multi-select, marquee selection, and snap helpers
-- command registry metadata and shortcut regression coverage
-- public style/theme tokens for app-facing widgets
-
-## Why wgpu 28?
-
-Vello 0.8.0 depends on `wgpu ^28.0.0` when its `wgpu` feature is enabled. Phase 1 therefore keeps `wgpu = "28.0.0"` so the renderer stack stays on one wgpu generation.
-
-## Build
+## Validation and current limitations
 
 ```powershell
-cargo check --workspace
-cargo test --workspace
-cargo run -p hello_plita
-cargo run -p docking_demo
-cargo run -p canvas_demo
+cargo fmt --all -- --check
+cargo check --workspace --locked
+cargo test --workspace --locked
+python docs/manual/build.py --check
 ```
 
-For verbose logs:
+Normal tests skip GPU and native desktop probes. Chapter 11 of every manual
+lists explicit opt-in commands and required inputs; do not run all ignored
+tests without their fixtures and a suitable desktop.
 
-```powershell
-$env:RUST_LOG="debug,plita_window=trace,plita_render=trace"
-cargo run -p hello_plita
-```
+Synchronous rendering is the default. `render_on_worker_thread()` opts into
+coalesced GPU rendering on per-window workers; event handling, UI updates and
+draw-list construction stay on the event-loop thread. At the 2026-10-18 native
+validation, the worker path timed out after restore/resize and a separate run
+terminated abnormally. Its reliable native operation remains unconfirmed.
+The [worker guide](docs/render_worker_ja.md) records that boundary.
 
-## Python Bindings
+## License and redistribution
 
-plita has an optional `python` feature for PyO3-based application bindings. It
-re-exports PyO3 through `plita::python::prelude::*`, exposes common wrapper
-classes such as `Point`, `Size`, `Rect`, `Color`, and `AppConfig`, and provides
-small helpers for registering those classes, returning Python `bytes`, and
-mapping plita app errors into Python exceptions.
+Project code and documentation are MIT licensed, copyright (c) 2026
+**DAISUKE OBA**. Roboto and Roboto Mono retain OFL-1.1; Lucide retains ISC and
+the inherited Feather MIT notices. Keep the applicable notices with source and
+binary redistributions. Review the recorded `dispatch` and `malloc_buf` notice
+gaps before distributing macOS binaries.
 
-To build plita's helper module directly:
+See [LICENSE](LICENSE), [third-party notices](THIRD_PARTY_NOTICES.md),
+[dependency notices](licenses/DEPENDENCIES.md) and [CLEAN_ROOM.md](CLEAN_ROOM.md).
+This public package contains framework source, assets and examples; application
+integrations, ROMs, executables and development evidence are outside its scope.
 
-```powershell
-cd crates\plita
-maturin develop --features python
-```
+## Update history
 
-Application crates can enable it from their own feature:
+### 2026-10-25 — menu buttons, input policy and documentation
 
-```toml
-[features]
-python = ["plita/python", "dep:pyo3"]
+- Add shared `draw_menu_button`, `MenuButtonStyle` and `MenuButtonLayout` with a geometric open/closed arrow and separate caption clipping.
+- Add the `PlitaProgram::ime_allowed()` creation policy and main-window `scale_factor_changed()` callback.
+- Add an opt-in DPI-aware offscreen fixture snapshot test.
+- Update all eight Markdown manuals and generated HTML; put specifications and usage before this history.
+- Keep Cargo package version `0.0.1`; this is a source update.
 
-[dependencies]
-pyo3 = { workspace = true, optional = true }
-```
+### 2026-10-18 — rendering and window lifecycle
 
-App crates that define `#[pyclass]` or `#[pymodule]` still keep an optional
-`pyo3` dependency because PyO3's procedural macros expand through the `::pyo3`
-crate path, but common binding glue should come from plita:
+- Reuse GPU buffers and image scratch storage, retain immutable image identities and release unused image-cache entries.
+- Add minimum window sizes, auxiliary-window activation requests and retained draw revisions.
+- Add `memory_viewer_address_at_point` and explicit offscreen GPU regression tests.
 
-```rust
-#[cfg(feature = "python")]
-mod python_api {
-    use plita::python::{self as plita_python, prelude::*};
-
-    #[pymodule]
-    fn my_app(_py: Python<'_>, module: &Bound<'_, PyModule>) -> PyResult<()> {
-        plita_python::add_plita_classes(module)?;
-        Ok(())
-    }
-}
-```
-
-## Rendering workers
-
-Custom apps can opt in to worker-thread GPU rendering with
-`PlitaProgram::render_on_worker_thread()`. The default remains synchronous;
-window management, input, UI ticks and draw-list construction stay on the
-event-loop thread. See [the rendering-worker guide](docs/render_worker_ja.md)
-for lifecycle, frame-coalescing and shared-image rules.
-
-## Double-click events
-
-Custom `PlitaProgram` implementations receive
-`UiEvent::PointerDoubleClick { position, button }` after the second
-`PointerUp`. plita recognizes two completed clicks when they use the same
-pointer button, finish within 500 ms, and stay within 6 logical pixels.
-Press-drag-release gestures are excluded, and detection is independent for the
-main window and each auxiliary window.
-
-## Expected result
-
-A native window opens with a dark creative-app shell:
-
-- top menu bar
-- left tool strip
-- central canvas with grid and artboard placeholder
-- right inspector
-- lower timeline
-- bottom status bar
-
-The bootstrap text uses the bundled Roboto UI font through plita's lightweight `fontdue` rasterizer, with an original tiny rectangle-based bitmap font kept as a deterministic fallback until the final text/IME subsystem is implemented.
-
-The debugger memory editor opens as a detached native auxiliary window when the
-default shell requests it. It edits the same retained memory buffer owned by the
-parent shell, supports vertical scrolling for longer memory ranges, and renders
-its memory/address text with the bundled Google Fonts Roboto Mono font.
-
-## v1.0 Scope
-
-plita v1.0 provides the framework foundation needed by production-tool style desktop apps: retained widget/event routing, command metadata, dock layout persistence, canvas document editing, text/IME routing, style tokens, and app-owned custom draw/event programs. Native OS file dialogs and advanced GPU text shaping can be layered on top without changing the public app trait.
-
-## Clean-room note
-
-The project documents a clean-room implementation approach based on the plita
-UI specification and public dependency APIs. This design note is not an
-independent proof of every source file's origin. See [CLEAN_ROOM.md](CLEAN_ROOM.md)
-and [third-party notices](THIRD_PARTY_NOTICES.md) for the stated scope and the
-separate provenance of bundled fonts and icons.
-
-## Historical development notes
-
-The phase notes below record earlier implementation stages. Use the current
-manuals above and the source APIs for the present feature set.
-
-
-## Phase 1 v2
-
-This snapshot adds the retained `plita_ui::CreativeShell`, a lightweight widget tree, event routing, toolbar selection, splitter dragging, and status bar updates.
-
-Run:
-
-```powershell
-cargo check --workspace
-cargo test --workspace
-cargo run -p hello_plita
-```
-
-## Phase 1 v3
-
-This snapshot continues Phase 1 after Widget Tree + Event Routing and adds the first interactive desktop-shell behaviors:
-
-- retained menu-bar item nodes: `FILE`, `EDIT`, `VIEW`, `WINDOW`, `HELP`
-- active menu popup rendering
-- keyboard shortcut routing with modifier state
-- tool shortcuts: `1/V` = Select, `2/H` = Pan, `3/R` = Box, `4/T` = Text
-- command-status shortcuts: `Ctrl+S`, `Ctrl+O`, `Ctrl+Z`, `Ctrl+Y`, `Ctrl+Shift+Z`
-- canvas mouse-wheel zoom
-- Pan tool drag on the canvas
-- `F` to reset/fit the canvas view
-- additional unit tests for menu opening, keyboard tool selection, and canvas zoom
-
-Manual check:
-
-```text
-1. Click FILE/EDIT/VIEW/WINDOW/HELP; a small popup should appear.
-2. Press 1/2/3/4 or V/H/R/T; the active tool should change.
-3. Select PAN, drag in the canvas; the grid/artboard should move.
-4. Wheel over the canvas; the zoom percentage should change.
-5. Press F; zoom/pan should reset.
-6. Press Ctrl+S/Ctrl+O/Ctrl+Z/Ctrl+Y; the status bar should show command status.
-```
-
-## Phase 1 v7
-
-This snapshot extends the canvas object prototype:
-
-- selected rectangle corner handles can be dragged to resize
-- resize operations are undoable/redoable
-- `Delete`/`Backspace` deletes the selected object through command history
-- `Ctrl+D` duplicates the selected object
-- arrow keys nudge the selected object; `Shift+Arrow` nudges by 10 world units
-- inspector shows selected object position and size
-- additional unit tests cover resize, delete/undo, duplicate, and nudge
-
-Manual check:
-
-```text
-1. Select the blue rectangle.
-2. Drag a corner handle; the object should resize.
-3. Press Ctrl+Z/Ctrl+Y; the resize should undo/redo.
-4. Press Ctrl+D; a duplicated rectangle should appear offset and selected.
-5. Press Arrow keys / Shift+Arrow; the selected object should move.
-6. Press Delete or Backspace; selected object should disappear.
-7. Press Ctrl+Z; deleted object should come back.
-```
-
-## Phase 1 v7 notes
-
-This source drop adds the first configurable grid-input prototype for dot/pixel/waveform-style editing, rich button/slider prototypes, a right-click context menu, and a floating debugger-style memory viewer window. These are still Phase 1 bootstrap widgets built from GPU rectangles and the 5x7 debug text renderer; later phases will move them into the formal widget/style/docking systems.
-
-
-## Phase 1 v8 typography note
-
-plita UI now bundles Roboto as its default UI font. Apps can still override it with `PLITA_UI_FONT` or a font placed in `assets/fonts/`. The plita source remains MIT-licensed; the bundled Roboto font remains under the SIL Open Font License 1.1.
-
-## Phase 2 v2.1 note
-
-This package includes the first shortcut-system cleanup after the floating dock shortcut fixes. `KeyInput` now normalizes the legacy key string before command handling, keeping ordinary logical shortcuts separate from Windows/JIS physical-key recovery for Ctrl+Shift+number.
-
-## Phase 2 v3.0 note
-
-This package introduces the Dock Layout State foundation on top of the v12 shortcut-stable floating dock implementation. The new `DockLayoutState` / `DockNode` / `DockPanelKind` model is synchronized with the existing inspector, bottom, and floating dock state, while preserving the confirmed v12 behavior. A deterministic JSON seed exporter is included through `CreativeShell::dock_layout_json()` and `DockLayoutState::to_json_pretty()` for future layout persistence work.
-
-
-## Phase 2 v3.1 note
-
-This package keeps the v13 `DockLayoutState` foundation and starts using it as the source of truth for fixed dock tabs. Inspector and bottom tab rectangles, plus their widget-tree nodes, are now derived from the Dock Tree tab groups. Runtime behavior remains intentionally conservative: no tab dragging or attach/detach is introduced yet, and the v12 shortcut fixes remain untouched.
-
-
-## Phase 2 v3.7.1 note
-
-This package keeps the bottom diagnostics visibility fix from v19 and adds a compact line-position hotfix. In a 743x354 window the bottom dock becomes about 72px high; the v19 test correctly exposed that the third diagnostics line could exceed `rect.bottom()`. v20 now uses a compact 10px diagnostics spacing table for bottom docks up to 80px high, so the title, layout summary, and layout seed size remain inside the visible bottom-dock bounds. Floating Diagnostics keeps the v18 behavior.
-
-
-## Phase 2 v3.7.1 note
-
-- Adds retained Dock Tree split ratio accessors.
-- Persists `root_ratio` and `main_ratio` in the lightweight JSON seed.
-- Shows `SPLIT ROOT ... MAIN ...` in Bottom DIAG and Floating Diagnostics.
-- Does not yet connect live splitter dragging to Dock Tree ratios; this keeps v21 behavior stable.
-
-## Shared Icons
-
-plita now includes 52 vendored Lucide icons through
-`plita::prelude::{draw_lucide_icon, lucide_icon_names}`. Icons are embedded in
-applications, centered and aspect-preserving. SVG sources, regeneration scripts,
-and upstream license are in `crates/plita_ui/assets`; see its README for usage.
-Applications can use this shared API without a separate icon renderer.
+Earlier implementation stages are preserved in [development history](docs/history.md).
